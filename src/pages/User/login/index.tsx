@@ -1,13 +1,8 @@
 import {
-  AlipayCircleOutlined,
   LockOutlined,
-  MailOutlined,
-  MobileOutlined,
-  TaobaoCircleOutlined,
   UserOutlined,
-  WeiboCircleOutlined,
 } from '@ant-design/icons';
-import {Alert, Space, message, Tabs, Drawer, Button} from 'antd';
+import {Alert, Space, message, Tabs, Drawer, Button, notification} from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
@@ -15,7 +10,7 @@ import type { Dispatch } from 'umi';
 import type { StateType } from '@/models/login';
 import type { LoginParamsType } from '@/services/login';
 import type { ConnectState } from '@/models/connect';
-import RegisterDrawer from './Drawer/index'
+import RegisterDrawer from './RegisterDrawer/index'
 
 import styles from './index.less';
 import {ArrowRightOutlined, DownloadOutlined, RightCircleOutlined, RightOutlined} from "@ant-design/icons/lib";
@@ -44,7 +39,12 @@ const Login: React.FC<LoginProps> = (props) => {
 
   const { userLogin = {}, submitting } = props;
   const { status, type: loginType } = userLogin;
+
+
+  // 当前的登录用户类型
   const [type, setType] = useState<string>('employee');
+
+  //抽屉是否显示
   const [visible, setVisible] = useState(false);
   // 切换登录方式
   const [isUser,setIsUser] = useState(true);
@@ -61,6 +61,18 @@ const Login: React.FC<LoginProps> = (props) => {
   };
 
   const handleRegister = ()=>{
+    if(type === 'admin'){
+      notification.open({
+        message: `提示信息:`,
+        description:
+          '请致电18735380816或联系天津工业大学计算机学院协助进行管理员权限的开通,暂不支持自行注册~',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+      return ;
+    }
+
      setVisible(true);
   }
 
@@ -92,7 +104,7 @@ const Login: React.FC<LoginProps> = (props) => {
                   key="employee"
                   tab={intl.formatMessage({
                     id: 'pages.login.accountLogin.tab',
-                    defaultMessage: '应聘者登录',
+                    defaultMessage: '求职者登录',
                   })}
                 />
                 <Tabs.TabPane
@@ -341,7 +353,7 @@ const Login: React.FC<LoginProps> = (props) => {
             setIsUser(!isUser)
             setType(  !isUser ? 'employee' :  'hr')
             console.log(isUser);
-          }} >{isUser ? '前往HR登录' : '前往用户登录'} <RightCircleOutlined /></a>
+          }} >{isUser ? '前往管理员登录页' : '我是用户,前往登录'} <RightCircleOutlined /></a>
           <a
             style={{
               float: 'right',
@@ -353,7 +365,7 @@ const Login: React.FC<LoginProps> = (props) => {
       </ProForm>
 
 
-      <RegisterDrawer visible={visible} setVisible={setVisible} type={type}/>
+      <RegisterDrawer visible={visible} setVisible={setVisible} type={type} />
     </div>
 
   );
