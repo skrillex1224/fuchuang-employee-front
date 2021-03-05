@@ -25,7 +25,7 @@ const data = [
 ].map((item) => ({
   title: item,
   subTitle: <Tag color="#5BD8A6">语雀专栏</Tag>,
-  actions: [<a>邀请</a>],
+  actions: [<a>查看公司详细信息</a>],
   avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
   content: (
     <div
@@ -33,14 +33,9 @@ const data = [
         flex: 1,
       }}
     >
-      <div
-        style={{
-          width: 200,
-        }}
-      >
-        <div>发布中</div>
-        <Progress percent={80} />
-      </div>
+        <div>公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介
+          司简介公司简介公司简介公司简介公司简介公司简介
+          司简介公司简介公司简介公司简介公司简介公司简介</div>
     </div>
   ),
 }));
@@ -151,7 +146,7 @@ export default class UserCenter extends React.Component<any, any>{
                       content: {},
                       actions: {},
                     }}
-                    headerTitle="您已经申请面试的公司列表"
+                    headerTitle="历史互动公司列表:"
                     dataSource={data}
                   />
                 </ProCard>

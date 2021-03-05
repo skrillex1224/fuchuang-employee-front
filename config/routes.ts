@@ -42,6 +42,13 @@
                 authority: ['admin'],
               },
               {
+                path:'/employee/interviewStatus',
+                icon: 'RiseOutlined',
+                name: '面试进度',
+                component: '../pages/Employee/InterviewStatus',
+                authority: ['admin'],
+              },
+              {
                 path:'/account/center',
                 icon: 'HomeOutlined',
                 name: '个人中心',

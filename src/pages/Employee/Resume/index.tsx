@@ -6,7 +6,6 @@ import { Document} from "react-pdf";
 import {message} from "antd";
 import {InboxOutlined} from "@ant-design/icons/lib";
 import Dragger from "antd/es/upload/Dragger";
-import styles from './index.less'
 
 
 
