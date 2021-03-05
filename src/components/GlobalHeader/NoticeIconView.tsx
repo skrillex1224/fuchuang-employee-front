@@ -43,7 +43,7 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
 
   handleNoticeClear = (title: string, key: string) => {
     const { dispatch } = this.props;
-    message.success(`${'清空了'} ${title}`);
+    message.success(`${'清空'} ${title}成功`);
 
     if (dispatch) {
       dispatch({
@@ -144,14 +144,6 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
           list={noticeData.message}
           title="消息"
           emptyText="您已读完所有消息"
-          showViewMore
-        />
-        <NoticeIcon.Tab
-          tabKey="event"
-          title="待办"
-          emptyText="你已完成所有待办"
-          count={unreadMsg.event}
-          list={noticeData.event}
           showViewMore
         />
       </NoticeIcon>

@@ -7,6 +7,7 @@ import type { ConnectState } from '@/models/connect';
 import type { CurrentUser } from '@/models/user';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+import moment from "moment";
 
 export type GlobalHeaderRightProps = {
   currentUser?: CurrentUser;
@@ -53,12 +54,6 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
             个人中心
           </Menu.Item>
         )}
-        {menu && (
-          <Menu.Item key="settings">
-            <SettingOutlined />
-            个人设置
-          </Menu.Item>
-        )}
         {menu && <Menu.Divider />}
 
         <Menu.Item key="logout">
@@ -70,8 +65,13 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
     return currentUser && currentUser.name ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-          <span className={`${styles.name} anticon`}>{currentUser.name}</span>
+          <span className={`${styles.name} anticon`}>{
+            `${{
+                0 : '早上好',
+                1 : '中午好',
+                2 : '晚上好'
+            }[Math.floor(moment().hours() / 8)]}，${currentUser.name}`
+           } </span>
         </span>
       </HeaderDropdown>
     ) : (

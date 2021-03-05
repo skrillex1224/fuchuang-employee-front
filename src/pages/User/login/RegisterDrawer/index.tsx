@@ -1,5 +1,5 @@
 import React, {createRef} from "react";
-import {Drawer, Form, Button, Col, Row, Input, Select, DatePicker, message, InputNumber, Calendar} from 'antd';
+import {Drawer, Form, Button, Col, Row, Input, Select, message, InputNumber, Calendar} from 'antd';
 import {EyeInvisibleOutlined, EyeTwoTone, InboxOutlined} from "@ant-design/icons/lib";
 import Dragger from "antd/es/upload/Dragger";
 

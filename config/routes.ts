@@ -1,4 +1,6 @@
-﻿export default [
+﻿import {HomeOutlined} from "@ant-design/icons/lib";
+
+export default [
   {
     path: '/',
     component: '../layouts/BlankLayout',
@@ -25,13 +27,14 @@
             routes: [
               {
                 path: '/',
-                redirect: '/welcome',
+                redirect: '/account/center',
               },
               {
-                path: '/welcome',
-                name: 'welcome',
-                icon: 'smile',
-                component: './Welcome',
+                path:'/account/center',
+                icon: 'HomeOutlined',
+                name: '个人中心',
+                component: '../components/UserCenter',
+                authority: ['admin'],
               },
               {
                 path: '/admin',

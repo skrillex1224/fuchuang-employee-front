@@ -2,9 +2,9 @@ import {
   LockOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import {Alert, Space, message, Tabs, Drawer, Button, notification} from 'antd';
+import {Alert,  Tabs,  notification} from 'antd';
 import React, { useState } from 'react';
-import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
+import ProForm, {  ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
 import type { Dispatch } from 'umi';
 import type { StateType } from '@/models/login';
@@ -13,7 +13,7 @@ import type { ConnectState } from '@/models/connect';
 import RegisterDrawer from './RegisterDrawer/index'
 
 import styles from './index.less';
-import {ArrowRightOutlined, DownloadOutlined, RightCircleOutlined, RightOutlined} from "@ant-design/icons/lib";
+import { RightCircleOutlined} from "@ant-design/icons/lib";
 
 export type LoginProps = {
   dispatch: Dispatch;
@@ -38,7 +38,7 @@ const Login: React.FC<LoginProps> = (props) => {
 
 
   const { userLogin = {}, submitting } = props;
-  const { status, type: loginType } = userLogin;
+  const { status } = userLogin;
 
 
   // 当前的登录用户类型
@@ -53,6 +53,7 @@ const Login: React.FC<LoginProps> = (props) => {
   const intl = useIntl();
 
   const handleSubmit = (values: LoginParamsType) => {
+
     const { dispatch } = props;
     dispatch({
       type: 'login/login',
@@ -137,11 +138,11 @@ const Login: React.FC<LoginProps> = (props) => {
         }
 
 
-        {status === 'error' && loginType === 'account' && !submitting && (
+        {status === 'error'  && !submitting && (
           <LoginMessage
             content={intl.formatMessage({
               id: 'pages.login.accountLogin.errorMessage',
-              defaultMessage: '账户或密码错误（admin/ant.design)',
+              defaultMessage: '账户或密码错误',
             })}
           />
         )}
@@ -194,9 +195,6 @@ const Login: React.FC<LoginProps> = (props) => {
           </>
         )}
 
-        {status === 'error' && loginType === 'mobile' && !submitting && (
-          <LoginMessage content="验证码错误" />
-        )}
         {type === 'enterprise' && (
           <>
             <ProFormText
