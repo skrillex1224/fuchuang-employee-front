@@ -1,5 +1,5 @@
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import {  Menu, Spin } from 'antd';
 import React from 'react';
 import type { ConnectProps } from 'umi';
 import { history, connect } from 'umi';
@@ -65,7 +65,8 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
     return currentUser && currentUser.name ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
-          <span className={`${styles.name} anticon`}>{
+          <span className={`${styles.name} anticon`}>
+            <UserOutlined style={{fontSize:'16px',paddingRight:'5px'}}/> {
             `${{
                 0 : '早上好',
                 1 : '中午好',

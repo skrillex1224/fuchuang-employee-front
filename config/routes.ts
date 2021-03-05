@@ -1,6 +1,4 @@
-﻿import {HomeOutlined} from "@ant-design/icons/lib";
-
-export default [
+﻿export default [
   {
     path: '/',
     component: '../layouts/BlankLayout',
@@ -27,7 +25,21 @@ export default [
             routes: [
               {
                 path: '/',
-                redirect: '/account/center',
+                redirect: '/employee/jobSeekerList',
+              },
+              {
+                name: '招聘信息总览',
+                icon: 'HeatMapOutlined',
+                path: '/employee/jobSeekerList',
+                component: '../pages/employee/JobSeekerList',
+                authority: ['admin','user']
+              },
+              {
+                path:'/employee/resume',
+                icon: 'FileWordOutlined',
+                name: '我的简历',
+                component: '../pages/Employee/Resume',
+                authority: ['admin'],
               },
               {
                 path:'/account/center',
@@ -36,28 +48,22 @@ export default [
                 component: '../components/UserCenter',
                 authority: ['admin'],
               },
-              {
-                path: '/admin',
-                name: 'admin',
-                icon: 'crown',
-                component: './Admin',
-                authority: ['admin'],
-                routes: [
-                  {
-                    path: '/admin/sub-page',
-                    name: 'sub-page',
-                    icon: 'smile',
-                    component: './Welcome',
-                    authority: ['admin'],
-                  },
-                ],
-              },
-              {
-                name: 'list.table-list',
-                icon: 'table',
-                path: '/list',
-                component: './TableList',
-              },
+              // {
+              //   path: '/admin',
+              //   name: 'admin',
+              //   icon: 'crown',
+              //   component: './Admin',
+              //   authority: ['admin'],
+              //   routes: [
+              //     {
+              //       path: '/admin/sub-page',
+              //       name: 'sub-page',
+              //       icon: 'smile',
+              //       component: './Welcome',
+              //       authority: ['admin'],
+              //     },
+              //   ],
+              // },
               {
                 component: './404',
               },
