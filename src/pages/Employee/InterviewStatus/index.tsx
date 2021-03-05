@@ -2,10 +2,27 @@ import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
 import ProCard from "@ant-design/pro-card";
 import {AlertFilled, CloseSquareFilled, EditOutlined, EllipsisOutlined, SettingOutlined} from "@ant-design/icons/lib";
-import {Card, Descriptions, Empty, message, Steps} from "antd";
+import {Button, Card, DatePicker, Descriptions, Empty, Input, message, Modal, Steps, TimePicker} from "antd";
+import moment from "moment";
 
 
 export default class Index extends React.Component<any, any>{
+
+  state = {
+      visible : false
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  hideModal = () => {
+    this.setState({
+      visible: false,
+    });
+  };
 
   render(): React.ReactNode {
     return (
@@ -35,7 +52,7 @@ export default class Index extends React.Component<any, any>{
             <Steps.Step title="面试通过" description="面试已通过,请等待公司进行商务联系" />
           </Steps>
 
-          <Card style={{marginTop:'20px'}} bordered type={'inner'}  title={'线下面试信息'}>
+          <Card style={{marginTop:'20px'}}  bordered type={'inner'}  title={'线下面试信息'}  extra={<Button type="primary" onClick={this.showModal}>时间冲突?申请调整</Button>}>
             {
               false ? <Empty description={'请等待Hr确认线下面试信息'} />
                 :
@@ -46,6 +63,19 @@ export default class Index extends React.Component<any, any>{
             }
           </Card>
         </ProCard>
+
+        <Modal
+          title="您期望的面试时间?"
+          visible={this.state.visible}
+          onOk={this.hideModal}
+          onCancel={this.hideModal}
+          okText="确认"
+          cancelText="取消"
+        >
+          面试日期: <DatePicker/>   <br/><br/>
+          面试时间: <TimePicker  defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
+        </Modal>
+
       </PageContainer>
     )
   }
