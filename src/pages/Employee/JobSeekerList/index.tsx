@@ -108,6 +108,21 @@ export default class Index extends React.Component<any> {
                       <Select.Option value="juck">3000元以上</Select.Option>
                       <Select.Option value="mick">5000元以上</Select.Option>
                     </Select>
+                <Divider/>
+                <span style={{marginLeft:'20px'}}>公司类型:</span>
+                <Select bordered={false} defaultValue="lucy" style={{ width: 200 }} >
+                  <Select.Option value="lucy">1000元以上</Select.Option>
+                  <Select.Option value="juck">3000元以上</Select.Option>
+                  <Select.Option value="mick">5000元以上</Select.Option>
+                </Select>
+
+                <span style={{marginLeft:'80px'}}>津贴福利:</span>
+                <Select bordered={false} defaultValue="lucy" style={{ width: 200 }} >
+                  <Select.Option value="lucy">1000元以上</Select.Option>
+                  <Select.Option value="juck">3000元以上</Select.Option>
+                  <Select.Option value="mick">5000元以上</Select.Option>
+                </Select>
+
               </Card>
               <Card hoverable style={{marginTop:'20px'}} >
                 <List

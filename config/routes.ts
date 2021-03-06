@@ -55,6 +55,14 @@
                 component: '../components/UserCenter',
                 authority: ['admin'],
               },
+              {
+                path:'/account/enterpriseCenter',
+                icon: 'HomeOutlined',
+                name: '个人中心(qiye)',
+                component: '../components/EnterpriseCenter',
+                authority: ['admin'],
+              },
+
               // {
               //   path: '/admin',
               //   name: 'admin',
