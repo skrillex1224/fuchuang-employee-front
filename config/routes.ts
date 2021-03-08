@@ -57,7 +57,7 @@
               },
               {
                 path:'/Enterprise/hireEmployeeList',
-                icon: 'ContainerOutlined',
+                icon: 'UnorderedListOutlined',
                 name: '招聘人才列表(qiye)',
                 component: '../pages/Enterprise/HireEmployeeList',
                 authority: ['admin'],
@@ -81,6 +81,20 @@
                 icon: 'HomeOutlined',
                 name: '个人中心(qiye)',
                 component: '../components/EnterpriseCenter',
+                authority: ['admin'],
+              },
+              {
+                path:'/hr/unverifyEnterprise',
+                icon: 'PaperClipOutlined',
+                name: '审核企业注册信息(hr)',
+                component: '../pages/Hr/UnverifyEnterprise',
+                authority: ['admin'],
+              },
+              {
+                path:'/account/hrCenter',
+                icon: 'HomeOutlined',
+                name: '个人中心(hr)',
+                component: '../components/HrCenter',
                 authority: ['admin'],
               },
 

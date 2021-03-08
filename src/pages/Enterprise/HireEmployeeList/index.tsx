@@ -1,7 +1,7 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
 import {observer} from "mobx-react";
-import {Button, Checkbox, Divider, Form, Input, Rate, Select, Space, Tag} from "antd";
+import {Button, Checkbox, Divider, Input, Rate, Select, Space, Tag} from "antd";
 import ProList from "@ant-design/pro-list";
 import ProCard from "@ant-design/pro-card";
 
@@ -321,7 +321,7 @@ export default class Index extends React.Component<any, any>{
   //真正的筛选方法
   onFilter = ()=>{
     const {checkboxChecked,starCount,selectChanged,selectChanged2} = this.state
-    console.log(this.state)
+    console.log(checkboxChecked,starCount,selectChanged,selectChanged2)
   }
 
   render() {

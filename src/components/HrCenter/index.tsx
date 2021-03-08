@@ -1,11 +1,12 @@
 import React, {CSSProperties} from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Button, Card, Col, Descriptions, Rate, Row, Tag} from "antd";
+import {Avatar, Button, Card, Col, Descriptions, Input, Rate, Row, Tag} from "antd";
 import EditDrawer  from './EditDrawer'
 
 import styles from './index.less'
 import ProList from "@ant-design/pro-list";
+import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons/lib";
 
 const gridStyle : CSSProperties= {
   width: '33.33%',
@@ -44,7 +45,7 @@ export default class UserCenter extends React.Component<any, any>{
 
     state = {
        visible : false,
-       type : 'employee',
+       type : 'hr',
     }
 
     setVisible = (visible : boolean )=>{
@@ -61,15 +62,15 @@ export default class UserCenter extends React.Component<any, any>{
       return (
           <>
             <ProCard  ghost={true} gutter={20}  >
-              <ProCard hoverable style={{maxHeight:1000}} layout="default" bordered colSpan={8} >
+              <ProCard hoverable style={{maxHeight:800}} layout="default" bordered colSpan={8} >
                 <Row gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
-                  <Col className={styles.col} span={24}>
-                        <Avatar  src={'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg'}  style={{width:'100px',height:'100px',fontSize:'70px',lineHeight:'90px'}}/>
+                  <Col span={24} style={{display:'flex',justifyContent:'center'}}   >
+                        <Avatar  src={'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}  style={{width:'100px',height:'100px',fontSize:'70px',lineHeight:'90px'}}/>
                   </Col>
-                  <Col className={styles.col} span={24}>
-                        <div style={{fontSize:30}}>付敬华</div>
+                  <Col style={{display:'flex',justifyContent:'center'}}  span={24}>
+                        <div style={{fontSize:30}}>HR付敬华</div>
                   </Col>
-                  <Col className={styles.col} span={24}>
+                  <Col span={24}>
                     <Card style={{ width: '100%' }} >
                      sdadadadad
                     </Card>
@@ -84,28 +85,17 @@ export default class UserCenter extends React.Component<any, any>{
                     >
                       <Descriptions.Item label="真实姓名">付敬华</Descriptions.Item>
                       <Descriptions.Item label="手机号码">18735380816</Descriptions.Item>
-                      <Descriptions.Item label="最高学历">大学本科</Descriptions.Item>
-                      <Descriptions.Item label="毕业院校">天津工业大学</Descriptions.Item>
                       <Descriptions.Item label="性别">男</Descriptions.Item>
                       <Descriptions.Item label="登录密码">*********</Descriptions.Item>
-                      <Descriptions.Item label="个人综合评分" span={4}>
-                        <Rate disabled defaultValue={4.5} allowHalf/>
+                      <Descriptions.Item label="身份证号码" span={4}>
+                        <Input.Password readOnly={true}
+                          value='140107199912043918'
+                          bordered={false}
+                          iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                        />
                       </Descriptions.Item>
-                      <Descriptions.Item label="理想工作方向" span={4}>
-                        Data disk type: MongoDB
-                        <br />
-                        Database version: 3.4
-                        <br />
-                        Package: dds.mongo.mid
-                        <br />
-                        Storage space: 10 GB
-                        <br />
-                        Replication factor: 3
-                        <br />
-                        Region: East China 1<br />
-                      </Descriptions.Item>
-                      <Descriptions.Item span={4} label={'简历信息'}>
-                        <Button type="primary" style={{width:'100%'}} onClick={()=>{window.location.href= '/employee/resume'}}>查看我的简历</Button>
+                      <Descriptions.Item span={4} label={'人脸图片信息'}>
+                        <Button type="primary" style={{width:'100%'}} onClick={()=>{window.location.href= '/employee/resume'}}>查看人像图片</Button>
                       </Descriptions.Item>
 
                     </Descriptions>
@@ -116,7 +106,7 @@ export default class UserCenter extends React.Component<any, any>{
                 </Row>
               </ProCard>
               <ProCard  ghost={true} layout="default" bordered colSpan={16} direction={'column'} gutter={[20,20]}>
-                <ProCard  layout="default" bordered colSpan={24}  title={'维诺智创软件公司'} extra={'当前任职的公司'}>
+                <ProCard  layout="default" bordered colSpan={24}  title={'wos'} extra={'当前任职的公司'}>
                     <ProCard style={{ width: '100%' }} hoverable bordered>
                        公司介绍
                     </ProCard>

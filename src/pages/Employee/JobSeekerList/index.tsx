@@ -4,7 +4,7 @@ import Search from "antd/lib/input/Search";
 import {Avatar, Card, Divider, Checkbox, List, Space, Select} from "antd";
 import {LikeOutlined, MessageOutlined, StarOutlined} from "@ant-design/icons/lib";
 
-const listData = [];
+const listData : any  = [];
 for (let i = 0; i < 23; i++) {
   listData.push({
     href: 'https://ant.design',
