@@ -63,11 +63,28 @@ export default class UserCenter extends React.Component<any, any>{
       const {visible, type } = this.state;
       return (
           <>
+            <ProCard hoverable={true} style={{marginBottom:'20px'}}>
+               <h1 style={{fontWeight:'bold'}}>企业招聘总进度</h1>
+              <Progress
+                strokeWidth={50}
+                strokeColor={{
+                  '0%': '#108ee9',
+                  '100%': '#87d068',
+                }}
+                showInfo={false}
+                percent={78}
+                status="active"
+              />
+            </ProCard>
             <ProCard  ghost={true} gutter={20}  >
-              <ProCard hoverable style={{maxHeight:1200}} layout="default" bordered colSpan={8} >
+              <ProCard hoverable style={{maxHeight:1500}} layout="default" bordered colSpan={8} >
                 <Row gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
                   <Col className={styles.col} span={24}>
-                        <Avatar icon={<CrownOutlined />} shape={'square'}  size={"large"} style={{width:'100%',height:'200px',fontSize:'120px',lineHeight:'190px'}}/>
+                    <img
+                      style={{width:'100%'}}
+                      alt="logo"
+                      src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                    />
                   </Col>
                   <Col className={styles.col} span={24}>
                         <div style={{fontSize:30}}>维诺智创大数据软件公司</div>

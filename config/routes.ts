@@ -56,6 +56,13 @@
                 authority: ['admin'],
               },
               {
+                path:'/Enterprise/hireEmployeeList',
+                icon: 'ContainerOutlined',
+                name: '招聘人才列表(qiye)',
+                component: '../pages/Enterprise/HireEmployeeList',
+                authority: ['admin'],
+              },
+              {
                 path:'/Enterprise/publishHireInfo',
                 icon: 'ContainerOutlined',
                 name: '发布招聘信息(qiye)',

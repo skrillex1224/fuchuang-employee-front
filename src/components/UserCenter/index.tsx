@@ -65,7 +65,7 @@ export default class UserCenter extends React.Component<any, any>{
               <ProCard hoverable style={{maxHeight:1000}} layout="default" bordered colSpan={8} >
                 <Row gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
                   <Col className={styles.col} span={24}>
-                        <Avatar icon={<UserOutlined/>} size={"large"} style={{width:'100px',height:'100px',fontSize:'70px',lineHeight:'90px'}}/>
+                        <Avatar  src={'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg'}  style={{width:'100px',height:'100px',fontSize:'70px',lineHeight:'90px'}}/>
                   </Col>
                   <Col className={styles.col} span={24}>
                         <div style={{fontSize:30}}>付敬华</div>
