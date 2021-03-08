@@ -41,6 +41,7 @@ const GlobalModel: GlobalModelType = {
   effects: {
     *fetchNotices(_, { call, put, select }) {
       const data = yield call(queryNotices);
+      console.log(data, 'data..........')
       yield put({
         type: 'saveNotices',
         payload: data,
