@@ -25,7 +25,7 @@ const data = [
 ].map((item) => ({
   title: item,
   subTitle: <Tag color="#5BD8A6">语雀专栏</Tag>,
-  actions: [<a>查看公司详细信息</a>],
+  actions: [<a>查看详情</a>,<a>修改</a>,<a>删除</a>],
   avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
   content: (
     <div
@@ -119,13 +119,8 @@ export default class UserCenter extends React.Component<any, any>{
                 </Row>
               </ProCard>
               <ProCard  ghost={true} layout="default" bordered colSpan={16} direction={'column'} gutter={[20,20]}>
-                <ProCard  layout="default" bordered colSpan={24}  title={'维诺智创软件公司'} extra={'当前任职的公司'}>
-                    <ProCard style={{ width: '100%' }} hoverable bordered>
-                       公司介绍
-                    </ProCard>
-                </ProCard>
 
-                <ProCard  layout="default" bordered colSpan={24}  title={'进行中的课程'}>
+                <ProCard collapsible={true}  layout="default" bordered colSpan={24}  title={'公司团队成员:'}>
                   <Card.Grid style={gridStyle}>Content</Card.Grid>
                   <Card.Grid  style={gridStyle}>
                     Content
@@ -137,7 +132,7 @@ export default class UserCenter extends React.Component<any, any>{
                   <Card.Grid style={gridStyle}>Content</Card.Grid>
                 </ProCard>
 
-                <ProCard  layout="default" bordered colSpan={24} >
+                <ProCard title={'正在进行的招聘信息:'} collapsible={true}  layout="default" bordered colSpan={24} >
                   <ProList
                     grid={{ gutter: 16, column: 1 }}
                     metas={{
@@ -148,11 +143,9 @@ export default class UserCenter extends React.Component<any, any>{
                       content: {},
                       actions: {},
                     }}
-                    headerTitle="历史互动公司列表:"
                     dataSource={data}
                   />
                 </ProCard>
-
               </ProCard>
             </ProCard>
 
