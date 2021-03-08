@@ -1,44 +1,36 @@
 import React, {CSSProperties} from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Button, Card, Col, Descriptions, Input, Rate, Row, Tag} from "antd";
+import {Avatar, Button, Card, Col, Descriptions, Input, Rate, Row, Tag, Tooltip} from "antd";
 import EditDrawer  from './EditDrawer'
 
-import styles from './index.less'
-import ProList from "@ant-design/pro-list";
-import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons/lib";
+import {AreaChartOutlined, BarChartOutlined, EyeInvisibleOutlined, EyeTwoTone, PieChartFilled, PieChartTwoTone} from "@ant-design/icons/lib";
+import Charts, {ChartCard, Field, MiniArea, MiniBar, MiniProgress, TimelineChart, WaterWave} from "ant-design-pro/lib/Charts"
+import Icon from "antd/es/icon";
+import numeral from 'numeral';
+import moment from 'moment';
 
-const gridStyle : CSSProperties= {
-  width: '33.33%',
-  textAlign: 'center',
-};
 
-const data = [
-  '语雀的天空',
-  'Ant Design',
-  '蚂蚁金服体验科技',
-  'TechUI',
-  'TechUI 2.0',
-  'Bigfish',
-  'Umi',
-  'Ant Design Pro',
-].map((item) => ({
-  title: item,
-  subTitle: <Tag color="#5BD8A6">语雀专栏</Tag>,
-  actions: [<a>查看公司详细信息</a>],
-  avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
-  content: (
-    <div
-      style={{
-        flex: 1,
-      }}
-    >
-        <div>公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介
-          司简介公司简介公司简介公司简介公司简介公司简介
-          司简介公司简介公司简介公司简介公司简介公司简介</div>
-    </div>
-  ),
-}));
+//审核公司数目图标
+const visitData : any = [];
+const beginDay = new Date().getTime();
+for (let i = 0; i < 7; i += 1) {
+  visitData.push({
+    x: moment(new Date(beginDay + 1000 * 60 * 60 * 24 * i)).format('YYYY-MM-DD'),
+    y: Math.floor(Math.random() * 100) + 10,
+  });
+}
+
+//面试场次
+const chartData : any = [];
+for (let i = 0; i < 20; i += 1) {
+  chartData.push({
+    x: moment(new Date(beginDay + 1000 * 60 * 60 * 24 * i)).format('YYYY-MM-DD'),
+    y1: Math.floor(Math.random() * 100) + 1000,
+  });
+}
+
+
 
 @observer
 export default class UserCenter extends React.Component<any, any>{
@@ -62,7 +54,7 @@ export default class UserCenter extends React.Component<any, any>{
       return (
           <>
             <ProCard  ghost={true} gutter={20}  >
-              <ProCard hoverable style={{maxHeight:800}} layout="default" bordered colSpan={8} >
+              <ProCard  hoverable layout="default" bordered colSpan={8} >
                 <Row gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
                   <Col span={24} style={{display:'flex',justifyContent:'center'}}   >
                         <Avatar  src={'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}  style={{width:'100px',height:'100px',fontSize:'70px',lineHeight:'90px'}}/>
@@ -104,42 +96,43 @@ export default class UserCenter extends React.Component<any, any>{
 
 
                 </Row>
+
+                <Row style={{marginTop:'50px'}} gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
+                  <WaterWave height={500} title="综合能力已超越其他HR" percent={80} color={'#D42C26'}  />
+                </Row>
+
               </ProCard>
               <ProCard  ghost={true} layout="default" bordered colSpan={16} direction={'column'} gutter={[20,20]}>
-                <ProCard  layout="default" bordered colSpan={24}  title={'wos'} extra={'当前任职的公司'}>
-                    <ProCard style={{ width: '100%' }} hoverable bordered>
-                       公司介绍
-                    </ProCard>
+                <ProCard style={{
+                  textAlign:'center',
+                  fontSize:40,
+                  color:'#329AFF'
+                }}   layout="default" bordered colSpan={24}  >
+                    数据统计  <PieChartTwoTone />
+                </ProCard>
+                <ProCard ghost={true}  layout="default" bordered colSpan={24}  >
+                  <ChartCard
+                    title="审核简历/安排面试总计"
+                    total={numeral(1235).format('0,0')}
+                    footer={<Field label="今日审核数" value={numeral(1234).format('0,0')} />}
+                    contentHeight={400}
+                    hoverable={true}
+                  >
+                    <MiniArea line height={400} data={visitData} />
+                  </ChartCard>
                 </ProCard>
 
-                <ProCard  layout="default" bordered colSpan={24}  title={'进行中的课程'}>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                  <Card.Grid  style={gridStyle}>
-                    Content
-                  </Card.Grid>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
+                <ProCard ghost={true}  layout="default" bordered colSpan={24}  >
+                  <ChartCard
+                    hoverable={true}
+                    title="审核注册企业总计"
+                    total={numeral(1235).format('0,0')}
+                    footer={<Field label="今日审核数" value={numeral(1234).format('0,0')} />}
+                    contentHeight={400}
+                  >
+                    <MiniBar height={400} data={visitData} />
+                  </ChartCard>
                 </ProCard>
-
-                <ProCard  layout="default" bordered colSpan={24} >
-                  <ProList
-                    grid={{ gutter: 16, column: 1 }}
-                    metas={{
-                      title: {},
-                      subTitle: {},
-                      type: {},
-                      avatar: {},
-                      content: {},
-                      actions: {},
-                    }}
-                    headerTitle="历史互动公司列表:"
-                    dataSource={data}
-                  />
-                </ProCard>
-
               </ProCard>
             </ProCard>
 
