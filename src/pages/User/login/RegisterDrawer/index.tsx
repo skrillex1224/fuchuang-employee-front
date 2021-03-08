@@ -50,7 +50,7 @@ export default  class DrawerForm extends React.Component<any> {
   };
   /**employee*/
 
-  /**enterprise*/
+  /**Enterprise*/
   enterpriseUploadProps = {
     name: 'file',
     multiple: true,
@@ -80,7 +80,7 @@ export default  class DrawerForm extends React.Component<any> {
     },
   };
 
-  /**enterprise*/
+  /**Enterprise*/
 
   render() {
     const {visible,type} = this.props

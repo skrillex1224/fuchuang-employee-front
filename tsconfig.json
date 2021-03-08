@@ -17,6 +17,9 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "strict": true,
+    "allowUnusedLabels": true,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
     "paths": {
       "@/*": ["./src/*"],
       "@@/*": ["./src/.umi/*"]
