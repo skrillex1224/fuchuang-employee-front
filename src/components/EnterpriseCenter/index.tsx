@@ -1,8 +1,7 @@
 import React, {CSSProperties} from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Button, Card, Col, Descriptions, Progress, Rate, Row, Tag} from "antd";
-import {CrownOutlined, UserOutlined} from "@ant-design/icons/lib";
+import {Button, Card, Col, Descriptions, Progress,  Row, Tag} from "antd";
 import EditDrawer  from './EditDrawer'
 
 import styles from './index.less'

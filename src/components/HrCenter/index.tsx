@@ -1,12 +1,11 @@
-import React, {CSSProperties} from "react";
+import React from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Button, Card, Col, Descriptions, Input, Rate, Row, Tag, Tooltip} from "antd";
+import {Avatar, Button, Card, Col, Descriptions, Input,  Row,} from "antd";
 import EditDrawer  from './EditDrawer'
 
-import {AreaChartOutlined, BarChartOutlined, EyeInvisibleOutlined, EyeTwoTone, PieChartFilled, PieChartTwoTone} from "@ant-design/icons/lib";
-import Charts, {ChartCard, Field, MiniArea, MiniBar, MiniProgress, TimelineChart, WaterWave} from "ant-design-pro/lib/Charts"
-import Icon from "antd/es/icon";
+import { EyeInvisibleOutlined, EyeTwoTone,  PieChartTwoTone} from "@ant-design/icons/lib";
+import {ChartCard, Field, MiniArea, MiniBar,  WaterWave} from "ant-design-pro/lib/Charts"
 import numeral from 'numeral';
 import moment from 'moment';
 
@@ -54,7 +53,7 @@ export default class UserCenter extends React.Component<any, any>{
       return (
           <>
             <ProCard  ghost={true} gutter={20}  >
-              <ProCard  hoverable layout="default" bordered colSpan={8} >
+              <ProCard  hoverable layout="default" bordered colSpan={8} style={{maxHeight:'1282px'}} >
                 <Row gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
                   <Col span={24} style={{display:'flex',justifyContent:'center'}}   >
                         <Avatar  src={'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}  style={{width:'100px',height:'100px',fontSize:'70px',lineHeight:'90px'}}/>
@@ -98,7 +97,7 @@ export default class UserCenter extends React.Component<any, any>{
                 </Row>
 
                 <Row style={{marginTop:'50px'}} gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
-                  <WaterWave height={500} title="综合能力已超越其他HR" percent={80} color={'#D42C26'}  />
+                  <WaterWave height={480} title="综合能力已超越其他HR" percent={80} color={'#D42C26'}  />
                 </Row>
 
               </ProCard>
@@ -115,10 +114,10 @@ export default class UserCenter extends React.Component<any, any>{
                     title="审核简历/安排面试总计"
                     total={numeral(1235).format('0,0')}
                     footer={<Field label="今日审核数" value={numeral(1234).format('0,0')} />}
-                    contentHeight={400}
+                    contentHeight={450}
                     hoverable={true}
                   >
-                    <MiniArea line height={400} data={visitData} />
+                    <MiniArea line height={450} data={visitData} />
                   </ChartCard>
                 </ProCard>
 

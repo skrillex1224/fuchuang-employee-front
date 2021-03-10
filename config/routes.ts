@@ -91,6 +91,13 @@
                 authority: ['admin'],
               },
               {
+                path:'/hr/verifyResumeList',
+                icon: 'HighlightOutlined',
+                name: '审阅求职简历(hr)',
+                component: '../pages/Hr/VerifyResumeList',
+                authority: ['admin'],
+              },
+              {
                 path:'/account/hrCenter',
                 icon: 'HomeOutlined',
                 name: '个人中心(hr)',
