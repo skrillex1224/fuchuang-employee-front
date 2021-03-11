@@ -1,12 +1,16 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Alert, Avatar, Button, Card, Col, Descriptions, Input, Rate, Row, Space, Table} from "antd";
-import {SearchOutlined} from "@ant-design/icons/lib";
+import {Alert, Avatar, Button, Card, Col, Descriptions, Input, Modal, Rate, Row, Space, Table, Tag, Tooltip} from "antd";
+import {CheckCircleFilled, CheckOutlined, ExclamationCircleOutlined, SearchOutlined} from "@ant-design/icons/lib";
 import Highlighter from 'react-highlight-words';
 import ProCard from "@ant-design/pro-card";
+import InterviewForm from './InterviewForm'
 
 import styles from './index.less'
+import TextArea from "antd/lib/input/TextArea";
+
+const { success,confirm,info } = Modal;
 
 @observer
 export default class Index extends React.Component<any, any>{
@@ -98,7 +102,30 @@ export default class Index extends React.Component<any, any>{
   //安排面试
   arrangeInterview = (current)=>{
     return (e)=>{
-      console.log(current)
+      info({
+        title: '请完善具体面试信息:',
+        icon: <CheckOutlined/>,
+        content: (<InterviewForm current={current}/>),
+        okText: '通知他',
+        cancelText:'取消',
+        okCancel:true,
+        onCancel() {
+          console.log('Cancel');
+        },
+        onOk: function () {
+          success({
+            title: <>为他的简历评分: </>,
+            icon: <CheckCircleFilled/>,
+            content: (<>
+                <Rate style={{fontSize: 40}} allowHalf/>
+            </>),
+            okText: '完成',
+            onOk() {
+              console.log('......')
+            },
+          });
+        },
+      });
       e.stopPropagation()
     }
 
@@ -107,13 +134,25 @@ export default class Index extends React.Component<any, any>{
   refuseResume = (current)=>{
     return (e)=>{
       console.log(current)
+      //@ts-ignore
+      confirm({
+        title: '请输入拒绝原因并确认:',
+        icon: <ExclamationCircleOutlined />,
+        content: <TextArea placeholder={'拒绝原因:未达到面试的目标公司最低要求'} showCount={true} allowClear bordered={true} rows={4}/>,
+        onOk() {
+          console.log('OK');
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      } );
+
       e.stopPropagation()
     }
   }
 
-  columns = [
+  columns : any = [
     {
-      title: 'avatar',
       dataIndex: 'avatar',
       key: 'avatar',
       width: "3%"
@@ -175,7 +214,8 @@ export default class Index extends React.Component<any, any>{
     }
 
   render(): React.ReactNode {
-      return (
+      // @ts-ignore
+    return (
         <PageContainer>
           <Alert style={{marginBottom:'20px'}} banner={true} message="欢迎您,HR,以下为近期投递的简历信息,您可以对以下投递的简历信息进行筛选和打分"
                  type="warning"  closable={true} />
