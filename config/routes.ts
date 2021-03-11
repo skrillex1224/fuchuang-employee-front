@@ -98,6 +98,20 @@
                 authority: ['admin'],
               },
               {
+                path:'/hr/interviewTable',
+                icon: 'SelectOutlined',
+                name: '面试信息安排(hr)',
+                component: '../pages/Hr/interviewTable',
+                authority: ['admin'],
+              },
+              {
+                path:'/hr/courseTable',
+                icon: 'CoffeeOutlined',
+                name: '培训信息安排(hr)',
+                component: '../pages/Hr/courseTable',
+                authority: ['admin'],
+              },
+              {
                 path:'/account/hrCenter',
                 icon: 'HomeOutlined',
                 name: '个人中心(hr)',

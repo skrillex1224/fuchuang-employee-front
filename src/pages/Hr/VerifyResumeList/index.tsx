@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Alert, Avatar, Button, Card, Col, Descriptions, Input, Modal, Rate, Row, Space, Table, Tag, Tooltip} from "antd";
+import {Alert, Avatar, Button, Card, Col, Descriptions, Input, Modal, Rate, Row, Space, Table} from "antd";
 import {CheckCircleFilled, CheckOutlined, ExclamationCircleOutlined, SearchOutlined} from "@ant-design/icons/lib";
 import Highlighter from 'react-highlight-words';
 import ProCard from "@ant-design/pro-card";
@@ -283,7 +283,6 @@ export default class Index extends React.Component<any, any>{
                   </ProCard>
                 </>
               ),
-              rowExpandable: record => record.name !== 'Not Expandable',
             }}
             expandRowByClick={true}
             dataSource={this.state.data}
