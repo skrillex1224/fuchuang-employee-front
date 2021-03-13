@@ -137,43 +137,40 @@ export default  class DrawerForm extends React.Component<any> {
           empData.employeeWillingJob = JSON.stringify(empData.employeeWillingJob);
 
 
-          message.loading({content: '注册中,请稍等....',key : 'empRegister'})
+          message.loading({content: '注册中,请稍等....',key : 'register'})
           /*请求接口*/
           await employeeRegister(empData);
-          message.destroy('empRegister')
           break;
 
         case 'enterprise':
           const {current: enterFormRef} = this.enterpriseForm
           //验证表单
-          // await enterFormRef.validateFields();
+          await enterFormRef.validateFields();
           const enterpriseData = enterFormRef.getFieldsValue();
 
           enterpriseData.enterpriseEstablishTime  = this.state.enterpriseEstablishTime;
 
-          message.loading({content: '注册中,请稍等....',key : 'enterRegister'})
+          message.loading({content: '注册中,请稍等....',key : 'register'})
           /*请求接口*/
           await enterpriseRegister(enterpriseData);
-          message.destroy('enterRegister')
           break;
         case 'hr':
           const {current: hrFormRef} = this.hrForm;
           await hrFormRef.validateFields();
           const hrData = hrFormRef.getFieldsValue();
-          message.loading({content: '注册中,请稍等....',key : 'hrRegister'})
+          message.loading({content: '注册中,请稍等....',key : 'register'})
           await hrRegister(hrData);
-          message.destroy('hrRegister')
           break;
       }
-
       setVisible(false);
-    } catch (e) {}
-
-
-
+    } catch (e) {
+      message.destroy('register')
+      return ;
+    }
 
     //关闭
-    // setVisible(false);
+    message.destroy('register')
+    setVisible(false);
 
   }
 
