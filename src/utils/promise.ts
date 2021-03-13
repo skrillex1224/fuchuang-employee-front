@@ -107,6 +107,7 @@ export const request = (api : string, method = MethodType.GET, params ) => {
       if(error.response.status === 422 ){
         message.error(error.response.data);
       }
+      /*return err  的promise状态为promise.resolved()*/
       return error;
     });
 };

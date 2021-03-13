@@ -160,16 +160,14 @@ export default  class DrawerForm extends React.Component<any> {
           const {current: hrFormRef} = this.hrForm;
           await hrFormRef.validateFields();
           const hrData = hrFormRef.getFieldsValue();
-          message.loading({content: '注册中,请稍等....',key : 'enterRegister'})
+          message.loading({content: '注册中,请稍等....',key : 'hrRegister'})
           await hrRegister(hrData);
-          message.destroy('enterRegister')
+          message.destroy('hrRegister')
           break;
       }
 
       setVisible(false);
-    } catch (e) {
-      message.error('提交失败,请重试!');
-    }
+    } catch (e) {}
 
 
 
