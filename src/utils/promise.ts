@@ -48,8 +48,6 @@ export const requestToken = (api : string, method = MethodType.GET, params = {})
             message.error(res.data.msg);
             return ;
           }
-
-
           message.success(res.data.msg);
         }
 
@@ -106,6 +104,9 @@ export const request = (api : string, method = MethodType.GET, params ) => {
       return resp;
     })
     .catch(error => {
+      if(error.response.status === 422 ){
+        message.error(error.response.data);
+      }
       return error;
     });
 };

@@ -4,7 +4,7 @@ import {EyeInvisibleOutlined, EyeTwoTone, InboxOutlined, SmileOutlined} from "@a
 import Dragger from "antd/es/upload/Dragger";
 import {observer} from "mobx-react";
 import {host} from "@/utils/promise";
-import {employeeRegister} from "@/apis/login";
+import {employeeRegister, enterpriseRegister, hrRegister} from "@/apis/login";
 import moment from "moment";
 
 const { Option } = Select;
@@ -146,15 +146,22 @@ export default  class DrawerForm extends React.Component<any> {
         case 'enterprise':
           const {current: enterFormRef} = this.enterpriseForm
           //验证表单
-          await enterFormRef.validateFields();
+          // await enterFormRef.validateFields();
           const enterpriseData = enterFormRef.getFieldsValue();
-          //处理傻逼后端解决不了的json问题
 
           enterpriseData.enterpriseEstablishTime  = this.state.enterpriseEstablishTime;
 
           message.loading({content: '注册中,请稍等....',key : 'enterRegister'})
           /*请求接口*/
-          // await employeeRegister(submitData);
+          await enterpriseRegister(enterpriseData);
+          message.destroy('enterRegister')
+          break;
+        case 'hr':
+          const {current: hrFormRef} = this.hrForm;
+          await hrFormRef.validateFields();
+          const hrData = hrFormRef.getFieldsValue();
+          message.loading({content: '注册中,请稍等....',key : 'enterRegister'})
+          await hrRegister(hrData);
           message.destroy('enterRegister')
           break;
       }
@@ -388,15 +395,6 @@ export default  class DrawerForm extends React.Component<any> {
                       >
                         <Input
                           style={{ width: '100%' }}
-                          addonAfter={<Select defaultValue="@qq.com" className="select-after">
-                            <Option value="@qq.com">@qq.com</Option>
-                            <Option value="@163.com">@163.com</Option>
-                            <Option value="@139.com">@139.com</Option>
-                            <Option value="@126.com">@126.com</Option>
-                            <Option value="@gmail.com">@gmail.com</Option>
-                            <Option value="@hotmail.com">@hotmail.com</Option>
-                            <Option value="@sina.com">@sina.com</Option>
-                          </Select>}
                           placeholder={'please enter the email'}
                         />
                       </Form.Item>
@@ -587,7 +585,7 @@ export default  class DrawerForm extends React.Component<any> {
                   <Row gutter={16}>
                     <Col span={12}>
                       <Form.Item
-                        name="hrName"
+                        name="hrRealname"
                         label="真实姓名:"
                         rules={[{ required: true, message: '请输入您的真实姓名' }]}
                       >
@@ -599,7 +597,7 @@ export default  class DrawerForm extends React.Component<any> {
                         name="hrPhoneNumber"
                         label="手机号码:"
                         tooltip='凭此登录'
-                        rules={[{ required: true, message: '请输入您的手机号' }]}
+                        rules={[{ required: true, message: '请输入您的手机号' },{pattern:/^1[3|4|5|7|8][0-9]{9}$/ig, message:'请输入正确格式的手机号'}]}
                       >
                         <Input
                           style={{ width: '100%' }}
@@ -629,7 +627,7 @@ export default  class DrawerForm extends React.Component<any> {
                         rules={[{ required: true, message: 'confirm password' },
                           ({getFieldValue})=>({
                             validator(_, value) {
-                              if (!value || getFieldValue('employeePassword') === value) {
+                              if (!value || getFieldValue('hrPassword') === value) {
                                 return Promise.resolve();
                               }
                               return Promise.reject(new Error('两次密码输入的不一致'));
@@ -649,7 +647,8 @@ export default  class DrawerForm extends React.Component<any> {
                       <Form.Item
                         name="hrIdCard"
                         label="身份证号:"
-                        rules={[{ required: true, message: '请输入您的身份证号!' }]}
+                        rules={[{ required: true, message: '请输入您的身份证号!' },{pattern:/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,message
+                        :"请输入正确的身份证号"}]}
                       >
                           <Input placeholder={'140137162356423962'}/>
                       </Form.Item>
