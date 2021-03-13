@@ -84,7 +84,7 @@ export const requestToken = (api : string, method = MethodType.GET, params = {})
 /**
  * 模块说明:无api_token请求
  */
-export const request = (api : string, method = MethodType.GET, params ) => {
+export const request = (api : string, method = MethodType.GET, params ={}) => {
   const data = (method === 'GET') ? 'params' : 'data';
   // @ts-ignore
   return axios({

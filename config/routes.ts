@@ -24,9 +24,20 @@
             authority: ['admin', 'employee','enterprise','hr'],
             routes: [
               {
-                path: '/',
-                redirect: '/employee/jobSeekerList',
+                path: '/employee',
+                redirect: '/account/employeeCenter',
               },
+
+              {
+                path: '/hr',
+                redirect: '/account/hrCenter',
+              },
+
+              {
+                path: '/enterprise',
+                redirect: '/account/enterpriseCenter',
+              },
+
               {
                 name: '招聘信息总览',
                 icon: 'HeatMapOutlined',

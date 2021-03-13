@@ -16,6 +16,9 @@ export const employeeLogin = async (params)=>(
   await  request('empLogin','POST',params)
 )
 
+export const commonLogout = async ()=>(
+   await request('logout')
+)
 
 export const enterpriseLogin = async (params)=>(
   await  request('enterpriseLogin','POST',params)

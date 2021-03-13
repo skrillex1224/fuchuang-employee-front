@@ -5,7 +5,7 @@ import { history } from 'umi';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
-import {employeeLogin, enterpriseLogin, hrLogin} from "@/apis/login";
+import {commonLogout, employeeLogin, enterpriseLogin, hrLogin} from "@/apis/login";
 
 export type StateType = {
   status?: 'ok' | 'error';
@@ -35,7 +35,6 @@ const Model: LoginModelType = {
   effects: {
     *login({ payload }, { call, put }) {
       let response ;
-      console.log(payload,'payload')
       try {
         switch (payload.type) {
           case 'employee':
@@ -58,30 +57,23 @@ const Model: LoginModelType = {
       });
       // Login successfully
       if (response.status === 'ok') {
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
         message.success('登录成功！');
-        let { redirect } = params as { redirect: string };
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            window.location.href = '/';
-            return;
-          }
-        }
-        history.replace(redirect || '/');
+        /*登录角色,认证 , 认证的是角色的类型*/
+        localStorage.setItem('token',payload.type);
+
+        const   redirect = `/${payload.type}`;
+
+        history.replace(redirect);
       }
     },
 
-    logout() {
+    *logout(_,{call}) {
       const { redirect } = getPageQuery();
       // Note: There may be security issues, please note
       if (window.location.pathname !== '/user/login' && !redirect) {
+        localStorage.clear()
+        yield call(commonLogout);
+
         history.replace({
           pathname: '/user/login',
           search: stringify({
