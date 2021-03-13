@@ -72,9 +72,9 @@
               {
                 path:'/Enterprise/employedList',
                 icon: 'MenuUnfoldOutlined',
-                name: '在职人员管理(qiye)',
+                name: '在职人员管理',
                 component: '../pages/Enterprise/EmployedList',
-                authority: ['admin'],
+                authority: ['enterprise'],
               },
               {
                 path:'/account/enterpriseCenter',
@@ -100,7 +100,7 @@
               {
                 path:'/hr/interviewTable',
                 icon: 'SelectOutlined',
-                name: '面试信息安排(hr)',
+                name: '面试信息安排',
                 component: '../pages/Hr/interviewTable',
                 authority: ['hr'],
               },
