@@ -68,7 +68,6 @@ const Login: React.FC<LoginProps> = (props) => {
         description:
           '请致电18735380816或联系天津工业大学计算机学院协助进行管理员权限的开通,暂不支持自行注册~',
         onClick: () => {
-          console.log('Notification Clicked!');
         },
       });
       return ;

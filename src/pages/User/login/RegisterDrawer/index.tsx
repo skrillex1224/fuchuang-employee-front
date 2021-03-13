@@ -1,6 +1,6 @@
 import React, {createRef} from "react";
 import {Drawer, Form, Button, Col, Row, Input, Select, message, InputNumber, Calendar, Upload} from 'antd';
-import {EyeInvisibleOutlined, EyeTwoTone, InboxOutlined, SmileOutlined} from "@ant-design/icons/lib";
+import {EyeInvisibleOutlined, EyeTwoTone, InboxOutlined} from "@ant-design/icons/lib";
 import Dragger from "antd/es/upload/Dragger";
 import {observer} from "mobx-react";
 import {host} from "@/utils/promise";
@@ -145,7 +145,7 @@ export default  class DrawerForm extends React.Component<any> {
         case 'enterprise':
           const {current: enterFormRef} = this.enterpriseForm
           //验证表单
-          await enterFormRef.validateFields();
+          // await enterFormRef.validateFields();
           const enterpriseData = enterFormRef.getFieldsValue();
 
           enterpriseData.enterpriseEstablishTime  = this.state.enterpriseEstablishTime;
@@ -398,7 +398,7 @@ export default  class DrawerForm extends React.Component<any> {
                   <Row gutter={16}>
                     <Col span={12}>
                       <Form.Item
-                        name="employeePassword"
+                        name="enterprisePassword"
                         label="请输入登录密码:"
                         rules={[{ required: true, message: 'Please select an owner' }]}
                       >
@@ -410,12 +410,12 @@ export default  class DrawerForm extends React.Component<any> {
                     </Col>
                     <Col span={12}>
                       <Form.Item
-                        name="employeePasswordConfirm"
+                        name="enterprisePasswordConfirm"
                         label="请确认登录密码:"
                         rules={[{ required: true, message: 'confirm password' },
                           ({getFieldValue})=>({
                             validator(_, value) {
-                              if (!value || getFieldValue('employeePassword') === value) {
+                              if (!value || getFieldValue('enterprisePassword') === value) {
                                 return Promise.resolve();
                               }
                               return Promise.reject(new Error('两次密码输入的不一致'));
@@ -510,7 +510,7 @@ export default  class DrawerForm extends React.Component<any> {
                   <Row gutter={16}>
                     <Col span={24}>
                       <Form.Item
-                        name="enterpriseLocation"
+                        name="enterpriseRegisterLocation"
                         label="企业注册地址"
                         rules={[{ required: true,message: '请填写企业注册地址!',},
                         ]}

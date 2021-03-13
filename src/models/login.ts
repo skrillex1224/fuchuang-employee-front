@@ -6,11 +6,12 @@ import { accountLogin } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
+import {employeeLogin, enterpriseLogin, hrLogin} from "@/apis/login";
 
 export type StateType = {
   status?: 'ok' | 'error';
   type?: string;
-  currentAuthority?: 'user' | 'enterprise'  | 'hr' | 'admin';
+  currentAuthority?: 'employee' | 'enterprise'  | 'hr' | 'admin';
 };
 
 export type LoginModelType = {
@@ -34,11 +35,23 @@ const Model: LoginModelType = {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(accountLogin, payload);
-      console.log(response, 'response')
-      /**
-       * 修改当前的authorities为type
-       */
+      let response ;
+      console.log(payload,'payload')
+      try {
+        switch (payload.type) {
+          case 'employee':
+            response = (yield call(employeeLogin, payload)).data;
+            break;
+          case 'enterprise':
+            response = (yield call(enterpriseLogin, payload)).data;
+            break;
+          case 'hr':
+            response = (yield call(hrLogin, payload)).data;
+            break;
+          default:
+            response = undefined;
+        }
+      } catch (e) { }
 
       yield put({
         type: 'changeLoginStatus',

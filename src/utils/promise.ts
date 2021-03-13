@@ -98,14 +98,15 @@ export const request = (api : string, method = MethodType.GET, params ) => {
     },
   })
     .then(resp => {
-      if(resp.status === 200 ){
-         message.success(resp.data);
+      console.log(resp)
+      if(resp.status === 200  && resp.data.errMsg){
+         message.success(resp.data.errMsg);
       }
       return resp;
     })
     .catch(error => {
-      if(error.response.status === 422 ){
-        message.error(error.response.data);
+      if(error.response.status === 422 && error.response.data.errMsg ){
+        message.error(error.response.data.errMsg);
       }
       /*return error 字符串  的promise状态为promise.resolved()*/
       return Promise.reject(error);
