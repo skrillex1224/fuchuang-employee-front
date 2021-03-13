@@ -145,11 +145,9 @@ export default  class DrawerForm extends React.Component<any> {
         case 'enterprise':
           const {current: enterFormRef} = this.enterpriseForm
           //验证表单
-          // await enterFormRef.validateFields();
+          await enterFormRef.validateFields();
           const enterpriseData = enterFormRef.getFieldsValue();
-
           enterpriseData.enterpriseEstablishTime  = this.state.enterpriseEstablishTime;
-
           message.loading({content: '注册中,请稍等....',key : 'register'})
           /*请求接口*/
           await enterpriseRegister(enterpriseData);
