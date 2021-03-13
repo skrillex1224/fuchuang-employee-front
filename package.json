@@ -63,6 +63,7 @@
     "@umijs/route-utils": "^1.0.33",
     "ant-design-pro": "^2.3.2",
     "antd": "^4.10.0",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
     "mobx": "^6.1.8",

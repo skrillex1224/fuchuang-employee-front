@@ -97,7 +97,7 @@ export default class UserCenter extends React.Component<any, any>{
                 </Row>
 
                 <Row style={{marginTop:'50px'}} gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
-                  <WaterWave height={480} title="综合能力已超越其他HR" percent={80} color={'#D42C26'}  />
+                  <WaterWave height={400} title="综合能力已超越其他HR" percent={80} color={'#D42C26'}  />
                 </Row>
 
               </ProCard>

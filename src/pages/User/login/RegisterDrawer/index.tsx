@@ -1,10 +1,14 @@
 import React, {createRef} from "react";
-import {Drawer, Form, Button, Col, Row, Input, Select, message, InputNumber, Calendar} from 'antd';
+import {Drawer, Form, Button, Col, Row, Input, Select, message, InputNumber, Calendar, Upload} from 'antd';
 import {EyeInvisibleOutlined, EyeTwoTone, InboxOutlined} from "@ant-design/icons/lib";
 import Dragger from "antd/es/upload/Dragger";
+import {observer} from "mobx-react";
+import {host} from "@/utils/promise";
+import {employeeRegister} from "@/apis/login";
 
 const { Option } = Select;
 
+@observer
 export default  class DrawerForm extends React.Component<any> {
 
   employeeForm : any  = createRef();
@@ -20,32 +24,48 @@ export default  class DrawerForm extends React.Component<any> {
   };
 
   /**employee*/
-   employeeUploadProps = {
-    name: 'file',
-    multiple: true,
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    onChange : (info : any )=> {
-      const { status } = info.file;
-      let fileList = [...info.fileList];
-      fileList = fileList.slice(-1);
-      fileList = fileList.map(file => {
-        if (file.response) {
-          file.url = file.response.url;
-        }
-        return file;
-      });
+   employeeUploadProps : any  = {
+    name: 'resume',
+    multiple: false,
+    action: `${host}uploadResume`,
+     beforeUpload : file => {
+       if (file.type !== 'application/pdf') {
+         message.error(`仅支持格式为.pdf的简历,重新上传!`);
+       }
+       const isLt2M = file.size / 1024 / 1024 < 2;
+       if (!isLt2M) {
+         message.error('pdf文件必须小于 2MB!');
+       }
 
-      this.setState({ empFileList: fileList });
+       return file.type === 'application/pdf' ? true : Upload.LIST_IGNORE;
+      },
 
+      onChange : (info : any )=> {
+          const { status } = info.file;
+          let fileList = [...info.fileList];
+          fileList = fileList.slice(-1);
+          fileList = fileList.map(file => {
+            if (file.response) {
+              file.url = file.response.url;
+            }
+            return file;
+          });
 
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (status === 'done') {
-        message.success(`${info.file.name} 文件上传成功!`);
-      } else if (status === 'error') {
-        message.error(`${info.file.name}文件上传失败!`);
-      }
+          this.setState({ empFileList: fileList });
+
+          if (status !== 'uploading') {
+            console.log(info.file, info.fileList);
+          }
+          if (status === 'done') {
+            const ossUrl = info.file.response;
+            this.employeeForm.current.setFieldsValue({
+              employeeResume : ossUrl
+            })
+
+            message.success(`${info.file.name} 文件上传成功!`);
+          } else if (status === 'error') {
+            message.error(`${info.file.name}文件上传失败!`);
+          }
     },
   };
   /**employee*/
@@ -80,6 +100,43 @@ export default  class DrawerForm extends React.Component<any> {
     },
   };
 
+  /*提交功能*/
+  onSubmit =async ()=>{
+    const {type,setVisible} = this.props;
+
+    try {
+      switch (type) {
+        case 'employee':
+          const {current: formRef} = this.employeeForm
+          //验证表单
+          await formRef.validateFields();
+          const submitData = formRef.getFieldsValue();
+          //处理傻逼后端解决不了的json问题
+          submitData.employeeWillingJob = JSON.stringify(submitData.employeeWillingJob);
+
+
+          message.loading({content: '注册中,请稍等....',key : 'empRegister'})
+          /*请求接口*/
+          await employeeRegister(submitData);
+          message.destroy('empRegister')
+
+
+          setVisible(false);
+          break;
+      }
+    } catch (e) {
+      message.error('提交失败,请重试!');
+    }
+
+
+
+
+    //关闭
+    // setVisible(false);
+
+  }
+
+
   /**Enterprise*/
 
   render() {
@@ -106,7 +163,7 @@ export default  class DrawerForm extends React.Component<any> {
               <Button onClick={this.onClose} style={{ marginRight: 8 }}>
                 取消
               </Button>
-              <Button onClick={this.onClose} type="primary">
+              <Button onClick={this.onSubmit} type="primary">
                 提交
               </Button>
             </div>
@@ -132,7 +189,7 @@ export default  class DrawerForm extends React.Component<any> {
                         name="employeePhoneNumber"
                         label="手机号码:"
                         tooltip='凭此登录'
-                        rules={[{ required: true, message: '请输入您的手机号' }]}
+                        rules={[{ required: true, message: '请输入您的手机号' },{pattern:/^1[3|4|5|7|8][0-9]{9}$/ig, message:'请输入正确格式的手机号'}]}
                       >
                         <Input
                           style={{ width: '100%' }}
@@ -219,6 +276,7 @@ export default  class DrawerForm extends React.Component<any> {
                       <Form.Item
                         name="employeeWillingJob"
                         label="您理想或擅长的工作方向:(多选)"
+                        initialValue={['WEB前端']}
                         rules={[{ required: true,message: '请选择您理想或擅长的工作方向!',},
                         ]}
                       >
@@ -248,9 +306,9 @@ export default  class DrawerForm extends React.Component<any> {
                       <Form.Item
                         name="employeeResume"
                         label="上传简历:"
-                        rules={[{ required: true, message: '请输入您的手机号' }]}
+                        rules={[{ required: true, message: '请输入您的手机号' },]}
                       >
-                        <Dragger {...this.employeeUploadProps} fileList={this.state.empFileList}>
+                        <Dragger {...this.employeeUploadProps}  fileList={this.state.empFileList}>
                           <p className="ant-upload-drag-icon">
                             <InboxOutlined />
                           </p>

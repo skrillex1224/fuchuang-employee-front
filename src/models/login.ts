@@ -2,7 +2,7 @@ import { stringify } from 'querystring';
 import type { Reducer, Effect } from 'umi';
 import { history } from 'umi';
 
-import { fakeAccountLogin } from '@/services/login';
+import { accountLogin } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
@@ -10,7 +10,7 @@ import { message } from 'antd';
 export type StateType = {
   status?: 'ok' | 'error';
   type?: string;
-  currentAuthority?: 'user' | 'guest' | 'admin';
+  currentAuthority?: 'user' | 'enterprise'  | 'hr' | 'admin';
 };
 
 export type LoginModelType = {
@@ -34,11 +34,10 @@ const Model: LoginModelType = {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      const response = yield call(accountLogin, payload);
       console.log(response, 'response')
       /**
        * 修改当前的authorities为type
-       *
        */
 
       yield put({

@@ -362,7 +362,6 @@ const Login: React.FC<LoginProps> = (props) => {
         </div>
       </ProForm>
 
-
       <RegisterDrawer visible={visible} setVisible={setVisible} type={type} />
     </div>
 
