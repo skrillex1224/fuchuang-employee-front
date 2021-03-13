@@ -1,15 +1,17 @@
 import React, {createRef} from "react";
 import {Drawer, Form, Button, Col, Row, Input, Select, message, InputNumber, Calendar, Upload} from 'antd';
-import {EyeInvisibleOutlined, EyeTwoTone, InboxOutlined} from "@ant-design/icons/lib";
+import {EyeInvisibleOutlined, EyeTwoTone, InboxOutlined, SmileOutlined} from "@ant-design/icons/lib";
 import Dragger from "antd/es/upload/Dragger";
 import {observer} from "mobx-react";
 import {host} from "@/utils/promise";
 import {employeeRegister} from "@/apis/login";
+import moment from "moment";
 
 const { Option } = Select;
 
 @observer
 export default  class DrawerForm extends React.Component<any> {
+
 
   employeeForm : any  = createRef();
   enterpriseForm : any = createRef();
@@ -17,6 +19,8 @@ export default  class DrawerForm extends React.Component<any> {
 
   state = {
      empFileList : [],
+    // 企业注册时间选择的state,
+     enterpriseEstablishTime : 0, //unix
   }
 
   onClose = () => {
@@ -72,9 +76,20 @@ export default  class DrawerForm extends React.Component<any> {
 
   /**Enterprise*/
   enterpriseUploadProps = {
-    name: 'file',
-    multiple: true,
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    name: 'license',
+    multiple: false,
+    action: `${host}uploadLicense`,
+    beforeUpload : file => {
+      if (file.type !== 'application/pdf') {
+        message.error(`仅支持格式为.pdf的营业执照,重新上传!`);
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        message.error('pdf文件必须小于 2MB!');
+      }
+
+      return file.type === 'application/pdf' ? true : Upload.LIST_IGNORE;
+    },
     onChange : (info : any )=> {
       const { status } = info.file;
       let fileList = [...info.fileList];
@@ -90,9 +105,16 @@ export default  class DrawerForm extends React.Component<any> {
 
 
       if (status !== 'uploading') {
+
+
         console.log(info.file, info.fileList);
       }
       if (status === 'done') {
+        const ossUrl = info.file.response;
+        this.enterpriseForm.current.setFieldsValue({
+          enterpriseLicense : ossUrl
+        })
+
         message.success(`${info.file.name} 文件上传成功!`);
       } else if (status === 'error') {
         message.error(`${info.file.name}文件上传失败!`);
@@ -107,23 +129,37 @@ export default  class DrawerForm extends React.Component<any> {
     try {
       switch (type) {
         case 'employee':
-          const {current: formRef} = this.employeeForm
+          const {current: empFormRef} = this.employeeForm
           //验证表单
-          await formRef.validateFields();
-          const submitData = formRef.getFieldsValue();
+          await empFormRef.validateFields();
+          const empData = empFormRef.getFieldsValue();
           //处理傻逼后端解决不了的json问题
-          submitData.employeeWillingJob = JSON.stringify(submitData.employeeWillingJob);
+          empData.employeeWillingJob = JSON.stringify(empData.employeeWillingJob);
 
 
           message.loading({content: '注册中,请稍等....',key : 'empRegister'})
           /*请求接口*/
-          await employeeRegister(submitData);
+          await employeeRegister(empData);
           message.destroy('empRegister')
+          break;
 
+        case 'enterprise':
+          const {current: enterFormRef} = this.enterpriseForm
+          //验证表单
+          await enterFormRef.validateFields();
+          const enterpriseData = enterFormRef.getFieldsValue();
+          //处理傻逼后端解决不了的json问题
 
-          setVisible(false);
+          enterpriseData.enterpriseEstablishTime  = this.state.enterpriseEstablishTime;
+
+          message.loading({content: '注册中,请稍等....',key : 'enterRegister'})
+          /*请求接口*/
+          // await employeeRegister(submitData);
+          message.destroy('enterRegister')
           break;
       }
+
+      setVisible(false);
     } catch (e) {
       message.error('提交失败,请重试!');
     }
@@ -348,7 +384,7 @@ export default  class DrawerForm extends React.Component<any> {
                         name="enterpriseAccount"
                         label="企业邮箱:"
                         tooltip='凭此登录'
-                        rules={[{ required: true, message: '请输入企业邮箱' }]}
+                        rules={[{ required: true, message: '请输入企业邮箱' },{pattern:/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/ig, message:'请输入正确格式的邮箱'}]}
                       >
                         <Input
                           style={{ width: '100%' }}
@@ -451,7 +487,7 @@ export default  class DrawerForm extends React.Component<any> {
                         //邮箱
                         name="enterpriseCorperationPhoneNumber"
                         label="企业法人手机号:"
-                        rules={[{ required: true, message: '请输入企业法人手机号' }]}
+                        rules={[{ required: true, message: '请输入企业法人手机号' },{pattern:/^1[3|4|5|7|8][0-9]{9}$/ig, message:'请输入正确格式的手机号'}]}
                       >
                         <Input
                           style={{ width: '100%' }}
@@ -510,9 +546,26 @@ export default  class DrawerForm extends React.Component<any> {
                       <Form.Item
                         name="enterpriseEstablishTime"
                         label="企业建立时间:"
-                        rules={[{ required: true, message: '请选择企业建立时间' }]}
+                        rules={[{ validator : ()=>{
+                              const {enterpriseEstablishTime} = this.state;
+                              if(!enterpriseEstablishTime){
+                                  return Promise.reject() ;
+                              }
+                              return Promise.resolve();
+                          },message:'请选择企业建立时间!'}]}
                       >
-                         <Calendar  fullscreen={false} onPanelChange={(value)=>{console.log('timeChange',value)}} />
+                        {/*组件不显示问题:::::::::::::::::::::::::::*/}
+                        {/*{*/}
+                        {/*  ({setFieldsValue}) =>*/}
+                        {/*    (<Calendar  fullscreen={false} onChange={(value)=>{*/}
+                        {/*      setFieldsValue({*/}
+                        {/*        enterpriseEstablishTime : moment(value).unix()*/}
+                        {/*      })*/}
+                        {/*    }} />)*/}
+                        {/*}*/}
+                        <Calendar  fullscreen={false} onChange={(value)=>{
+                          this.setState({enterpriseEstablishTime: moment(value).unix()})
+                        }} />
                       </Form.Item>
                     </Col>
                   </Row>
