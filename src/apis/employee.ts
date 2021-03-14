@@ -20,3 +20,7 @@ export const getAllApplicationInterview = async ()=>{
 export const deleteByApplicationId = async (params)=>{
   return await  request("deleteByApplicationId","POST",params)
 }
+
+export const getAllHireInfo = async ()=>{
+  return await request('getAllHireInfo');
+}

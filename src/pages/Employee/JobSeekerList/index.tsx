@@ -1,21 +1,15 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
 import Search from "antd/lib/input/Search";
-import {Avatar, Card, Divider, Checkbox, List, Space, Select} from "antd";
-import {LikeOutlined, MessageOutlined, StarOutlined} from "@ant-design/icons/lib";
+import {Avatar, Card, Divider, Checkbox, List, Space, Select, Collapse, Tag, Button, Descriptions,} from "antd";
+import {CaretRightOutlined, LikeOutlined, MessageOutlined, MoneyCollectOutlined, StarOutlined} from "@ant-design/icons/lib";
+import EmployeeStore from "@/stores/EmployeeStore";
+import {observer} from "mobx-react";
+import {toJS} from "mobx";
+import moment from "moment";
 
-const listData : any  = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: 'https://ant.design',
-    title: `ant design part ${i}`,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    description:
-      'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-      'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-  });
-}
+const {Panel} = Collapse;
+
 
 const IconText = ({ icon, text }) => (
   <Space>
@@ -24,6 +18,7 @@ const IconText = ({ icon, text }) => (
   </Space>
 );
 
+@observer
 export default class Index extends React.Component<any> {
     state = {
       loading : false,
@@ -66,7 +61,11 @@ export default class Index extends React.Component<any> {
       this.setState({checkedList})
   }
 
-    render(): React.ReactNode {
+  async componentDidMount() {
+      await EmployeeStore.initializeHireInfo();
+  }
+
+  render(): React.ReactNode {
       const {loading,checkedList} = this.state;
       // @ts-ignore
       return (
@@ -134,10 +133,10 @@ export default class Index extends React.Component<any> {
                     },
                     pageSize: 10,
                   }}
-                  dataSource={listData}
-                  renderItem={item => (
+                  dataSource={EmployeeStore.hireInfoList}
+                  renderItem={(item : any ) => (
                     <List.Item
-                      key={item.title}
+                      key={item.hireInfoId}
                       actions={[
                         <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
                         <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
@@ -152,11 +151,47 @@ export default class Index extends React.Component<any> {
                       }
                     >
                       <List.Item.Meta
-                        avatar={<Avatar src={item.avatar} />}
-                        title={<a href={item.href}>{item.title}</a>}
-                        description={item.description}
+
+                        title={
+                          <div>
+                            <a><b>{`${item.hireinfoTitle} [${item.enterprise && item.enterprise.enterpriseLocation}]`}</b></a>
+                            <Tag style={{marginLeft:'10px'}} color={'#DA5757'}>{item.hireinfoRequireEducation}</Tag>
+                            <Tag style={{marginLeft:'10px'}} color={'#DA5757'}>{item.hireinfoRequireExperience}</Tag>
+                            <Tag style={{marginLeft:'10px'}} color={'#DA5757'}>需要{item.hireinfoRequireNumsPerson}人</Tag>
+                            <a style={{fontSize:20,fontWeight:'bold',float:'right'}}>{item.enterprise && item.enterprise.enterpriseName}</a>
+                          </div>
+                        }
+                        description={<div>
+                          <span style={{fontSize:20,color:'#fc703e'}}><MoneyCollectOutlined />{item.hireinfoSalary/1000}K/月</span>
+                          <span>{item.hireinfoInfo}</span>
+                          <div style={{float:'right'}}>
+                            <Tag color={"red"}>{item.enterprise && item.enterprise.enterpriseType}</Tag>
+                            <Tag color={"red"}>{item.enterprise && item.enterprise.enterpriseNumsPerson}人</Tag>
+                            <Tag color={"red"}>{item.enterprise && item.enterprise.enterpriseWelfare}</Tag>
+                          </div>
+                        </div>}
+
                       />
-                      {item.content}
+                      <Collapse
+                        ghost={false}
+                        bordered={false}
+                        defaultActiveKey={['1']}
+                        expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+                        className="site-collapse-custom-collapse"
+                      >
+                        {console.log(toJS(item),'-----------------')}
+                        <Panel style={{backgroundColor:'#FFFFFFAA'}}   header="招聘公司扩展信息" key="1" className="site-collapse-custom-panel">
+                          <Descriptions column={2}>
+                            <Descriptions.Item label="公司建立时间">{item.enterprise && moment(item.enterprise.enterpriseEstablishTime).format("YYYY-MM-DD")}</Descriptions.Item>
+                            <Descriptions.Item label="公司注册资金">{item.enterprise && item.enterprise.enterpriseRegisterAmount}</Descriptions.Item>
+                            <Descriptions.Item label="公司法人姓名">{item.enterprise && item.enterprise.enterpriseCorperationName}</Descriptions.Item>
+                            <Descriptions.Item label="公司法人联系电话">{item.enterprise && item.enterprise.enterpriseCorperationPhoneNumber}</Descriptions.Item>
+                            <Descriptions.Item label="公司介绍信息" span={4}>
+                              {item.enterprise && item.enterprise.enterpriseInfo}
+                            </Descriptions.Item>
+                          </Descriptions>
+                        </Panel>
+                      </Collapse>
                     </List.Item>
                   )}
                 />

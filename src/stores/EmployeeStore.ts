@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {getAllApplicationInterview, getEmpInfo} from "@/apis/employee";
+import {getAllApplicationInterview, getAllHireInfo, getEmpInfo} from "@/apis/employee";
 
 class EmployeeStore {
   constructor() {
@@ -45,6 +45,17 @@ class EmployeeStore {
     } catch (e) {}
   }
 
+
+  //获取当前所有的面试信息
+  @observable
+  hireInfoList = [];
+
+  @action.bound
+  initializeHireInfo =async  ()=>{
+    try {
+      this.hireInfoList = (await getAllHireInfo()).data;
+    } catch (e) {}
+  }
 
 }
 
