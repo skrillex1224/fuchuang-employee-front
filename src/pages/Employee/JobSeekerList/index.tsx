@@ -138,9 +138,7 @@ export default class Index extends React.Component<any> {
                     <List.Item
                       key={item.hireInfoId}
                       actions={[
-                        <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-                        <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                        <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                        <Button  type={"default"} style={{width:'100%',float:'right'}}>投递我的简历至改公司</Button>
                       ]}
                       extra={
                         <img
@@ -179,7 +177,6 @@ export default class Index extends React.Component<any> {
                         expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
                         className="site-collapse-custom-collapse"
                       >
-                        {console.log(toJS(item),'-----------------')}
                         <Panel style={{backgroundColor:'#FFFFFFAA'}}   header="招聘公司扩展信息" key="1" className="site-collapse-custom-panel">
                           <Descriptions column={2}>
                             <Descriptions.Item label="公司建立时间">{item.enterprise && moment(item.enterprise.enterpriseEstablishTime).format("YYYY-MM-DD")}</Descriptions.Item>
