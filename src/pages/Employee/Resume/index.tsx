@@ -35,7 +35,6 @@ export default class Index extends React.Component<any, any>{
 
 
       if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
       }
       if (status === 'done') {
         message.success(`${info.file.name} 文件上传成功!`);

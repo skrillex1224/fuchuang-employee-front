@@ -1,7 +1,7 @@
 import React, {CSSProperties} from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Button, Card, Col, Descriptions, Rate, Row, Tag} from "antd";
+import {Avatar, Button, Card, Col, Descriptions, PageHeader, Rate, Row, Tag} from "antd";
 import EditDrawer  from './EditDrawer'
 
 import styles from './index.less'
@@ -122,17 +122,32 @@ export default class UserCenter extends React.Component<any, any>{
                     </ProCard>
                 </ProCard>
 
-                <ProCard  layout="default" bordered colSpan={24}  title={'进行中的课程'}>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                  <Card.Grid  style={gridStyle}>
-                    Content
-                  </Card.Grid>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                  <Card.Grid style={gridStyle}>Content</Card.Grid>
-                </ProCard>
+                <PageHeader
+                  ghost={false}
+                  title="当前正在进行中的课程"
+                  subTitle="Processing"
+                  style={{marginBottom:'20px'}}
+                  extra={[
+                    <Button key="3">Operation</Button>,
+                    <Button key="2">Operation</Button>,
+                    <Button key="1" type="primary">
+                      Primary
+                    </Button>,
+                  ]}
+                >
+                  <Descriptions size="small" column={3}>
+                    <Descriptions.Item label="Created">Lili Qu</Descriptions.Item>
+                    <Descriptions.Item label="Association">
+                      <a>421421</a>
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Creation Time">2017-01-10</Descriptions.Item>
+                    <Descriptions.Item label="Effective Time">2017-10-10</Descriptions.Item>
+                    <Descriptions.Item label="Remarks">
+                      Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
+                    </Descriptions.Item>
+                  </Descriptions>
+                </PageHeader>
+
 
                 <ProCard  layout="default" bordered colSpan={24} >
                   <ProList
