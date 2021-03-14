@@ -5,6 +5,7 @@ import { Redirect, connect } from 'umi';
 import { stringify } from 'querystring';
 import type { ConnectState } from '@/models/connect';
 import type { CurrentUser } from '@/models/user';
+import {message} from "antd";
 
 type SecurityLayoutProps = {
   loading?: boolean;
@@ -24,20 +25,21 @@ class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayout
     this.setState({
       isReady: true,
     });
-    // const { dispatch } = this.props;
-    // if (dispatch) {
-    //   dispatch({
-    //     type: 'user/fetchCurrent',
-    //   });
-    // }
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'user/fetchCurrent',
+      });
+    }
   }
 
   render() {
     const { isReady } = this.state;
-    const { children, loading } = this.props;
+    const { children, loading, currentUser } = this.props;
     // You can replace it to your authentication rule (such as check token exists)
     // 你可以把它替换成你自己的登录认证规则（比如判断 token 是否存在）
-    const isLogin = localStorage.getItem('token');
+    const isLogin = currentUser && currentUser.name;
+
     const queryString = stringify({
       redirect: window.location.href,
     });
@@ -46,6 +48,7 @@ class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayout
       return <PageLoading tip={'Loading....'} />;
     }
     if (!isLogin && window.location.pathname !== '/user/login') {
+      message.error('您还未登录或登录已失效,请重新登录!')
       return <Redirect to={`/user/login?${queryString}`} />;
     }
     return children;

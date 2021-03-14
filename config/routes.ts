@@ -60,7 +60,7 @@
                 authority: ['employee'],
               },
               {
-                path:'/account/center',
+                path:'/account/employeeCenter',
                 icon: 'HomeOutlined',
                 name: '个人中心',
                 component: '../components/UserCenter',
