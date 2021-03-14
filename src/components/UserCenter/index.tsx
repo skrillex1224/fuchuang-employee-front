@@ -1,4 +1,4 @@
-import React, {CSSProperties} from "react";
+import React from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
 import {Avatar, Button, Card, Col, Descriptions, Empty, Input, PageHeader, Rate, Row, Tag} from "antd";
@@ -7,7 +7,7 @@ import EditDrawer  from './EditDrawer'
 import styles from './index.less'
 import ProList from "@ant-design/pro-list";
 import EmployeeStore from "@/stores/EmployeeStore";
-import {DoubleRightOutlined, FireFilled, StarFilled} from "@ant-design/icons/lib";
+import { StarFilled} from "@ant-design/icons/lib";
 import moment from "moment";
 
 
@@ -22,7 +22,7 @@ export default class UserCenter extends React.Component<any, any>{
     }
 
 
-    async componentDidMount(): void {
+    async componentDidMount(){
       const {initializeCurrentUser} = EmployeeStore;
       await initializeCurrentUser();
 
@@ -192,8 +192,8 @@ export default class UserCenter extends React.Component<any, any>{
                               }}
                             >
                               <Descriptions column={2}>
-                                <Descriptions.Item label="面试地点">{currentItem.interview.interviewLocation}</Descriptions.Item>
-                                <Descriptions.Item label="面试时间">{moment(currentItem.interview.interviewTime).format("YYYY-MM-DD HH:mm:ss")}</Descriptions.Item>
+                                <Descriptions.Item label="面试地点">{currentItem.interview && currentItem.interview.interviewLocation}</Descriptions.Item>
+                                <Descriptions.Item label="面试时间">{moment(currentItem.interview && currentItem.interview.interviewTime).format("YYYY-MM-DD HH:mm:ss")}</Descriptions.Item>
                               </Descriptions>
                             </div>
                           ),
