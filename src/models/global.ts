@@ -41,10 +41,12 @@ const GlobalModel: GlobalModelType = {
   effects: {
     *fetchNotices(_, { call, put, select }) {
       const data = yield call(queryNotices);
+      console.log(data,'notices')
       yield put({
         type: 'saveNotices',
         payload: data,
       });
+
       const unreadCount: number = yield select(
         (state: ConnectState) => state.global.notices.filter((item) => !item.read).length,
       );

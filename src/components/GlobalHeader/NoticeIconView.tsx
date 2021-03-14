@@ -123,11 +123,7 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
           this.changeReadState(item as NoticeItem);
         }}
         loading={fetchingNotices}
-        clearText="清空"
-        viewMoreText="查看更多"
-        onClear={this.handleNoticeClear}
         onPopupVisibleChange={onNoticeVisibleChange}
-        onViewMore={() => message.info('Click on view more')}
         clearClose
       >
         <NoticeIcon.Tab
@@ -136,7 +132,6 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
           list={noticeData.notification}
           title="通知"
           emptyText="你已查看所有通知"
-          showViewMore
         />
       </NoticeIcon>
     );

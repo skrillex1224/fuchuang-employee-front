@@ -1,8 +1,9 @@
 import {request} from '@/utils/promise';
+import ts from '@/utils/request';
 
 
 export async function query(): Promise<any> {
-  // return request('/api/users');
+  return ts('/api/users');
 }
 
 export async function queryCurrent(): Promise<any> {
@@ -10,5 +11,5 @@ export async function queryCurrent(): Promise<any> {
 }
 
 export async function queryNotices(): Promise<any> {
-  // return request('/api/notices');
+  return ts('/api/notices');
 }
