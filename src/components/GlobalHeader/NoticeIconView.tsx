@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import type { ConnectProps } from 'umi';
 import { connect } from 'umi';
-import { Tag, message } from 'antd';
+import { Tag } from 'antd';
 import groupBy from 'lodash/groupBy';
 import moment from 'moment';
 import type { NoticeItem } from '@/models/global';
@@ -41,18 +41,6 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
     }
   };
 
-  handleNoticeClear = (title: string, key: string) => {
-    const { dispatch } = this.props;
-    message.success(`${'清空'} ${title}成功`);
-
-    if (dispatch) {
-      dispatch({
-        type: 'global/clearNotices',
-        payload: key,
-      });
-    }
-  };
-
   getNoticeData = (): Record<string, NoticeItem[]> => {
     const { notices = [] } = this.props;
 
@@ -71,16 +59,13 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
         newNotice.key = newNotice.id;
       }
 
-      if (newNotice.extra && newNotice.status) {
-        const color = {
-          todo: '',
-          processing: 'blue',
-          urgent: 'red',
-          doing: 'gold',
-        }[newNotice.status];
+      if (newNotice.extra ) {
+          // processing: 'blue',
+          // urgent: 'red',
+          // doing: 'gold',
         newNotice.extra = (
           <Tag
-            color={color}
+            color={'blue'}
             style={{
               marginRight: 0,
             }}
@@ -95,41 +80,24 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
     return groupBy(newNotices, 'type');
   };
 
-  getUnreadData = (noticeData: Record<string, NoticeItem[]>) => {
-    const unreadMsg: Record<string, number> = {};
-    Object.keys(noticeData).forEach((key) => {
-      const value = noticeData[key];
-
-      if (!unreadMsg[key]) {
-        unreadMsg[key] = 0;
-      }
-
-      if (Array.isArray(value)) {
-        unreadMsg[key] = value.filter((item) => !item.read).length;
-      }
-    });
-    return unreadMsg;
-  };
 
   render() {
     const { currentUser, fetchingNotices, onNoticeVisibleChange } = this.props;
     const noticeData = this.getNoticeData();
-    const unreadMsg = this.getUnreadData(noticeData);
     return (
       <NoticeIcon
         className={styles.action}
-        count={currentUser && currentUser.unreadCount}
+        count={currentUser && currentUser.notifyCount}
         onItemClick={(item) => {
           this.changeReadState(item as NoticeItem);
         }}
         loading={fetchingNotices}
         onPopupVisibleChange={onNoticeVisibleChange}
-        clearClose
       >
         <NoticeIcon.Tab
           tabKey="notification"
-          count={unreadMsg.notification}
-          list={noticeData.notification}
+          count={noticeData && noticeData.notification && noticeData.notification.length}
+          list={noticeData && noticeData.notification}
           title="通知"
           emptyText="你已查看所有通知"
         />

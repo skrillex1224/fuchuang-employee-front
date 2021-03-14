@@ -98,7 +98,6 @@ export const request = (api : string, method = MethodType.GET, params ={}) => {
     },
   })
     .then(resp => {
-      console.log(resp)
       if(resp.status === 200  && resp.data.errMsg){
          message.success(resp.data.errMsg);
       }

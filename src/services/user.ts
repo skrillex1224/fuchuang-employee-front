@@ -1,9 +1,7 @@
 import {request} from '@/utils/promise';
-import ts from '@/utils/request';
 
-
-export async function query(): Promise<any> {
-  return ts('/api/users');
+export async function readNoticeId(params) {
+    return request('delNotification','POST',params)
 }
 
 export async function queryCurrent(): Promise<any> {
@@ -11,5 +9,5 @@ export async function queryCurrent(): Promise<any> {
 }
 
 export async function queryNotices(): Promise<any> {
-  return ts('/api/notices');
+  return request('fetchNotification');
 }
