@@ -112,16 +112,16 @@ export default class UserCenter extends React.Component<any, any>{
                   ]}
                 >
                   {
-                    enterprise.enterpriseName ?
+                    enterprise?.enterpriseName ?
                        <div style={{display:'flex',justifyContent:'space-evenly',alignItems:'center'}}>
                             <img src={'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'} height={200} />
                          <Descriptions size="middle" style={{width:'50%'}} column={1}  colon bordered>
-                           <Descriptions.Item label="公司名称">{enterprise.enterpriseName}</Descriptions.Item>
+                           <Descriptions.Item label="公司名称">{enterprise?.enterpriseName}</Descriptions.Item>
                            <Descriptions.Item label="公司地点">
-                             {enterprise.enterpriseLocation}
+                             {enterprise?.enterpriseLocation}
                            </Descriptions.Item>
-                           <Descriptions.Item label="公司人数">{enterprise.enterpriseNumsPerson}</Descriptions.Item>
-                           <Descriptions.Item label="公司邮箱">{enterprise.enterpriseAccount}</Descriptions.Item>
+                           <Descriptions.Item label="公司人数">{enterprise?.enterpriseNumsPerson}</Descriptions.Item>
+                           <Descriptions.Item label="公司邮箱">{enterprise?.enterpriseAccount}</Descriptions.Item>
                          </Descriptions>
                        </div>
                       :
@@ -141,23 +141,23 @@ export default class UserCenter extends React.Component<any, any>{
                   ]}
                 >
                   {
-                    course.courseName ?
+                    course?.courseName ?
                       <Descriptions size="small" column={3} colon>
-                        <Descriptions.Item label="课程名称">{course.courseName}</Descriptions.Item>
+                        <Descriptions.Item label="课程名称">{course?.courseName}</Descriptions.Item>
                         <Descriptions.Item label="课程状态">
-                          <Tag color={course.courseStatus === '未开课' ? 'red' : 'skyblue'}>{course.courseStatus}</Tag>
+                          <Tag color={course.courseStatus === '未开课' ? 'red' : 'skyblue'}>{course?.courseStatus}</Tag>
                         </Descriptions.Item>
-                        <Descriptions.Item label="上课地点">{course.courseLocation}</Descriptions.Item>
-                        <Descriptions.Item label="上课时间">{moment(course.courseTime).format("YYYY-MM-DD HH:mm:ss")}</Descriptions.Item>
+                        <Descriptions.Item label="上课地点">{course?.courseLocation}</Descriptions.Item>
+                        <Descriptions.Item label="上课时间">{moment(course?.courseTime).format("YYYY-MM-DD HH:mm:ss")}</Descriptions.Item>
                         <Descriptions.Item label="课程人数">
-                          {course.courseTotalNumsPerson}
+                          {course?.courseTotalNumsPerson}
                         </Descriptions.Item>
                         <Descriptions.Item label="课程讲师">
-                          {course.couseTeacherName}
+                          {course?.couseTeacherName}
                         </Descriptions.Item>
                         <Descriptions.Item label="课程简介" span={6} style={{border:'1px solid #F0F0F0'}} >
                           {/*课程简介*/}
-                          {course.courseTeacherInfo}
+                          {course?.courseTeacherInfo}
                         </Descriptions.Item>
                       </Descriptions>
                       :
@@ -168,7 +168,7 @@ export default class UserCenter extends React.Component<any, any>{
 
                 <ProCard  layout="default" bordered colSpan={24} >
                   {
-                    applications.length ?
+                    applications?.length ?
                       <ProList
                         grid={{ gutter: 16, column: 1 }}
                         metas={{
@@ -180,8 +180,8 @@ export default class UserCenter extends React.Component<any, any>{
                           actions: {},
                         }}
                         headerTitle="我参与过的面试:"
-                        dataSource={applications.map((currentItem) => ({
-                          title: "面试公司："  + currentItem.enterprise.enterpriseName,
+                        dataSource={applications?.map((currentItem) => ({
+                          title: "面试公司："  + currentItem.enterprise?.enterpriseName,
                           subTitle:  <Tag color={currentItem.applicationEmpStatus === '未通过' ? 'red' : 'skyblue'}>状态：{currentItem.applicationEmpStatus}</Tag> ,
                           actions: [<a onClick={()=>window.location.href ='/employee/interviewStatus'}>查看当前面试进度→</a>],
                           avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',

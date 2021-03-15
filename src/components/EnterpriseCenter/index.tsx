@@ -1,7 +1,7 @@
 import React, {CSSProperties} from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Badge, Button, Card, Col, Descriptions, Input, Comment, Popover, Progress, Row, Tag, Empty, Collapse, Form} from "antd";
+import {Avatar, Badge, Button, Card, Col, Descriptions, Input, Comment, Popover, Progress, Row, Tag, Empty, Collapse, Form, Popconfirm} from "antd";
 import EditDrawer  from './EditDrawer'
 import styles from './index.less'
 import ProList from "@ant-design/pro-list";
@@ -125,7 +125,7 @@ export default class UserCenter extends React.Component<any, any>{
                       </Descriptions.Item>
                       <Descriptions.Item label="企业注册地址" span={4}>{enterpriseInfo.enterpriseLocation}</Descriptions.Item>
                       <Descriptions.Item span={4} label={'企业营业执照'}>
-                         <Popover  trigger={'click'} placement={"rightTop"} content={<Document
+                         <Popover  trigger={'click'} placement={"top"} content={<Document
                             file={enterpriseInfo.enterpriseLicense} //PDF文件在此
                             onLoadSuccess={()=>{}}
                           >
@@ -200,7 +200,10 @@ export default class UserCenter extends React.Component<any, any>{
                           hireinfos.map((item) => ({
                             title: item.hireinfoTitle,
                             subTitle: <Tag color="#5BD8A6">需要{item.hireinfoRequireNumsPerson}人</Tag>,
-                            actions: [<a onClick={()=>this.handleFormUpdate(item)}>{this.state.isEditing ? '完成' : '修改'}</a>,<a>删除</a>],
+                            actions: [<a onClick={()=>this.handleFormUpdate(item)}>{this.state.isEditing ? '完成' : '修改'}</a>,
+                            <Popconfirm title={'你确定要删除?'} >
+                              <a>删除</a>
+                            </Popconfirm>],
                             avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
                             content: (
                               <>

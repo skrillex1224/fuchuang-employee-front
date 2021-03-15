@@ -5,3 +5,6 @@ export const getEnterpriseByAccount = async  ()=>{
   return await request('getEnterpriseByAccount','GET',{});
 }
 
+export const getPassedEmployeeList = async ()=>{
+  return await  request("getPassedEmployeeList");
+}

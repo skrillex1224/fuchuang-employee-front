@@ -4,6 +4,8 @@ import {observer} from "mobx-react";
 import {Button, Checkbox, Divider, Input, Rate, Select, Space, Tag} from "antd";
 import ProList from "@ant-design/pro-list";
 import ProCard from "@ant-design/pro-card";
+import {getPassedEmployeeList} from "@/apis/enterprise";
+import {response} from "express";
 
 const {Option} = Select;
 
@@ -290,6 +292,12 @@ export default class Index extends React.Component<any, any>{
     starCount : 4,
     selectChanged : 'web前端',
     selectChanged2 : '大学本科'
+  }
+
+  async  componentDidMount() {
+    const responseList =  (await getPassedEmployeeList()).data
+    console.log(responseList);
+
   }
 
   setExpandedRowKeys = (expandedRowKeys)=>{
