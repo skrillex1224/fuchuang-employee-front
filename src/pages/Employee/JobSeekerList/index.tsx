@@ -121,7 +121,6 @@ export default class Index extends React.Component<any> {
     }
 
     //职位类型
-    console.log(checkedList)
     //不是全选才进行操作
      hireInfoList = hireInfoList.filter((item : any) => checkedList.indexOf(item.hireinfoTitle) > -1);
 
@@ -272,7 +271,7 @@ export default class Index extends React.Component<any> {
                   size="large"
                   pagination={{
                     onChange: page => {
-                      console.log(page);
+                      window.scrollTo(0,0)
                     },
                     pageSize: 10,
                   }}

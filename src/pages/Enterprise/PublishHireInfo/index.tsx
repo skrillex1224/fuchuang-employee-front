@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Button, Checkbox, Form, Input, InputNumber, PageHeader, Select, Space} from "antd";
+import {Button,  Form, Input, InputNumber, Select, } from "antd";
 
 import styles from './index.less'
 import TextArea from "antd/es/input/TextArea";

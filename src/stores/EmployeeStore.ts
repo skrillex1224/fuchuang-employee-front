@@ -1,6 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
 import {getAllApplicationInterview, getAllHireInfo, getEmpInfo} from "@/apis/employee";
-import {message} from "antd";
 
 class EmployeeStore {
   constructor() {
