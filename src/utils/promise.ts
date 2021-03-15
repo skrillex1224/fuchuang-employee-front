@@ -31,8 +31,6 @@ export const requestToken = (api : string, method = MethodType.GET, params = {})
   return new Promise((resolve, reject) => {
     // @ts-ignore
     axios({
-      url: `${host}${api}`,
-      method,
       [data]: params,
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
