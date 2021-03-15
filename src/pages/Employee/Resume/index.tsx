@@ -1,22 +1,27 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
 import {observer} from "mobx-react";
-import { Document} from "react-pdf";
-
-import {message} from "antd";
+import {message, Skeleton} from "antd";
 import {InboxOutlined} from "@ant-design/icons/lib";
 import Dragger from "antd/es/upload/Dragger";
 import {host} from "@/utils/promise";
 import {isContainerResume} from "@/apis/employee";
+import './index.less'
 
+import { Document, Page ,pdfjs} from 'react-pdf';
 
 
 @observer
 export default class Index extends React.Component<any, any>{
 
+  constructor(props) {
+    super(props);
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+  }
+
   state = {
     fileList : [],
-    isContainerResume : false
+    empResumeOss :  undefined,
   }
 
   employeeUploadProps = {
@@ -50,27 +55,41 @@ export default class Index extends React.Component<any, any>{
 
  async componentDidMount() {
      const response = (await isContainerResume()).data;
-     this.setState({isContainerResume:response.flag});
+    console.log(response)
+     this.setState({empResumeOss:response});
+
   }
 
+  onDocumentComplete = ()=>{
+          message.success('简历加载成功!')
+  }
 
   render() {
      return (
-        <PageContainer>
+        <PageContainer >
+
           {
-            this.state.isContainerResume ?
-            <Document
-              file='https://www.gov.cn/zhengce/pdfFile/2021_PDF.pdf'
-            /> :
-              <Dragger height={700}   {...this.employeeUploadProps} fileList={this.state.fileList}>
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">您还没有上传过简历</p>
-                <p className="ant-upload-text">拖拽或点击进行简历的上传</p>
-              </Dragger>
+            (typeof this.state.empResumeOss === 'string') ?
+              <Document
+                file={this.state.empResumeOss} //PDF文件在此
+                onLoadSuccess={this.onDocumentComplete}
 
-
+              >
+                <div>
+                  <Page pageNumber={1} />
+                </div>
+              </Document>
+              :
+              (this.state.empResumeOss === undefined ?
+                <Skeleton active />
+                :
+                <Dragger height={700}   {...this.employeeUploadProps} fileList={this.state.fileList}>
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">您还没有上传过简历</p>
+                  <p className="ant-upload-text">拖拽或点击进行简历的上传</p>
+                </Dragger>)
           }
         </PageContainer>
      )

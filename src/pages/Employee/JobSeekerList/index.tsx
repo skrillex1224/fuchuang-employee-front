@@ -2,7 +2,7 @@ import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
 import Search from "antd/lib/input/Search";
 import {Card, Divider,  List, Select, Collapse, Tag, Button, Descriptions, message,} from "antd";
-import {CaretRightOutlined ,MoneyCollectOutlined} from "@ant-design/icons/lib";
+import {CaretRightOutlined, MoneyCollectOutlined, SearchOutlined} from "@ant-design/icons/lib";
 import EmployeeStore from "@/stores/EmployeeStore";
 import {observer} from "mobx-react";
 import moment from "moment";
@@ -133,10 +133,26 @@ export default class Index extends React.Component<any> {
     message.destroy('loading')
   }
 
+  handleSearch = async  (enterpriseName)=>{
+    this.setState({loading:true });
+    //如果是空的说明是清空操作
+    if(enterpriseName){
+      await EmployeeStore.rerenderHireInfoBySearch(enterpriseName);
+    }else{
+      await EmployeeStore.initializeHireInfo();
+    }
+
+
+    this.setState({loading:false });
+  }
+
+
 
   async componentDidMount() {
       await EmployeeStore.initializeHireInfo();
   }
+
+
 
   render(): React.ReactNode {
       const {loading,checkedList } = this.state;
@@ -144,7 +160,8 @@ export default class Index extends React.Component<any> {
       return (
           <PageContainer>
               <Card hoverable  style={{display:'flex',justifyContent:'center'}} >
-                <Search style={{width:'800px'}}  placeholder="输入公司的名称或信息....." enterButton="搜索" size="large" loading={loading} />
+                <Search style={{width:'800px'}} onSearch={this.handleSearch} allowClear  placeholder="输入公司的名称或信息....."
+                          enterButton={`搜索`}  size="large" loading={loading} />
               </Card>
               <Card hoverable>
                   <div style={{display:'flex',justifyContent:'flex-start'}}>

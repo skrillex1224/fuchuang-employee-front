@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {getAllApplicationInterview, getAllHireInfo, getEmpInfo} from "@/apis/employee";
+import {getAllApplicationInterview, getAllHireInfo, getEmpInfo, getHireInfoByEnterName} from "@/apis/employee";
 
 class EmployeeStore {
   constructor() {
@@ -61,6 +61,15 @@ class EmployeeStore {
   @action.bound
   rerenderHireInfo = (hireInfoList)=>{
      this.hireInfoList = hireInfoList;
+  }
+
+  //搜索
+  @action.bound
+  rerenderHireInfoBySearch = async  (enterpriseName)=>{
+    try {
+      this.hireInfoList = (await getHireInfoByEnterName({enterpriseName})).data;
+    } catch (e) {
+    }
   }
 
 }
