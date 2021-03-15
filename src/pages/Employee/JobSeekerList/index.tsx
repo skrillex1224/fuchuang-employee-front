@@ -1,28 +1,36 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
 import Search from "antd/lib/input/Search";
-import {Avatar, Card, Divider, Checkbox, List, Space, Select, Collapse, Tag, Button, Descriptions,} from "antd";
-import {CaretRightOutlined, LikeOutlined, MessageOutlined, MoneyCollectOutlined, StarOutlined} from "@ant-design/icons/lib";
+import {Card, Divider, Checkbox, List , Select, Collapse, Tag, Button, Descriptions,} from "antd";
+import {CaretRightOutlined ,MoneyCollectOutlined} from "@ant-design/icons/lib";
 import EmployeeStore from "@/stores/EmployeeStore";
 import {observer} from "mobx-react";
-import {toJS} from "mobx";
 import moment from "moment";
 
 const {Panel} = Collapse;
 
-
-const IconText = ({ icon, text }) => (
-  <Space>
-    {React.createElement(icon)}
-    {text}
-  </Space>
-);
+const {Option} = Select;
 
 @observer
 export default class Index extends React.Component<any> {
     state = {
+      //搜索状态
       loading : false,
-      checkedList : []
+      //投递简历的状态
+      submitResume : false,
+      checkedList : [
+        '全选',
+        'Java开发',
+        'PHP开发',
+        'WEB前端',
+        '大数据',
+        'Linux运维',
+        'Android',
+        'IOS',
+        'C/Python',
+        '软件测试'
+      ]
+
     }
 
   handleCheckBox = (checkedList)=>{
@@ -61,6 +69,19 @@ export default class Index extends React.Component<any> {
       this.setState({checkedList})
   }
 
+  //投递简历
+  handleSubmitResume = async  ()=>{
+      this.setState({submitResume:true });
+      //异步请求
+      setTimeout(()=>{
+        this.setState({submitResume:false});
+      },2000)
+
+
+
+  }
+
+
   async componentDidMount() {
       await EmployeeStore.initializeHireInfo();
   }
@@ -87,41 +108,68 @@ export default class Index extends React.Component<any> {
                     '软件测试'
               ]} value={checkedList} onChange={this.handleCheckBox} />
                   <Divider/>
-                    <span style={{marginLeft:'20px'}}>工资边界:</span>
-                    <Select bordered={false} defaultValue="lucy" style={{ width: 200 }} >
-                      <Select.Option value="lucy">1000元以上</Select.Option>
-                      <Select.Option value="juck">3000元以上</Select.Option>
-                      <Select.Option value="mick">5000元以上</Select.Option>
+                    <span style={{marginLeft:'20px'}}>薪资要求:</span>
+                    <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
+                      <Select.Option value="不限">不限</Select.Option>
+                      <Select.Option value="lucy">3K以下</Select.Option>
+                      <Select.Option value="juck">3K-5K</Select.Option>
+                      <Select.Option value="mick">5K-8K</Select.Option>
+                      <Select.Option value="mick">8K-12K</Select.Option>
+                      <Select.Option value="mick">12K以上</Select.Option>
                     </Select>
 
-                    <span style={{marginLeft:'80px'}}>最低学历要求:</span>
-                    <Select bordered={false} defaultValue="lucy" style={{ width: 200 }} >
-                      <Select.Option value="lucy">1000元以上</Select.Option>
-                      <Select.Option value="juck">3000元以上</Select.Option>
-                      <Select.Option value="mick">5000元以上</Select.Option>
+                    <span style={{marginLeft:'80px'}}>学历要求:</span>
+                    <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
+                      <Option value="不限">不限</Option>
+                      <Option value="职业高中">职业高中</Option>
+                      <Option value="大学专科">大学专科</Option>
+                      <Option value="大学本科">大学本科</Option>
+                      <Option value="硕士">硕士</Option>
+                      <Option value="博士">博士</Option>
+                      <Option value="其他">其他</Option>
                     </Select>
 
-                    <span style={{marginLeft:'80px'}}>工作经验(年):</span>
-                    <Select bordered={false} defaultValue="lucy" style={{ width: 200 }} >
-                      <Select.Option value="lucy">1000元以上</Select.Option>
-                      <Select.Option value="juck">3000元以上</Select.Option>
-                      <Select.Option value="mick">5000元以上</Select.Option>
+                    <span style={{marginLeft:'80px'}}>工作经验:</span>
+                    <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
+                      <Option value="不限">不限</Option>
+                      <Option value="应届生/在校生"><b>应届生/在校生</b></Option>
+                      <Option value="一年以下">一年以下</Option>
+                      <Option value="1~3年">1~3年</Option>
+                      <Option value="3~5年">3~5年</Option>
+                      <Option value="5~10年">5~10年</Option>
                     </Select>
                 <Divider/>
                 <span style={{marginLeft:'20px'}}>公司类型:</span>
-                <Select bordered={false} defaultValue="lucy" style={{ width: 200 }} >
-                  <Select.Option value="lucy">1000元以上</Select.Option>
-                  <Select.Option value="juck">3000元以上</Select.Option>
-                  <Select.Option value="mick">5000元以上</Select.Option>
+                <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
+                  <Select.Option value={'不限'}>不限</Select.Option>
+                  <Select.Option value={'合资'}>合资</Select.Option>
+                  <Select.Option value={'独资'}>独资</Select.Option>
+                  <Select.Option value={'国有'}>国有</Select.Option>
+                  <Select.Option value={'私营'}>私营</Select.Option>
+                  <Select.Option value={'全民所有制'}>全民所有制</Select.Option>
+                  <Select.Option value={'集体所有制'}>集体所有制</Select.Option>
+                  <Select.Option value={'股份制'}>股份制</Select.Option>
+                  <Select.Option value={'有限责任'}>有限责任</Select.Option>
                 </Select>
 
                 <span style={{marginLeft:'80px'}}>津贴福利:</span>
-                <Select bordered={false} defaultValue="lucy" style={{ width: 200 }} >
-                  <Select.Option value="lucy">1000元以上</Select.Option>
-                  <Select.Option value="juck">3000元以上</Select.Option>
-                  <Select.Option value="mick">5000元以上</Select.Option>
+                <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
+                  <Select.Option value={'不限'}>不限</Select.Option>
+                  <Select.Option value={'五险一金'}>五险一金</Select.Option>
+                  <Select.Option value={'六险一金'}>六险一金</Select.Option>
+                  <Select.Option value={'无'}>无</Select.Option>
                 </Select>
 
+
+                <span style={{marginLeft:'80px'}}>公司规模:</span>
+                <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
+                  <Select.Option value={'不限'}>不限</Select.Option>
+                  <Select.Option value={5}>0~5人</Select.Option>
+                  <Select.Option value={10}>5~10人</Select.Option>
+                  <Select.Option value={20}>10~20人</Select.Option>
+                  <Select.Option value={50}>20人~50人</Select.Option>
+                  <Select.Option value={1000}>50人以上</Select.Option>
+                </Select>
               </Card>
               <Card hoverable style={{marginTop:'20px'}} >
                 <List
@@ -137,9 +185,6 @@ export default class Index extends React.Component<any> {
                   renderItem={(item : any ) => (
                     <List.Item
                       key={item.hireInfoId}
-                      actions={[
-                        <Button  type={"default"} style={{width:'100%',float:'right'}}>投递我的简历至改公司</Button>
-                      ]}
                       extra={
                         <img
                           width={272}
@@ -173,7 +218,7 @@ export default class Index extends React.Component<any> {
                       <Collapse
                         ghost={false}
                         bordered={false}
-                        defaultActiveKey={['1']} 
+                        defaultActiveKey={['1']}
                         expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
                         className="site-collapse-custom-collapse"
                       >
@@ -189,6 +234,7 @@ export default class Index extends React.Component<any> {
                           </Descriptions>
                         </Panel>
                       </Collapse>
+                      <Button loading={this.state.submitResume} onClick={this.handleSubmitResume}  type={"primary"} style={{float:'right',marginTop:'10px'}}>投递我的简历至改公司</Button>
                     </List.Item>
                   )}
                 />
