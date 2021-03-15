@@ -173,14 +173,14 @@ export default class Index extends React.Component<any> {
                       <Collapse
                         ghost={false}
                         bordered={false}
-                        defaultActiveKey={['1']}
+                        defaultActiveKey={['1']} 
                         expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
                         className="site-collapse-custom-collapse"
                       >
                         <Panel style={{backgroundColor:'#FFFFFFAA'}}   header="招聘公司扩展信息" key="1" className="site-collapse-custom-panel">
                           <Descriptions column={2}>
                             <Descriptions.Item label="公司建立时间">{item.enterprise && moment(item.enterprise.enterpriseEstablishTime).format("YYYY-MM-DD")}</Descriptions.Item>
-                            <Descriptions.Item label="公司注册资金">{item.enterprise && item.enterprise.enterpriseRegisterAmount}</Descriptions.Item>
+                            <Descriptions.Item label="公司注册资金">{item.enterprise && item.enterprise.enterpriseRegisterAmount}万</Descriptions.Item>
                             <Descriptions.Item label="公司法人姓名">{item.enterprise && item.enterprise.enterpriseCorperationName}</Descriptions.Item>
                             <Descriptions.Item label="公司法人联系电话">{item.enterprise && item.enterprise.enterpriseCorperationPhoneNumber}</Descriptions.Item>
                             <Descriptions.Item label="公司介绍信息" span={4}>
