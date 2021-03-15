@@ -271,7 +271,12 @@ export default class Index extends React.Component<any> {
                   size="large"
                   pagination={{
                     onChange: page => {
-                      window.scrollTo(0,0)
+                      let minusVal = 10;
+                      const timer = setInterval(()=>{
+                        if(window.scrollY <= 0) clearInterval(timer);
+                        minusVal += 5;
+                        window.scrollTo( 0,window.scrollY - minusVal)
+                      },10)
                     },
                     pageSize: 10,
                   }}
