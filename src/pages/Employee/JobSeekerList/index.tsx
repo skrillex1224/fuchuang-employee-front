@@ -1,15 +1,17 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
 import Search from "antd/lib/input/Search";
-import {Card, Divider, Checkbox, List , Select, Collapse, Tag, Button, Descriptions,} from "antd";
+import {Card, Divider,  List, Select, Collapse, Tag, Button, Descriptions, message,} from "antd";
 import {CaretRightOutlined ,MoneyCollectOutlined} from "@ant-design/icons/lib";
 import EmployeeStore from "@/stores/EmployeeStore";
 import {observer} from "mobx-react";
 import moment from "moment";
+import TagSelect from 'ant-design-pro/lib/TagSelect';
 
 const {Panel} = Collapse;
 
 const {Option} = Select;
+
 
 @observer
 export default class Index extends React.Component<any> {
@@ -19,7 +21,6 @@ export default class Index extends React.Component<any> {
       //投递简历的状态
       submitResume : false,
       checkedList : [
-        '全选',
         'Java开发',
         'PHP开发',
         'WEB前端',
@@ -29,45 +30,15 @@ export default class Index extends React.Component<any> {
         'IOS',
         'C/Python',
         '软件测试'
-      ]
+      ],
+      salary : 100000,
+      college : '不限',
+      experience : '不限',
+      enterpriseType : '不限',
+      welfare: '不限',
+      enterpriseSize : 10000
 
     }
-
-  handleCheckBox = (checkedList)=>{
-    /***
-     *  精华就是 this.state.checkedList 是上次的状态
-     *  参数checkedList 是这次的状态
-     *   然后看有没有全选
-     */
-
-    /*选择了所有其他的自动全选*/
-      if((!checkedList.find((item)=>item === '全选')) &&  checkedList.length === 9 && this.state.checkedList.length < 10){
-        this.setState({checkedList: [...checkedList,"全选"]})
-        return ;
-      }
-
-      /*如果选择了全选*/
-      if(checkedList.find((item)=>item === '全选' && this.state.checkedList.length < 10)){
-        this.setState({checkedList: ["全选", "Java开发", "PHP开发", "WEB前端", "大数据", "Linux运维", "Android", "IOS", "C/Python", "软件测试"]})
-        return ;
-      }
-
-      /**如果点击了其他按钮,且全选是10个的时候取消全选*/
-      if(this.state.checkedList.length === 10 && checkedList.find((item)=>item === '全选')){
-         this.setState({checkedList : checkedList.filter(item => item !=='全选')})
-        return;
-      }
-
-      /**如果点击的是全选,则取消所有*/
-      if(this.state.checkedList.length === 10  && (!checkedList.find((item)=>item === '全选'))){
-        console.log('dsadasdad')
-         this.setState({checkedList : []})
-        return ;
-      }
-
-
-      this.setState({checkedList})
-  }
 
   //投递简历
   handleSubmitResume = async  ()=>{
@@ -77,8 +48,90 @@ export default class Index extends React.Component<any> {
         this.setState({submitResume:false});
       },2000)
 
+  }
+
+  //重新根据条件筛选列表
+  rerenderList = async ()=>{
+    message.loading({content: '加载中....',key:'loading'})
+    await EmployeeStore.initializeHireInfo() ;
+    let hireInfoList  : any = EmployeeStore.hireInfoList;
+    const {checkedList, salary, college,experience ,enterpriseType , welfare,enterpriseSize } = this.state;
+
+    //薪水,如果有限制
+    switch (salary) {
+      case 100000:
+        break;
+      case 12000:
+        hireInfoList = hireInfoList.filter((item : any )=>{return Number(item.hireinfoSalary) > 12000})
+        break;
+      case 8000:
+        hireInfoList = hireInfoList.filter((item : any )=>(Number(item.hireinfoSalary) <= 12000 && Number(item.hireinfoSalary) >= 8000)   )
+        break;
+      case 5000:
+        hireInfoList = hireInfoList.filter((item : any )=>(Number(item.hireinfoSalary) <= 8000 && Number(item.hireinfoSalary) >= 5000)   )
+        break;
+      case 3000:
+        hireInfoList = hireInfoList.filter((item : any )=>(Number(item.hireinfoSalary) <= 5000 && Number(item.hireinfoSalary) >= 3000)   )
+        break;
+      case 0:
+        hireInfoList = hireInfoList.filter((item : any )=>( Number(item.hireinfoSalary) <= 3000)   )
+        break;
+    }
+    //学历要求
+    if(college !== '不限'){
+      hireInfoList = hireInfoList.filter((item :any) => item.hireinfoRequireEducation === college);
+    }
+
+    //工作经验
+    if(experience !== '不限'){
+      hireInfoList = hireInfoList.filter((item : any) => item.hireinfoRequireExperience === experience);
+    }
+
+    //公司类型
+    if(enterpriseType !== '不限'){
+      hireInfoList = hireInfoList.filter((item : any) => item.enterprise.enterpriseType === enterpriseType);
+    }
+
+    //津贴福利
+    if(welfare !== '不限'){
+      hireInfoList = hireInfoList.filter((item : any) => item.enterprise.enterpriseWelfare === welfare);
+    }
+    // 公司规模
+    switch (enterpriseSize) {
+      case 10000:
+          break;
+      case 0 :
+          hireInfoList = hireInfoList.filter((item :any) => item.enterprise.enterpriseNumsPerson <= 5)
+          break;
+      case 5 :
+        hireInfoList = hireInfoList.filter((item :any) => (item.enterprise.enterpriseNumsPerson <= 10 && item.enterprise.enterpriseNumsPerson >= 5) )
+        break;
+      case 10 :
+        hireInfoList = hireInfoList.filter((item :any) => {
+         return  item.enterprise.enterpriseNumsPerson <= 20 && item.enterprise.enterpriseNumsPerson >= 10})
+        break;
+      case 20 :
+        hireInfoList = hireInfoList.filter((item :any) => (item.enterprise.enterpriseNumsPerson <= 50 && item.enterprise.enterpriseNumsPerson >= 20))
+        break;
+      case 50 :
+        hireInfoList = hireInfoList.filter((item :any) => item.enterprise.enterpriseNumsPerson >=50 )
+        break;
+      default:
+        break;
+    }
+
+    //职位类型
+    console.log(checkedList)
+    //不是全选才进行操作
+     hireInfoList = hireInfoList.filter((item : any) => checkedList.indexOf(item.hireinfoTitle) > -1);
 
 
+      //重新渲染列表
+      EmployeeStore.rerenderHireInfo(hireInfoList);
+  }
+
+  componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<{}>, snapshot?: any): void {
+    message.destroy('loading')
   }
 
 
@@ -87,39 +140,65 @@ export default class Index extends React.Component<any> {
   }
 
   render(): React.ReactNode {
-      const {loading,checkedList} = this.state;
+      const {loading,checkedList } = this.state;
       // @ts-ignore
       return (
           <PageContainer>
               <Card hoverable  style={{display:'flex',justifyContent:'center'}} >
                 <Search style={{width:'800px'}}  placeholder="输入公司的名称或信息....." enterButton="搜索" size="large" loading={loading} />
               </Card>
-              <Card hoverable  style={{display:'flex',justifyContent:'flex-start',marginTop:'20px'}}  >
-                  职位类型: <Checkbox.Group options={[
-                    '全选',
-                    'Java开发',
-                    'PHP开发',
-                    'WEB前端',
-                    '大数据',
-                    'Linux运维',
-                    'Android',
-                    'IOS',
-                    'C/Python',
-                    '软件测试'
-              ]} value={checkedList} onChange={this.handleCheckBox} />
+              <Card hoverable>
+                  <div style={{display:'flex',justifyContent:'flex-start'}}>
+                    <div style={{width:'80px',marginLeft:'20px',lineHeight:'30px'}}>职位类型:</div>
+                    <div >
+                      <TagSelect   actionsText={{
+                        selectAllText :'全选'
+                      }} value={checkedList}  onChange={(value)=>{
+                        this.setState({checkedList:value},()=>{
+                          this.rerenderList();
+                        }) } }>
+
+                        {
+                          [
+                            'Java开发',
+                            'PHP开发',
+                            'WEB前端',
+                            '大数据',
+                            'Linux运维',
+                            'Android',
+                            'IOS',
+                            'C/Python',
+                            '软件测试'
+                          ].map((item,index)=>{
+                            return ( <TagSelect.Option value={item} key={index}>{item}</TagSelect.Option>)
+                          })
+                        }
+
+                      </TagSelect>
+                    </div>
+                  </div>
                   <Divider/>
                     <span style={{marginLeft:'20px'}}>薪资要求:</span>
-                    <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
-                      <Select.Option value="不限">不限</Select.Option>
-                      <Select.Option value="lucy">3K以下</Select.Option>
-                      <Select.Option value="juck">3K-5K</Select.Option>
-                      <Select.Option value="mick">5K-8K</Select.Option>
-                      <Select.Option value="mick">8K-12K</Select.Option>
-                      <Select.Option value="mick">12K以上</Select.Option>
+                    <Select onChange={(value)=>{
+                      this.setState({salary:value},()=>{
+                        this.rerenderList();
+                      })
+
+                    }} bordered={false} defaultValue={100000} style={{ width: 200 }} >
+                      <Select.Option value={100000}>不限</Select.Option>
+                      <Select.Option value={0}>3K以下</Select.Option>
+                      <Select.Option value={3000}>3K-5K</Select.Option>
+                      <Select.Option value={5000}>5K-8K</Select.Option>
+                      <Select.Option value={8000}>8K-12K</Select.Option>
+                      <Select.Option value={12000}>12K以上</Select.Option>
                     </Select>
 
                     <span style={{marginLeft:'80px'}}>学历要求:</span>
-                    <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
+                    <Select onChange={(value)=>{
+                      this.setState({college:value},()=>{
+                        this.rerenderList();
+                      })
+                    }}  bordered={false} defaultValue="不限" style={{ width: 200 }} >
                       <Option value="不限">不限</Option>
                       <Option value="职业高中">职业高中</Option>
                       <Option value="大学专科">大学专科</Option>
@@ -130,17 +209,25 @@ export default class Index extends React.Component<any> {
                     </Select>
 
                     <span style={{marginLeft:'80px'}}>工作经验:</span>
-                    <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
-                      <Option value="不限">不限</Option>
-                      <Option value="应届生/在校生"><b>应届生/在校生</b></Option>
-                      <Option value="一年以下">一年以下</Option>
-                      <Option value="1~3年">1~3年</Option>
-                      <Option value="3~5年">3~5年</Option>
-                      <Option value="5~10年">5~10年</Option>
+                    <Select onChange={(value)=>{
+                      this.setState({experience:value},()=>{
+                        this.rerenderList();
+                      })
+                    }}  bordered={false} defaultValue={'不限'} style={{ width: 200 }} >
+                      <Option value={'不限'}>不限</Option>
+                      <Option value={'应届生/在校生'}><b>应届生/在校生</b></Option>
+                      <Option value={'一年以下'}>一年以下</Option>
+                      <Option value={'1~3年'}>1~3年</Option>
+                      <Option value={'3~5年'}>3~5年</Option>
+                      <Option value={'5~10年'}>5~10年</Option>
                     </Select>
                 <Divider/>
                 <span style={{marginLeft:'20px'}}>公司类型:</span>
-                <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
+                <Select onChange={(value)=>{
+                  this.setState({enterpriseType:value},()=>{
+                    this.rerenderList();
+                  })
+                }}  bordered={false} defaultValue="不限" style={{ width: 200 }} >
                   <Select.Option value={'不限'}>不限</Select.Option>
                   <Select.Option value={'合资'}>合资</Select.Option>
                   <Select.Option value={'独资'}>独资</Select.Option>
@@ -153,7 +240,11 @@ export default class Index extends React.Component<any> {
                 </Select>
 
                 <span style={{marginLeft:'80px'}}>津贴福利:</span>
-                <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
+                <Select  onChange={(value)=>{
+                  this.setState({welfare:value},()=>{
+                    this.rerenderList();
+                  })
+                }}  bordered={false} defaultValue="不限" style={{ width: 200 }} >
                   <Select.Option value={'不限'}>不限</Select.Option>
                   <Select.Option value={'五险一金'}>五险一金</Select.Option>
                   <Select.Option value={'六险一金'}>六险一金</Select.Option>
@@ -162,13 +253,17 @@ export default class Index extends React.Component<any> {
 
 
                 <span style={{marginLeft:'80px'}}>公司规模:</span>
-                <Select bordered={false} defaultValue="不限" style={{ width: 200 }} >
-                  <Select.Option value={'不限'}>不限</Select.Option>
-                  <Select.Option value={5}>0~5人</Select.Option>
-                  <Select.Option value={10}>5~10人</Select.Option>
-                  <Select.Option value={20}>10~20人</Select.Option>
-                  <Select.Option value={50}>20人~50人</Select.Option>
-                  <Select.Option value={1000}>50人以上</Select.Option>
+                <Select  onChange={(value)=>{
+                  this.setState({enterpriseSize:value},()=>{
+                    this.rerenderList();
+                  })
+                }}  bordered={false} defaultValue={10000} style={{ width: 200 }} >
+                  <Select.Option value={10000}>不限</Select.Option>
+                  <Select.Option value={0}>0~5人</Select.Option>
+                  <Select.Option value={5}>5~10人</Select.Option>
+                  <Select.Option value={10}>10~20人</Select.Option>
+                  <Select.Option value={20}>20人~50人</Select.Option>
+                  <Select.Option value={50}>50人以上</Select.Option>
                 </Select>
               </Card>
               <Card hoverable style={{marginTop:'20px'}} >

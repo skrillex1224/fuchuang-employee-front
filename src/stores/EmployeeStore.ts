@@ -1,5 +1,6 @@
 import {action, makeObservable, observable} from "mobx";
 import {getAllApplicationInterview, getAllHireInfo, getEmpInfo} from "@/apis/employee";
+import {message} from "antd";
 
 class EmployeeStore {
   constructor() {
@@ -55,6 +56,12 @@ class EmployeeStore {
     try {
       this.hireInfoList = (await getAllHireInfo()).data;
     } catch (e) {}
+  }
+
+  //重新渲染
+  @action.bound
+  rerenderHireInfo = (hireInfoList)=>{
+     this.hireInfoList = hireInfoList;
   }
 
 }
