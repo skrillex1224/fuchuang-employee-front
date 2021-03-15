@@ -75,9 +75,7 @@ export default class Index extends React.Component<any, any>{
                 onLoadSuccess={this.onDocumentComplete}
 
               >
-                <div>
                   <Page pageNumber={1} />
-                </div>
               </Document>
               :
               (this.state.empResumeOss === undefined ?

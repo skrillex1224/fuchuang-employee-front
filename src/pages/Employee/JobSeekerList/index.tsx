@@ -137,6 +137,7 @@ export default class Index extends React.Component<any> {
     this.setState({loading:true });
     //如果是空的说明是清空操作
     if(enterpriseName){
+
       await EmployeeStore.rerenderHireInfoBySearch(enterpriseName);
     }else{
       await EmployeeStore.initializeHireInfo();
@@ -161,7 +162,7 @@ export default class Index extends React.Component<any> {
           <PageContainer>
               <Card hoverable  style={{display:'flex',justifyContent:'center'}} >
                 <Search style={{width:'800px'}} onSearch={this.handleSearch} allowClear  placeholder="输入公司的名称或信息....."
-                          enterButton={`搜索`}  size="large" loading={loading} />
+                          enterButton={<>搜索 <SearchOutlined style={{verticalAlign:'middle',fontSize:20}}/></>}  size="large" loading={loading} />
               </Card>
               <Card hoverable>
                   <div style={{display:'flex',justifyContent:'flex-start'}}>
