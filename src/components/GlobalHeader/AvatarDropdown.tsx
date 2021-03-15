@@ -69,9 +69,11 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
             <UserOutlined style={{fontSize:'16px',paddingRight:'5px'}}/> {
             `${{
                 0 : '早上好',
-                1 : '中午好',
-                2 : '晚上好'
-            }[Math.floor(moment().hours() / 8)]}，${currentUser.name}`
+                1 : '上午好',
+                2 : '中午好',
+                3 : '下午好',
+                4 : '晚上好'
+            }[Math.floor(moment().hours() / 5)]}，${currentUser.name}`
            } </span>
         </span>
       </HeaderDropdown>
