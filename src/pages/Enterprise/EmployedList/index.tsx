@@ -1,210 +1,11 @@
 import React from "react";
 import {observer} from "mobx-react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Form, FormInstance, message, Modal, Rate, Select, Space, Tag} from "antd";
+import {Avatar, Form, FormInstance, message, Modal, Rate, Select, Space, Tag} from "antd";
 import ProList from "@ant-design/pro-list";
 import {SwapRightOutlined} from "@ant-design/icons/lib";
 import TextArea from "antd/es/input/TextArea";
-import {getEmployedEmployeeList} from "@/apis/enterprise";
-
-const dataSource = [
-  {
-    id: '1',
-    name: '语雀的天空',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '2',
-    name: 'Ant Design',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '3',
-    name: '蚂蚁金服体验科技',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '4',
-    name: 'TechUI',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '1',
-    name: '语雀的天空',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '2',
-    name: 'Ant Design',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '3',
-    name: '蚂蚁金服体验科技',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '4',
-    name: 'TechUI',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '1',
-    name: '语雀的天空',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '2',
-    name: 'Ant Design',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '3',
-    name: '蚂蚁金服体验科技',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '4',
-    name: 'TechUI',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '1',
-    name: '语雀的天空',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '2',
-    name: 'Ant Design',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '3',
-    name: '蚂蚁金服体验科技',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '4',
-    name: 'TechUI',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '<a>我是一条测试的描述</a>',
-  },
-  {
-    id: '1',
-    name: '语雀的天空',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '2',
-    name: 'Ant Design',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '3',
-    name: '蚂蚁金服体验科技',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '4',
-    name: 'TechUI',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '1',
-    name: '语雀的天空',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '2',
-    name: 'Ant Design',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '3',
-    name: '蚂蚁金服体验科技',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '4',
-    name: 'TechUI',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '1',
-    name: '语雀的天空',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '2',
-    name: 'Ant Design',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '3',
-    name: '蚂蚁金服体验科技',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-  {
-    id: '4',
-    name: 'TechUI',
-    image:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-    desc: '我是一条测试的描述',
-  },
-];
+import EnterpriseStore from "@/stores/EnterpriseStore";
 
 @observer
 export default class Index extends React.Component<any, any>{
@@ -254,10 +55,7 @@ export default class Index extends React.Component<any, any>{
   }
 
   async componentDidMount() {
-    try {
-       const responseList = (await getEmployedEmployeeList()).data;
-       console.log(responseList)
-    } catch (e) {}
+     await  EnterpriseStore.initializeEmployedList();
   }
 
   render() {
@@ -300,33 +98,33 @@ export default class Index extends React.Component<any, any>{
             }
           </Modal>
 
-          <ProList<typeof dataSource[number]>
-            rowKey="id"
+          <ProList
+            rowKey="employeeId"
             headerTitle="在职人员列表"
-            dataSource={dataSource}
+            dataSource={EnterpriseStore.employedList}
             showActions="hover"
-            editable={{
-              onChange: (e) => console.log(e),
-            }}
             pagination={{
               defaultPageSize: 8,
               showSizeChanger: true,
             }}
             metas={{
               title: {
-                dataIndex: 'name',
+                dataIndex: 'employeeName',
               },
               avatar: {
-                dataIndex: 'image',
+                render: ()=>{
+                  return <Avatar src={'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg'} />
+                }
               },
               description: {
-                dataIndex: 'desc',
+                dataIndex: 'employeeInfo',
               },
               subTitle: {
-                render: () => {
+                dataIndex:'employeeWillingJob',
+                render: (item : any) => {
                   return (
                     <Space size={0}>
-                      <Tag color="blue">web前端工程师</Tag>
+                      <Tag color="red">{JSON.parse(item || "[]")[0] }</Tag>
                     </Space>
                   );
                 },

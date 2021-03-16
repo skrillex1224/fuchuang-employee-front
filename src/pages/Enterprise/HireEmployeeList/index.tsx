@@ -5,7 +5,6 @@ import {Button, Checkbox, Divider, Input, Rate, Select, Space, Tag} from "antd";
 import ProList from "@ant-design/pro-list";
 import ProCard from "@ant-design/pro-card";
 import {getPassedEmployeeList} from "@/apis/enterprise";
-import {response} from "express";
 
 const {Option} = Select;
 

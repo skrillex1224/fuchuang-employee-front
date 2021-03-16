@@ -1,7 +1,7 @@
 import React, {CSSProperties} from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Badge, Button, Card, Col, Descriptions, Input, Comment, Popover, Progress, Row, Tag, Empty, Collapse, Form, Popconfirm} from "antd";
+import {Avatar, Badge, Button, Card, Col, Descriptions, Input, Comment, Popover, Progress, Row, Tag, Empty, Collapse,  Popconfirm} from "antd";
 import EditDrawer  from './EditDrawer'
 import styles from './index.less'
 import ProList from "@ant-design/pro-list";
@@ -28,7 +28,8 @@ export default class UserCenter extends React.Component<any, any>{
        isLawer : false,
        collapsedKey : -1,
       //子组件是否在编辑
-       isEditing : false
+      /*因为这个组件是map遍历出来的所以他的状态需要是数组*/
+       isEditing : []
     }
 
   constructor(props) {
@@ -48,14 +49,17 @@ export default class UserCenter extends React.Component<any, any>{
 
   setCollapse = (collapsedKey)=>{
     this.setState({collapsedKey })
-
   }
 
   // 设置表单组件的值是否为编辑状态
   handleFormUpdate= (item)=>{
     this.setCollapse(item.hireinfoId)
+
+    let isEditing : boolean[] | undefined[] = this.state.isEditing;
     //取反
-    this.setState({isEditing:!this.state.isEditing});
+    isEditing[item.hireinfoId] = !isEditing[item.hireinfoId];
+
+    this.setState({isEditing})
   }
 
   async componentDidMount() {
@@ -200,7 +204,7 @@ export default class UserCenter extends React.Component<any, any>{
                           hireinfos.map((item) => ({
                             title: item.hireinfoTitle,
                             subTitle: <Tag color="#5BD8A6">需要{item.hireinfoRequireNumsPerson}人</Tag>,
-                            actions: [<a onClick={()=>this.handleFormUpdate(item)}>{this.state.isEditing ? '完成' : '修改'}</a>,
+                            actions: [<a onClick={()=>this.handleFormUpdate(item)}>{this.state.isEditing[item.hireinfoId] ? '完成' : '修改'}</a>,
                             <Popconfirm title={'你确定要删除?'} >
                               <a>删除</a>
                             </Popconfirm>],
@@ -210,7 +214,7 @@ export default class UserCenter extends React.Component<any, any>{
                                 <Collapse  ghost  activeKey={this.state.collapsedKey}>
                                   <Collapse.Panel showArrow={false}  header={<a onClick={()=>this.setCollapse(item.hireinfoId)}>点击查看详细信息<DownSquareOutlined /></a>} key={item.hireinfoId}>
                                       {/*::::::::::::::::::::::如何在map遍历的时候引用多个form对象*/}
-                                      <HireinfoForm isEditing={this.state.isEditing}  item={item}/>
+                                      <HireinfoForm isEditing={this.state.isEditing[item.hireinfoId]}  item={item}/>
                                   </Collapse.Panel>
                                 </Collapse>
 
