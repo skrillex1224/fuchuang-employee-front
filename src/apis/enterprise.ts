@@ -8,3 +8,9 @@ export const getEnterpriseByAccount = async  ()=>{
 export const getPassedEmployeeList = async ()=>{
   return await  request("getPassedEmployeeList");
 }
+
+
+
+export const getEmployedEmployeeList = async ()=>{
+  return await  request("getEmployedEmployeeList");
+}

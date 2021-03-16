@@ -295,9 +295,10 @@ export default class Index extends React.Component<any, any>{
   }
 
   async  componentDidMount() {
-    const responseList =  (await getPassedEmployeeList()).data
-    console.log(responseList);
-
+    try {
+      const responseList = (await getPassedEmployeeList()).data
+      console.log(responseList);
+    } catch (e) {}
   }
 
   setExpandedRowKeys = (expandedRowKeys)=>{

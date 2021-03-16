@@ -5,6 +5,7 @@ import {Form, FormInstance, message, Modal, Rate, Select, Space, Tag} from "antd
 import ProList from "@ant-design/pro-list";
 import {SwapRightOutlined} from "@ant-design/icons/lib";
 import TextArea from "antd/es/input/TextArea";
+import {getEmployedEmployeeList} from "@/apis/enterprise";
 
 const dataSource = [
   {
@@ -227,6 +228,7 @@ export default class Index extends React.Component<any, any>{
      console.log('id',rowKey)
   }
 
+
   handleSubmit = async ()=>{
     const {dismissModal,changePostModal} = this.state;
 
@@ -249,6 +251,13 @@ export default class Index extends React.Component<any, any>{
     }
 
 
+  }
+
+  async componentDidMount() {
+    try {
+       const responseList = (await getEmployedEmployeeList()).data;
+       console.log(responseList)
+    } catch (e) {}
   }
 
   render() {
