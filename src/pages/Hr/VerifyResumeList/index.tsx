@@ -10,6 +10,8 @@ import InterviewForm from './InterviewForm'
 import styles from './index.less'
 import TextArea from "antd/lib/input/TextArea";
 
+import { Document, Page ,pdfjs} from 'react-pdf';
+
 const { success,confirm,info } = Modal;
 
 @observer
@@ -19,6 +21,11 @@ export default class Index extends React.Component<any, any>{
     searchedColumn: '',
     data: []
   };
+
+  constructor(props) {
+    super(props);
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+  }
 
   searchInput : any ;
 
@@ -271,7 +278,13 @@ export default class Index extends React.Component<any, any>{
                             Region: East China 1<br />
                           </Descriptions.Item>
                           <Descriptions.Item span={4} label={'简历信息'}>
-                            <Button type="primary" style={{width:'100%'}} onClick={()=>{window.location.href= '/employee/resume'}}>查看该用户的简历信息</Button>
+                            <Document
+                              file={'https://react-fuchuang.oss-cn-zhangjiakou.aliyuncs.com/APP/DNOSS11869619_zh-CN_intl_181211182439_public_b0b3e034e3b1ba422c2d90da94d6afa7.pdf'} //PDF文件在此
+                              onLoadSuccess={()=>{}}
+
+                            >
+                              <Page pageNumber={1} />
+                            </Document>
                           </Descriptions.Item>
 
                         </Descriptions>

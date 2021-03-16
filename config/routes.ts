@@ -106,7 +106,7 @@
                 icon: 'HighlightOutlined',
                 name: '审阅求职简历',
                 component: '../pages/Hr/VerifyResumeList',
-                authority: ['admin'],
+                authority: ['hr'],
               },
               {
                 path:'/hr/interviewTable',

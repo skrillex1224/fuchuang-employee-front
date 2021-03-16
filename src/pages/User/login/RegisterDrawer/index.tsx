@@ -181,10 +181,10 @@ export default  class DrawerForm extends React.Component<any> {
       <>
         <Drawer
           title={`${{
-            employee : '求职者注册',
-            enterprise : '企业注册',
-            hr : 'HR申请',
-            admin : '管理员申请'
+            employee : '信息修改',
+            enterprise : '信息修改',
+            hr : '信息修改',
+            admin : '信息修改'
           }[type]}`}
           width={720}
           onClose={this.onClose}
