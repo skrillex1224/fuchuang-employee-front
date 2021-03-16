@@ -42,6 +42,13 @@ class EnterpriseStore{
        } catch (e) {}
      }
 
+  @action.bound
+    rerenderHireEmployeeList = async  (hireEmployeeList)=>{
+    try {
+      this.hireEmployeeList= hireEmployeeList;
+    } catch (e) {}
+  }
+
 
 }
 

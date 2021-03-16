@@ -1,16 +1,14 @@
-import { Button, Result } from 'antd';
+import {  Result } from 'antd';
 import React from 'react';
-import { history } from 'umi';
+import {BackwardOutlined} from "@ant-design/icons/lib";
 
 const NoFoundPage: React.FC = () => (
   <Result
     status="404"
     title="404"
-    subTitle="Sorry, the page you visited does not exist."
+    subTitle="对不起,您所访问的页面不存在."
     extra={
-      <Button type="primary" onClick={() => history.push('/')}>
-        Back Home
-      </Button>
+        <a><BackwardOutlined />点击左侧导航栏</a>
     }
   />
 );

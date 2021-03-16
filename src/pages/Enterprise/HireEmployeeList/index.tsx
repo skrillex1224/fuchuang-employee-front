@@ -13,19 +13,15 @@ const {Option} = Select;
 export default class Index extends React.Component<any, any>{
   state = {
     expandedRowKeys : [],
-    checkboxChecked : false,
-    starCount : 4,
-    selectChanged : 'web前端',
-    selectChanged2 : '大学本科'
+    checkboxChecked : true,
+    starCount : 3,
+    selectChanged : '不限',
+    selectChanged2 : '不限'
   }
 
   constructor(props) {
     super(props);
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-  }
-
-  async  componentDidMount() {
-      await EnterpriseStore.initializeHireEmployeeList()
   }
 
   setExpandedRowKeys = (expandedRowKeys)=>{
@@ -55,12 +51,45 @@ export default class Index extends React.Component<any, any>{
   }
 
   //真正的筛选方法
-  onFilter = ()=>{
-    const {checkboxChecked,starCount,selectChanged,selectChanged2} = this.state
-    console.log(checkboxChecked,starCount,selectChanged,selectChanged2)
+  onFilter = async  ()=>{
+    //重新获取数据
+    await EnterpriseStore.initializeHireEmployeeList();
+    let hireEmployeeList :any = EnterpriseStore.hireEmployeeList;
 
+    const {checkboxChecked,starCount,selectChanged,selectChanged2} = this.state
+
+    //如果只显示意愿来公司的员工
+    if(checkboxChecked){
+      hireEmployeeList = hireEmployeeList.filter((item :any)=>{
+        return JSON.parse(item.employeeWillingEnterpriseList || "[]").indexOf(localStorage.getItem("userName")) > -1;
+      })
+    }
+
+    hireEmployeeList = hireEmployeeList.filter((item : any)=>{
+       return item.employeeStar >=  starCount;
+    })
+
+    if(selectChanged !== '不限'){
+      hireEmployeeList = hireEmployeeList.filter((item : any)=>{
+        return JSON.parse(item.employeeWillingJob || "[]").indexOf(selectChanged) > -1 ;
+      })
+    }
+
+    if(selectChanged2 !== '不限'){
+      hireEmployeeList = hireEmployeeList.filter((item : any)=>{
+        return  item.employeeEducation === selectChanged2;
+      })
+    }
+
+
+    await  EnterpriseStore.rerenderHireEmployeeList(hireEmployeeList);
 
   }
+
+  async  componentDidMount() {
+    await this.onFilter();
+  }
+
 
   render() {
     const {expandedRowKeys,checkboxChecked,starCount} = this.state;
@@ -82,11 +111,13 @@ export default class Index extends React.Component<any, any>{
             <span>
                 人才专业:  <Select
                 showArrow
-                defaultValue={['WEB前端']}
+                defaultValue={['不限']}
+                dropdownMatchSelectWidth={200}
                 bordered={false}
                 onChange={this.onSelectChanged}
                 placeholder={'choose....'}
               >
+                <Option value={'不限'}>不限</Option>
                 <Option value={'Java开发'}>Java开发</Option>
                 <Option value={'PHP开发'}>PHP开发</Option>
                 <Option value={'WEB前端'}>WEB前端</Option>
@@ -101,10 +132,12 @@ export default class Index extends React.Component<any, any>{
             </span>
             <span>
               人才学历: <Select bordered={false}
-                            defaultValue={'大学本科'}
+                            defaultValue={'不限'}
+                            dropdownMatchSelectWidth={200}
                             onChange={this.onSelectChanged2}
               placeholder={'choose....'}
             >
+               <Option value="不限">不限</Option>
                <Option value="职业高中">职业高中</Option>
                <Option value="大学专科">大学专科</Option>
                <Option value="大学本科">大学本科</Option>
@@ -114,7 +147,20 @@ export default class Index extends React.Component<any, any>{
              </Select>
             </span>
 
-            <Button type={"primary"} size={"middle"} onClick={this.onFilter} >筛选</Button>
+            <span>
+              <Button type={"link"} style={{color:'#DA504F'}} size={"middle"} onClick={ async ()=>{
+                 await EnterpriseStore.initializeHireEmployeeList()
+                  this.setState( {
+                    expandedRowKeys : [],
+                    checkboxChecked : false,
+                    starCount : 0,
+                    selectChanged : '不限',
+                    selectChanged2 : '不限'
+                  })
+              }} >清空所有筛选条件</Button>
+              <span style={{width:'10px'}}> </span>
+              <Button type={"primary"}  size={"middle"} onClick={this.onFilter} >筛选</Button>
+            </span>
           </div>
         </ProCard>
 

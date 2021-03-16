@@ -60,6 +60,7 @@ const Model: LoginModelType = {
         message.success('登录成功！');
         /*登录角色,认证 , 认证的是角色的类型*/
         localStorage.setItem('token',payload.type);
+        localStorage.setItem('userName',payload.userName);
 
         const   redirect = `/${payload.type}`;
 
