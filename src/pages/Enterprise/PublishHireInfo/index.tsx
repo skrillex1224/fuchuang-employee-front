@@ -45,9 +45,9 @@ export default class Index extends React.Component<any, any>{
            initialValues={{
               hireinfoTitle: 'WEB前端',
               hireinfoSalary: 8000,
-              hireinfoRequiredEducation: '大学本科',
-              hireinfoRequiredExperience : '应届生/在校生',
-              hireinfoRequiredNumsPerson: 2,
+              hireinfoRequireEducation: '大学本科',
+              hireinfoRequireExperience : '应届生/在校生',
+              hireinfoRequireNumsPerson: 2,
            }}
            onFinish={this.onFinish}
          >
@@ -89,7 +89,7 @@ export default class Index extends React.Component<any, any>{
 
            <Form.Item
              label="学历要求:"
-             name="hireinfoRequiredEducation"
+             name="hireinfoRequireEducation"
              rules={[{ required: true, message: '请选择最低学历要求!' }]}
            >
              <Select
@@ -108,7 +108,7 @@ export default class Index extends React.Component<any, any>{
 
            <Form.Item
              label="经验要求:"
-             name="hireinfoRequiredExperience"
+             name="hireinfoRequireExperience"
              rules={[{ required: true, message: '请选择经验要求!' }]}
            >
              <Select
@@ -126,7 +126,7 @@ export default class Index extends React.Component<any, any>{
 
            <Form.Item
              label="岗位招聘人数:"
-             name="hireinfoRequiredNumsPerson"
+             name="hireinfoRequireNumsPerson"
              rules={[{ required: true, message: '请输入岗位招聘人数!' }]}
              help={'请输入1-100之间的整数,单位(人)'}
            >

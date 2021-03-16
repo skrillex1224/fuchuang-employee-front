@@ -76,7 +76,7 @@ export default class Index extends React.Component<any, any>{
         <PageContainer>
           <Modal title={
             changePostModal ? '请选择调职的目标岗位' : '请完善辞退信息表'
-          } visible={changePostModal || dismissModal } onOk={this.handleSubmit} onCancel={()=>{this.setState({changePostModal: false ,dismissModal : false  })}}>
+          } visible={changePostModal || dismissModal } confirmLoading={this.state.isLoading} onOk={this.handleSubmit} onCancel={()=>{this.setState({changePostModal: false ,dismissModal : false  })}}>
             {
               changePostModal && (
                 <>
