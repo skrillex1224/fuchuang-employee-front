@@ -43,7 +43,7 @@ export default class Index extends React.Component<any, any>{
 
            <Form.Item
              label="岗位名称:"
-             name="hireInfoTitle"
+             name="hireinfoTitle"
              rules={[{ required: true, message: '请选择岗位名称!' }]}
            >
              <Select
@@ -67,31 +67,18 @@ export default class Index extends React.Component<any, any>{
            </Form.Item>
 
            {
-             formRef && formRef.getFieldValue('hireInfoTitle') === '其他' &&
+             formRef && formRef.getFieldValue('hireinfoTitle') === '其他' &&
              <Form.Item
                label="自定义岗位名称:"
-               name="hireInfoTitleDiy"
+               name="hireinfoTitleDiy"
                rules={[{ required: true, message: '请输入岗位名称!' }]}
              >
                <Input/>
              </Form.Item>
            }
            <Form.Item
-             label="岗位薪资区间下界:"
-             name="hireInfoSalarySub"
-             rules={[{ required: true, message: '请选择岗位薪资!' }]}
-           >
-             <InputNumber
-               defaultValue={1000}
-               formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-               parser={value => value?.replace(/\$\s?|(,*)/g, '')}
-               style={{width:'100%'}}
-             />
-           </Form.Item>
-
-           <Form.Item
-             name="hireInfoSalaryTop"
-             label="岗位薪资区间上界:"
+             label="岗位薪资:"
+             name="hireinfoSalary"
              rules={[{ required: true, message: '请选择岗位薪资!' }]}
            >
              <InputNumber
@@ -104,7 +91,7 @@ export default class Index extends React.Component<any, any>{
 
            <Form.Item
              label="学历要求:"
-             name="hireInfoRequiredEducation"
+             name="hireinfoRequiredEducation"
              rules={[{ required: true, message: '请选择最低学历要求!' }]}
            >
              <Select
@@ -122,7 +109,7 @@ export default class Index extends React.Component<any, any>{
 
            <Form.Item
              label="经验要求:"
-             name="hireInfoRequiredExperience"
+             name="hireinfoRequiredExperience"
              rules={[{ required: true, message: '请选择经验要求!' }]}
            >
              <Select
@@ -139,7 +126,7 @@ export default class Index extends React.Component<any, any>{
 
            <Form.Item
              label="岗位招聘人数:"
-             name="hireInfoRequiredNumsPerson"
+             name="hireinfoRequiredNumsPerson"
              rules={[{ required: true, message: '请输入岗位招聘人数!' }]}
              help={'请输入1-100之间的整数,单位(人)'}
            >
@@ -153,7 +140,7 @@ export default class Index extends React.Component<any, any>{
 
            <Form.Item
              label="岗位简介:"
-             name="hireInfoInfo"
+             name="hireinfoInfo"
              rules={[{ required: true, message: '请输入岗位简介!' }]}
            >
              <TextArea rows={6} placeholder={'请输入岗位简介，100字以内'} size={"large"}/>

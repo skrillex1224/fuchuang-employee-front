@@ -60,6 +60,7 @@ export default class Index extends React.Component<any, any>{
 
   }
 
+
   onDocumentComplete = ()=>{
           message.success('简历加载成功!')
   }

@@ -1,287 +1,13 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
 import {observer} from "mobx-react";
-import {Button, Checkbox, Divider, Input, Rate, Select, Space, Tag} from "antd";
+import {Avatar, Button, Checkbox, Descriptions, Divider, Input, notification, Rate, Select, Space, Tag} from "antd";
 import ProList from "@ant-design/pro-list";
 import ProCard from "@ant-design/pro-card";
-import {getPassedEmployeeList} from "@/apis/enterprise";
+import EnterpriseStore from "@/stores/EnterpriseStore";
+import { Document, Page ,pdfjs} from 'react-pdf';
 
 const {Option} = Select;
-
-const dataSource = [
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-  {
-    title: '语雀的天空',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'Ant Design',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: '蚂蚁金服体验科技',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },{
-    title: 'TechUI',
-    avatar:
-      'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-  },
-];
 
 @observer
 export default class Index extends React.Component<any, any>{
@@ -293,11 +19,13 @@ export default class Index extends React.Component<any, any>{
     selectChanged2 : '大学本科'
   }
 
+  constructor(props) {
+    super(props);
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+  }
+
   async  componentDidMount() {
-    try {
-      const responseList = (await getPassedEmployeeList()).data
-      console.log(responseList);
-    } catch (e) {}
+      await EnterpriseStore.initializeHireEmployeeList()
   }
 
   setExpandedRowKeys = (expandedRowKeys)=>{
@@ -330,6 +58,8 @@ export default class Index extends React.Component<any, any>{
   onFilter = ()=>{
     const {checkboxChecked,starCount,selectChanged,selectChanged2} = this.state
     console.log(checkboxChecked,starCount,selectChanged,selectChanged2)
+
+
   }
 
   render() {
@@ -343,7 +73,9 @@ export default class Index extends React.Component<any, any>{
                <Input.Search   onSearch={this.onSearch}   enterButton={true} style={{width:'50%',marginLeft:'20%'}} placeholder={'搜索人才姓名'}/>
             </ProCard>
             <Divider  />
-            <Checkbox  checked={checkboxChecked}    onChange={this.onCheckBoxChanged}>只显示已意愿任职本公司的人才</Checkbox>
+            <span>
+              <Checkbox style={{position:'relative',top:'8px'}}  checked={checkboxChecked}    onChange={this.onCheckBoxChanged}>只显示已意愿任职本公司的人才</Checkbox>
+            </span>
             <span>
              人才最低星数:<Rate allowHalf  value={starCount} onChange={this.onRated}/>
             </span>
@@ -387,57 +119,94 @@ export default class Index extends React.Component<any, any>{
         </ProCard>
 
         <ProList
-          rowKey="title"
+          rowKey="employeeId"
           headerTitle={'人才列表'}
           showHeader={true}
+          showActions={'hover'}
           pagination={{
             defaultPageSize:20,
           }}
           expandable={{ expandedRowKeys, onExpandedRowsChange: this.setExpandedRowKeys }}
-          dataSource={dataSource}
+          dataSource={EnterpriseStore.hireEmployeeList}
           metas={{
-            title: {},
+            title: {
+              dataIndex:'employeeName',
+            },
+            avatar: {
+              render: ()=>{
+                return (<Avatar src={'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg'} />)
+              }
+            },
             subTitle: {
-              render: () => {
+              dataIndex:'employeeWillingJob',
+              render: (item : any ) => {
                 return (
                   <Space size={0}>
-                    <Tag color="blue">web前端工程师</Tag>
-                    <Tag color="blue">java开发</Tag>
+                    {
+                      JSON.parse(item || "[]").map((item,index) =>{
+                          return (
+                            <Tag key={index} color={'red'}>{item}</Tag>
+                          )
+                      })
+                    }
                   </Space>
                 );
               },
             },
             description: {
-              render: () => {
-                return 'Ant Design, a design language for background applications, is refined by Ant UED Team';
-              },
+              dataIndex:'employeeInfo',
             },
-            avatar: {},
             content: {
-              render: () => (
-                <div
-                  style={{
-                    minWidth: 200,
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '200px',
-                    }}
+              render: (_,record:any) => (
+                  <Descriptions
+                    bordered={false}
+                    title="个人信息"
+                    column={2}
                   >
-                    <div>发布中</div>
-                  </div>
-                </div>
+                    <Descriptions.Item label="真实姓名">{record.employeeName}</Descriptions.Item>
+                    <Descriptions.Item label="手机号码">{record.employeePhoneNumber}</Descriptions.Item>
+                    <Descriptions.Item label="最高学历">{record.employeeEducation}</Descriptions.Item>
+                    <Descriptions.Item label="毕业院校">{record.employeeCollege}</Descriptions.Item>
+                    <Descriptions.Item label="性别">{record.employeeGender}</Descriptions.Item>
+                    <Descriptions.Item label="理想工作方向" span={4}>
+                      {
+                        record.employeeWillingJob && JSON.parse(record.employeeWillingJob).map((item,index)=>{
+                          return <span style={{marginRight:'5px'}} key={index}>{item}</span>
+                        })
+                      }
+                    </Descriptions.Item>
+                  </Descriptions>
               ),
             },
             actions: {
-              render: () => {
+              dataIndex: 'employeeResume',
+              render: (_,record : any ) => {
                 return (
                   <>
-                    <a key="invite">邀请加入公司</a>
+                    <a  onClick={()=>{
+                      this.setExpandedRowKeys([record.employeeId]);
+                      notification.open({
+                        message: `${record.employeeName}的简历信息`,
+                        duration : null,
+                        style: {
+                          width:'auto'
+                        },
+                        description: <>
+                          <Document
+                            file={record.employeeResume} //PDF文件在此
+                            onLoadSuccess={()=>{}}
+                          >
+                            <Page pageNumber={1} />
+                          </Document>
+                        </>,
+
+                        onClick: () => {
+                          console.log('Notification Clicked!');
+                        },
+                      });
+
+                    }}>查看Ta的简历</a>
+                    <a style={{marginLeft:'15px'}} key="invite">邀请加入公司</a>
                   </>
                 );
               },

@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {getEmployedEmployeeList, getEnterpriseByAccount} from "@/apis/enterprise";
+import {getEmployedEmployeeList, getEnterpriseByAccount, getPassedEmployeeList} from "@/apis/enterprise";
 
 
 class EnterpriseStore{
@@ -30,6 +30,17 @@ class EnterpriseStore{
       } catch (e) {}
     }
 
+    // 招聘人才列表
+    @observable
+    hireEmployeeList = [];
+
+    @action.bound
+     initializeHireEmployeeList = async  ()=>{
+       try {
+         const responseList = (await getPassedEmployeeList()).data
+         this.hireEmployeeList= responseList;
+       } catch (e) {}
+     }
 
 
 }

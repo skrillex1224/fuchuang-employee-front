@@ -8,8 +8,6 @@ import EmployeeStore from "@/stores/EmployeeStore";
 import {observer} from "mobx-react";
 import {deleteByApplicationId} from "@/apis/employee";
 
-const {confirm} = Modal;
-
 @observer
 export default class Index extends React.Component<any, any>{
 
@@ -56,41 +54,42 @@ export default class Index extends React.Component<any, any>{
     return (
       <PageContainer title={'正在进行的面试'} >
         {
-          EmployeeStore.interviewList.map((item  : any ,index)=>{
-            //如果 是数组取出0
-             if( Array.isArray(item) ){
+          EmployeeStore.interviewList.length ?
+            EmployeeStore.interviewList.map((item  : any ,index)=>{
+              //如果 是数组取出0
+              if( Array.isArray(item) ){
                 item = item[0];
-             }
-             return (
+              }
+              return (
                 <>
                   <ProCard key={index}
-                     style={{marginBottom:'40px'}}
-                    title={`面试公司:${item.enterprise && item.enterprise.enterpriseName}`}
-                    hoverable
-                    headerBordered
-                    actions={[
-                      <div onClick={()=>{
-                        message.loading({content:'loading...',key:'msg',duration:0})
-                        setTimeout(()=>{
-                          message.destroy('msg');
-                          setTimeout(()=>{
-                            message.success('催促hr成功,请耐心等待~');
-                          },400)
-                        },400)
+                           style={{marginBottom:'40px'}}
+                           title={`面试公司:${item.enterprise && item.enterprise.enterpriseName}`}
+                           hoverable
+                           headerBordered
+                           actions={[
+                             <div onClick={()=>{
+                               message.loading({content:'loading...',key:'msg',duration:0})
+                               setTimeout(()=>{
+                                 message.destroy('msg');
+                                 setTimeout(()=>{
+                                   message.success('催促hr成功,请耐心等待~');
+                                 },400)
+                               },400)
 
-                      }}>进度停滞不前?催一下<AlertFilled /></div>,
-                      <div>
-                        <Popconfirm title="你确定吗？" okText="确认" cancelText="取消" onConfirm={()=>this.withdrawResume(item.applicationId)}>
-                          <span>取消该简历投递<CloseSquareFilled /></span>
-                        </Popconfirm>
-                      </div>
-                      ,
-                    ]}
+                             }}>进度停滞不前?催一下<AlertFilled /></div>,
+                             <div>
+                               <Popconfirm title="你确定吗？" okText="确认" cancelText="取消" onConfirm={()=>this.withdrawResume(item.applicationId)}>
+                                 <span>取消该简历投递<CloseSquareFilled /></span>
+                               </Popconfirm>
+                             </div>
+                             ,
+                           ]}
                   >
                     <Steps current={{
-                        "简历投递成功" : 0,
-                        '等待面试' : 2,
-                        '简历已投递' : 1
+                      "简历投递成功" : 0,
+                      '等待面试' : 2,
+                      '简历已投递' : 1
                     }[item.applicationEmpStatus]} >
                       <Steps.Step title="简历已投递" description="等待Hr进行审核"/>
                       <Steps.Step title="简历投递成功" description="等待Hr安排面试时间" />
@@ -112,8 +111,10 @@ export default class Index extends React.Component<any, any>{
                     </Card>
                   </ProCard>
                 </>
-             )
-          })
+              )
+            })
+            :
+            <Empty/>
         }
 
         <Modal
