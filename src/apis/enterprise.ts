@@ -9,8 +9,23 @@ export const getPassedEmployeeList = async ()=>{
   return await  request("getPassedEmployeeList");
 }
 
-
-
 export const getEmployedEmployeeList = async ()=>{
   return await  request("getEmployedEmployeeList");
+}
+
+export const submitHireInfo = async (params)=>{
+  return await request("addHireInfoByEnterpriseId",'POST',params);
+}
+
+/**待对接*/
+export const deleteOneHireinfo = async (params)=>{
+  return await request("deleteHireInfo","POST",params);
+}
+
+export const dismissFormSubmit = async  (params)=>{
+  return await request("dismissEmployedEmp","POST",params);
+}
+
+export const switchPost = async  (params)=>{
+  return await request("transferPosition","POST",params);
 }

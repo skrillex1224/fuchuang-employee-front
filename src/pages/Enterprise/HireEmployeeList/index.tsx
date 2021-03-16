@@ -7,6 +7,7 @@ import ProCard from "@ant-design/pro-card";
 import EnterpriseStore from "@/stores/EnterpriseStore";
 import { Document, Page ,pdfjs} from 'react-pdf';
 import { Spin } from "antd";
+import {FilterOutlined} from "@ant-design/icons/lib";
 
 const {Option} = Select;
 
@@ -182,7 +183,7 @@ export default class Index extends React.Component<any, any>{
                   // @ts-ignore
               }} >清空所有筛选条件</Button>
               <span style={{width:'10px'}}> </span>
-              <Button type={"primary"}  size={"middle"} onClick={this.onFilter} >筛选</Button>
+              <Button type={"primary"}  size={"middle"} onClick={this.onFilter} >筛选<FilterOutlined /></Button>
             </span>
           </div>
         </ProCard>

@@ -332,7 +332,6 @@ export default  class DrawerForm extends React.Component<any> {
                           <Option value={'IOS'}>IOS</Option>
                           <Option value={'C/Python'}>C/Python</Option>
                           <Option value={'软件测试'}>软件测试</Option>
-                          <Option value={'其他'}>其他</Option>
                         </Select>
                       </Form.Item>
                     </Col>

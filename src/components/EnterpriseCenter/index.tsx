@@ -205,7 +205,10 @@ export default class UserCenter extends React.Component<any, any>{
                             title: item.hireinfoTitle,
                             subTitle: <Tag color="#5BD8A6">需要{item.hireinfoRequireNumsPerson}人</Tag>,
                             actions: [<a onClick={()=>this.handleFormUpdate(item)}>{this.state.isEditing[item.hireinfoId] ? '完成' : '修改'}</a>,
-                            <Popconfirm title={'你确定要删除?'} >
+                            <Popconfirm title={'你确定要删除?'} onConfirm={async ()=>{
+                                await EnterpriseStore.deleteHireInfoWithId(item.hireinfoId);
+                                await EnterpriseStore.initializeEnterpriseInfo();
+                            }} >
                               <a>删除</a>
                             </Popconfirm>],
                             avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',

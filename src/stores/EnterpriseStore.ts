@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {getEmployedEmployeeList, getEnterpriseByAccount, getPassedEmployeeList} from "@/apis/enterprise";
+import {deleteOneHireinfo, dismissFormSubmit, getEmployedEmployeeList, getEnterpriseByAccount, getPassedEmployeeList, submitHireInfo, switchPost} from "@/apis/enterprise";
 
 
 class EnterpriseStore{
@@ -47,6 +47,47 @@ class EnterpriseStore{
     try {
       this.hireEmployeeList= hireEmployeeList;
     } catch (e) {}
+  }
+
+
+  // 发布招聘信息
+  @action.bound
+  publishHireinfoForm = async (params)=>{
+      try{
+        await submitHireInfo(params);
+        return 1;
+      }catch(e){
+        throw new Error(e);
+      }
+  }
+
+  // 删除正在进行的招聘信息
+  @action.bound
+  deleteHireInfoWithId = async (hireInfoId)=>{
+    try {
+      await deleteOneHireinfo({hireInfoId});
+    } catch (e) {}
+  }
+
+  //解雇原因表单提交
+  @action.bound
+  dismissEmployee = async (params)=>{
+    try {
+      await dismissFormSubmit(params);
+      await  this.initializeEmployedList();
+    } catch (e) {
+    }
+  }
+
+
+  //调岗
+  @action.bound
+  changeThePost = async (params)=>{
+    try {
+      await switchPost(params);
+      await  this.initializeEmployedList();
+    } catch (e) {
+    }
   }
 
 
