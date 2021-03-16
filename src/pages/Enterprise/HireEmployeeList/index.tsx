@@ -6,6 +6,7 @@ import ProList from "@ant-design/pro-list";
 import ProCard from "@ant-design/pro-card";
 import EnterpriseStore from "@/stores/EnterpriseStore";
 import { Document, Page ,pdfjs} from 'react-pdf';
+import { Spin } from "antd";
 
 const {Option} = Select;
 
@@ -16,7 +17,9 @@ export default class Index extends React.Component<any, any>{
     checkboxChecked : true,
     starCount : 3,
     selectChanged : '不限',
-    selectChanged2 : '不限'
+    selectChanged2 : '不限',
+    isLoading: true,
+    searchVal : ''
   }
 
   constructor(props) {
@@ -46,13 +49,28 @@ export default class Index extends React.Component<any, any>{
     this.setState({selectChanged2})
   }
 
-  onSearch = (val)=>{
-    console.log(val)
+  onSearch =async  (val)=>{
+    this.setState({isLoading : true,});
+    //先筛选和重新渲染列表后, 再过滤
+    await this.onFilter();
+
+    if(val){
+      let hireEmployeeList = EnterpriseStore.hireEmployeeList.filter((item : any)=>{
+        console.log(new RegExp(val,'ig').test(item.employeeName))
+        return new RegExp(val,'ig').test(item.employeeName);
+      })
+
+     await EnterpriseStore.rerenderHireEmployeeList(hireEmployeeList);
+
+    }
+
+    this.setState({isLoading : false});
   }
 
   //真正的筛选方法
   onFilter = async  ()=>{
     //重新获取数据
+    this.setState({isLoading : true});
     await EnterpriseStore.initializeHireEmployeeList();
     let hireEmployeeList :any = EnterpriseStore.hireEmployeeList;
 
@@ -83,11 +101,12 @@ export default class Index extends React.Component<any, any>{
 
 
     await  EnterpriseStore.rerenderHireEmployeeList(hireEmployeeList);
-
+    this.setState({isLoading : false});
   }
 
   async  componentDidMount() {
     await this.onFilter();
+
   }
 
 
@@ -99,7 +118,9 @@ export default class Index extends React.Component<any, any>{
         <ProCard title={'筛选人才信息'} type={"inner"} style={{marginBottom:'20px'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignContent:'space-between',flexWrap:'wrap'}}>
             <ProCard  style={{width:'100%'}} >
-               <Input.Search   onSearch={this.onSearch}   enterButton={true} style={{width:'50%',marginLeft:'20%'}} placeholder={'搜索人才姓名'}/>
+               <Input.Search value={this.state.searchVal}  allowClear onChange={(val)=>{
+                 this.setState({searchVal : val.target.value})
+               }}   onSearch={this.onSearch}   enterButton={true} style={{width:'50%',marginLeft:'20%'}} placeholder={'搜索人才姓名'}/>
             </ProCard>
             <Divider  />
             <span>
@@ -155,15 +176,17 @@ export default class Index extends React.Component<any, any>{
                     checkboxChecked : false,
                     starCount : 0,
                     selectChanged : '不限',
-                    selectChanged2 : '不限'
+                    selectChanged2 : '不限',
+                    searchVal : ''
                   })
+                  // @ts-ignore
               }} >清空所有筛选条件</Button>
               <span style={{width:'10px'}}> </span>
               <Button type={"primary"}  size={"middle"} onClick={this.onFilter} >筛选</Button>
             </span>
           </div>
         </ProCard>
-
+      <Spin tip="加载中..."spinning={this.state.isLoading}>
         <ProList
           rowKey="employeeId"
           headerTitle={'人才列表'}
@@ -259,6 +282,7 @@ export default class Index extends React.Component<any, any>{
             },
           }}
         />
+        </Spin>
       </PageContainer>
     )
   }
