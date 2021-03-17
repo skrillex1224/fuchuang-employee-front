@@ -27,3 +27,7 @@ export const getAllHireInfo = async ()=>{
 export const getHireInfoByEnterName = async (params)=>{
   return await request('getHireInfoByEnterName','GET',params)
 }
+
+export const empSubmitResume= async (params)=>{
+  return await  request('SubmitApplication','POST',params);
+}

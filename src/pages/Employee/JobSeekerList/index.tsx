@@ -7,6 +7,7 @@ import EmployeeStore from "@/stores/EmployeeStore";
 import {observer} from "mobx-react";
 import moment from "moment";
 import TagSelect from 'ant-design-pro/lib/TagSelect';
+import {empSubmitResume} from "@/apis/employee";
 
 const {Panel} = Collapse;
 
@@ -41,13 +42,11 @@ export default class Index extends React.Component<any> {
     }
 
   //投递简历
-  handleSubmitResume = async  ()=>{
-      this.setState({submitResume:true });
-      //异步请求
-      setTimeout(()=>{
+  handleSubmitResume =  async  (enterpriseId)=>{
+        this.setState({submitResume:true });
+        //异步请求
+        await EmployeeStore.submitEmpResume(enterpriseId);
         this.setState({submitResume:false});
-      },2000)
-
   }
 
   //重新根据条件筛选列表
@@ -351,7 +350,7 @@ export default class Index extends React.Component<any> {
                           </Descriptions>
                         </Panel>
                       </Collapse>
-                      <Button loading={this.state.submitResume} onClick={this.handleSubmitResume}  type={"primary"} style={{float:'right',marginTop:'10px'}}>投递我的简历至改公司</Button>
+                      <Button loading={this.state.submitResume} onClick={()=>this.handleSubmitResume(item.enterprise && item.enterprise.enterpriseId)}  type={"primary"} style={{float:'right',marginTop:'10px'}}>投递我的简历至改公司</Button>
                     </List.Item>
                   )}
                 />
