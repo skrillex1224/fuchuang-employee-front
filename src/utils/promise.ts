@@ -49,7 +49,6 @@ export const request = (api : string, method = MethodType.GET, params ={}) => {
       return resp;
     })
     .catch(error => {
-      message.destroy('globalKey');
       if(error.response.status === 422 && error.response.data.errMsg ){
 
         message.error(error.response.data.errMsg);

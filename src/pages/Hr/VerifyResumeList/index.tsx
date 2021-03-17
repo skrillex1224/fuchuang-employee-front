@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Alert, Avatar, Button, Card, Col, Descriptions, Input, message, Modal, Rate, Row, Space, Spin, Table, Tag} from "antd";
+import {Alert, Avatar, Button, Card, Col, Descriptions, Input, Modal, Rate, Row, Space, Spin, Table, Tag} from "antd";
 import {CheckCircleFilled, CheckOutlined, ExclamationCircleOutlined, SearchOutlined} from "@ant-design/icons/lib";
 import Highlighter from 'react-highlight-words';
 import ProCard from "@ant-design/pro-card";
@@ -12,7 +12,6 @@ import TextArea from "antd/lib/input/TextArea";
 
 import { Document, Page ,pdfjs} from 'react-pdf';
 import HrStore from "@/stores/HrStore";
-import {toJS} from "mobx";
 
 const { success,confirm,info } = Modal;
 
@@ -24,6 +23,7 @@ export default class Index extends React.Component<any, any>{
     data: [],
     starCount: 4,
     isLoading : false,
+    dismissReason:'',
   };
 
   constructor(props) {
@@ -143,12 +143,11 @@ export default class Index extends React.Component<any, any>{
               content: (<>
                   <Rate onChange={(starCount)=>{
                     this.setState({starCount})
-                  }} defaultValue={this.state.starCount}  style={{fontSize: 40}} allowHalf/>
+                  }} defaultValue={4}  style={{fontSize: 40}} allowHalf/>
               </>),
               okText: '完成',
-              onOk : () => {
-                  message.loading({content:'加载中....',key:'globalKey'})
-                  console.log(this.state.starCount,childFormValue,current)
+              onOk : async () => {
+                  await HrStore.hrArrangeInterview(this.state.starCount,childFormValue,current);
               },
             });
             return Promise.resolve();
@@ -169,12 +168,27 @@ export default class Index extends React.Component<any, any>{
       confirm({
         title: '请输入拒绝原因并确认:',
         icon: <ExclamationCircleOutlined />,
-        content: <TextArea placeholder={'未达到面试的目标公司最低要求'} showCount={true} allowClear bordered={true} rows={4}/>,
-        onOk() {
-          console.log('OK');
+        content: <TextArea   onChange={(event)=>{
+          this.setState({dismissReason : event.target.value})
+        }} placeholder={'未达到面试的目标公司最低要求'} showCount={true} allowClear bordered={true} rows={4}/>,
+        onOk : async ()=> {
+
+          success({
+            title: <>为他的简历评分: </>,
+            icon: <CheckCircleFilled/>,
+            content: (<>
+              <Rate onChange={(starCount)=>{
+                this.setState({starCount})
+              }} defaultValue={4}  style={{fontSize: 40}} allowHalf/>
+            </>),
+            okText: '完成',
+            onOk : async () => {
+              await HrStore.hrRefuseInterview(this.state.dismissReason, current.applicationId,this.state.starCount);
+            },
+          });
+
         },
-        onCancel() {
-          console.log('Cancel');
+        onCancel : ()=> {
         },
       } );
 
@@ -253,7 +267,6 @@ export default class Index extends React.Component<any, any>{
     this.setState({isLoading:true})
     await HrStore.initializeAllApplication();
     this.setState({isLoading:false});
-    console.log(toJS(HrStore.applicationList))
    }
 
   render(): React.ReactNode {
@@ -274,7 +287,6 @@ export default class Index extends React.Component<any, any>{
 
                 expandedRowRender: (record:any ) => (
                   <>
-                    {console.log(record)}
                     {/*style={{margin:'0 auto'}} */}
                     <ProCard hoverable  bordered colSpan={24} >
                       <Row gutter={[16, 16]} >

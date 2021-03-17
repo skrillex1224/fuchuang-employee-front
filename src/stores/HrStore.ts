@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {arrangeInterview, getAllApplication} from "@/apis/hr";
+import {arrangeInterview, getAllApplication, refuseInterview} from "@/apis/hr";
 
 
 class HrStore {
@@ -8,10 +8,34 @@ class HrStore {
     makeObservable(this)
   }
 
+
   @action.bound
-   hrArrangeInterview = async (params)=>{
+  hrRefuseInterview = async (dismissReason,applicationId,empStar)=>{
+    const params = {
+      dismissReason,
+      applicationId,
+      empStar
+    };
+    try {
+      await refuseInterview(params)
+      await  this.initializeAllApplication();
+    } catch (e) {
+    }
+  }
+
+
+  @action.bound
+   hrArrangeInterview = async (empStar, formData , record)=>{
+
+      const params = {
+        empStar ,
+        applicationId : record.applicationId,
+        ...formData,
+      }
+
      try {
         await arrangeInterview(params);
+        await this.initializeAllApplication();
      } catch (e) {}
    }
 
