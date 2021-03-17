@@ -258,8 +258,11 @@ export default class Index extends React.Component<any, any>{
                       notification.open({
                         message: `${record.employeeName}的简历信息`,
                         duration : null,
+                        placement:'topLeft',
                         style: {
-                          width:'auto'
+                          width:'auto',
+                          height: window.innerHeight - 20,
+                          overflow:'auto'
                         },
                         description: <>
                           <Document

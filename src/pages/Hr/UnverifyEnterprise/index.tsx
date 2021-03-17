@@ -1,19 +1,33 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Alert, Button, Card, Col, Descriptions, List, Row} from "antd";
+import {Alert, Button, Card, Col, Descriptions, List, notification, Row} from "antd";
 import styles from "@/components/EnterpriseCenter/index.less";
 import ProCard from "@ant-design/pro-card";
+import HrStore from "@/stores/HrStore";
+import {observer} from "mobx-react";
+import moment from "moment";
 
-const dataSource : {id: number}[]= [];
-for (let i = 0; i < 1000; i++) {
-  dataSource.push({
-    id : i
-  })
-}
+import { Document, Page ,pdfjs} from 'react-pdf';
 
+@observer
 export default class  Index extends React.Component<any, any>{
   auditEnterprise= (item)=>{
      console.log(item)
+  }
+
+  constructor(props) {
+    super(props);
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+  }
+
+  state = {
+    isLoading :false
+  }
+
+   async componentDidMount() {
+    this.setState({isLoading:true})
+     await HrStore.initializeEnterpriseList();
+     this.setState({isLoading:false})
   }
 
   render(): React.ReactNode {
@@ -25,11 +39,11 @@ export default class  Index extends React.Component<any, any>{
          grid={{
            column:2,
          }}
-          dataSource={dataSource}
+          dataSource={HrStore.enterpriseList}
           pagination={{
             defaultPageSize:10
           }}
-          renderItem={ item =>{
+          renderItem={ (item :any ) =>{
           return (
                  <ProCard onClick={()=>{this.auditEnterprise(item)}} hoverable={true} style={{marginBottom:'40px'}} layout="default" bordered colSpan={22}  >
                   <Row gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
@@ -41,11 +55,11 @@ export default class  Index extends React.Component<any, any>{
                       />
                     </Col>
                     <Col className={styles.col} span={24}>
-                      <div style={{fontSize:30}}>维诺智创大数据软件公司</div>
+                      <div style={{fontSize:30}}>{item.enterpriseName}</div>
                     </Col>
                     <Col className={styles.col} span={24}>
                       <Card style={{ width: '100%' }} >
-                        sdadadadad
+                        {item.enterpriseInfo}
                       </Card>
                     </Col>
 
@@ -55,20 +69,33 @@ export default class  Index extends React.Component<any, any>{
                         title="企业信息"
                         column={2}
                       >
-                        <Descriptions.Item label="企业名称">维诺智创</Descriptions.Item>
-                        <Descriptions.Item label="企业邮箱">18735380816@qq.com</Descriptions.Item>
-                        <Descriptions.Item label="注册资金">200万</Descriptions.Item>
-                        <Descriptions.Item label="企业人数">10000人以上</Descriptions.Item>
-                        <Descriptions.Item label="企业经营类型">国营</Descriptions.Item>
-                        <Descriptions.Item label="企业福利保障">五险一金</Descriptions.Item>
-                        <Descriptions.Item label="企业建立时间">2021年2月12日</Descriptions.Item>
-                        <Descriptions.Item label="企业登录密码">*********</Descriptions.Item>
-                        <Descriptions.Item label="企业注册地址" span={4}>白杨树北一街抬杠大撒大撒</Descriptions.Item>
+                        <Descriptions.Item label="企业名称">{item.enterpriseName}</Descriptions.Item>
+                        <Descriptions.Item label="企业邮箱">{item.enterpriseAccount}</Descriptions.Item>
+                        <Descriptions.Item label="注册资金">{item.enterpriseRegisterAmount}万</Descriptions.Item>
+                        <Descriptions.Item label="企业人数">{item.enterpriseNumsPerson}人以上</Descriptions.Item>
+                        <Descriptions.Item label="企业经营类型">{item.enterpriseType}</Descriptions.Item>
+                        <Descriptions.Item label="企业福利保障">{item.enterpriseWelfare}</Descriptions.Item>
+                        <Descriptions.Item label="企业建立时间">{moment(item.enterpriseEstablishTime).format('YYYY-MM-DD')}</Descriptions.Item>
+                        <Descriptions.Item label="企业注册地址" span={4}>{item.enterpriseLocation}</Descriptions.Item>
                         <Descriptions.Item span={4} label={'企业营业执照'}>
                           <Button type="link" style={{width:'100%'}} onClick={(e)=>{
-
-                            // window.location.href= '/employee/resume'
-                            e.stopPropagation();
+                            notification.open({
+                              message: '查看简历',
+                              duration: null,
+                              placement:'topLeft',
+                              style: {
+                                width:'auto',
+                                height: window.innerHeight - 20,
+                                overflow:'auto'
+                              },
+                              description:
+                                  <Document
+                                    file={"https://react-fuchuang.oss-cn-zhangjiakou.aliyuncs.com/APP/DNOSS11869619_zh-CN_intl_181211182439_public_b0b3e034e3b1ba422c2d90da94d6afa7.pdf"} //PDF文件在此
+                                    onLoadSuccess={()=>{}}
+                                  >
+                                    <Page pageNumber={1} />
+                                  </Document>
+                            });
                           }}>查看营业执照</Button>
                         </Descriptions.Item>
 

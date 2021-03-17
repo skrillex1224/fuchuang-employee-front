@@ -1,11 +1,21 @@
 import {action, makeObservable, observable} from "mobx";
-import {arrangeInterview, getAllApplication, refuseInterview} from "@/apis/hr";
+import {arrangeInterview, getAllApplication, getAllEnterpriseList, refuseInterview} from "@/apis/hr";
 
 
 class HrStore {
 
   constructor() {
     makeObservable(this)
+  }
+
+  @observable
+  enterpriseList = [];
+
+  @action.bound
+  initializeEnterpriseList = async ()=>{
+    try{
+      this.enterpriseList=  (await getAllEnterpriseList()).data
+    }catch (e) {}
   }
 
 

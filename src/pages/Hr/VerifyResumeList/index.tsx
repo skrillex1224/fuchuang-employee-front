@@ -147,7 +147,9 @@ export default class Index extends React.Component<any, any>{
               </>),
               okText: '完成',
               onOk : async () => {
+                  this.setState({isLoading:true})
                   await HrStore.hrArrangeInterview(this.state.starCount,childFormValue,current);
+                this.setState({isLoading:false})
               },
             });
             return Promise.resolve();
@@ -163,7 +165,6 @@ export default class Index extends React.Component<any, any>{
 
   refuseResume = (current)=>{
     return (e)=>{
-      console.log(current)
       //@ts-ignore
       confirm({
         title: '请输入拒绝原因并确认:',
@@ -183,8 +184,11 @@ export default class Index extends React.Component<any, any>{
             </>),
             okText: '完成',
             onOk : async () => {
+              this.setState({isLoading:true})
               await HrStore.hrRefuseInterview(this.state.dismissReason, current.applicationId,this.state.starCount);
+              this.setState({isLoading:false})
             },
+
           });
 
         },
@@ -214,16 +218,16 @@ export default class Index extends React.Component<any, any>{
       title: '姓名',
       dataIndex: ["employee","employeeName"],
       key: ["employee","employeeName"],
-      ...this.getColumnSearchProps('age'),
+      ...this.getColumnSearchProps(["employee","employeeName"]),
     },
     {
       title: '联系电话',
       dataIndex: ["employee","employeePhoneNumber"],
       key: ["employee","employeePhoneNumber"],
-      ...this.getColumnSearchProps('address'),
+      ...this.getColumnSearchProps(["employee","employeePhoneNumber"]),
     },
     {
-      title: '总体评级', dataIndex: ["employee","employeeStar"], key: ["employee","employeeStar"],
+    title: '总体评级', dataIndex: ["employee","employeeStar"], key: ["employee","employeeStar"],
     render: (text) =>{
         return (
           <Rate value={text} disabled={true}/>

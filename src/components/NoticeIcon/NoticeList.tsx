@@ -77,6 +77,7 @@ const NoticeList: React.SFC<NoticeIconTabProps> = ({
                 title={
                   <div className={styles.title}>
                     {item.title}
+                    {console.log(item.extra,'---------------------------------')}
                     <div className={styles.extra}>{item.extra}</div>
                   </div>
                 }

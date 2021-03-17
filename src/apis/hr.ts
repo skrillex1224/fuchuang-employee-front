@@ -18,4 +18,7 @@ export const getAllInterview = async (params)=>{
   return await request('getAllInterviewByHrId',"GET",params)
 }
 
+export const getAllEnterpriseList = async ()=>{
+  return await request('getAllRegisterEnterprise');
+}
 

@@ -10,7 +10,7 @@ export default ({getFormValues,current}) => {
      const formRef = interviewFormInstance.current;
       formRef.setFieldsValue({
         id : 1,
-        empName:'程福源'
+        empName:current.employee.employeeName
       })
 
       getFormValues(async ()=>{

@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Button, Card, Col, Descriptions, Input,  Row,} from "antd";
+import {Avatar, Button, Card, Col, Descriptions, Input, notification, Row,} from "antd";
 import EditDrawer  from './EditDrawer'
 
 import { EyeInvisibleOutlined, EyeTwoTone,  PieChartTwoTone} from "@ant-design/icons/lib";
@@ -77,16 +77,22 @@ export default class UserCenter extends React.Component<any, any>{
                       <Descriptions.Item label="真实姓名">付敬华</Descriptions.Item>
                       <Descriptions.Item label="手机号码">18735380816</Descriptions.Item>
                       <Descriptions.Item label="性别">男</Descriptions.Item>
-                      <Descriptions.Item label="登录密码">*********</Descriptions.Item>
-                      <Descriptions.Item label="身份证号码" span={4}>
+                      <Descriptions.Item label="登录密码">
                         <Input.Password readOnly={true}
-                          value='140107199912043918'
-                          bordered={false}
-                          iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                                        value='140107199912043918'
+                                        bordered={false}
+                                        iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                         />
                       </Descriptions.Item>
+                      <Descriptions.Item label="身份证号码" span={4}>
+                            140107199912073918
+                      </Descriptions.Item>
                       <Descriptions.Item span={4} label={'人脸图片信息'}>
-                        <Button type="primary" style={{width:'100%'}} onClick={()=>{window.location.href= '/employee/resume'}}>查看人像图片</Button>
+                        <Button type="link" style={{width:'100%'}} onClick={()=>{
+                          notification.info({
+                            message: '您还没有进行人像注册',
+                          });
+                        }}>查看人像图片</Button>
                       </Descriptions.Item>
 
                     </Descriptions>
@@ -97,7 +103,7 @@ export default class UserCenter extends React.Component<any, any>{
                 </Row>
 
                 <Row style={{marginTop:'50px'}} gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
-                  <WaterWave height={400} title="综合能力已超越其他HR" percent={80} color={'#D42C26'}  />
+                  <WaterWave height={400} title="综合能力已超越其他HR" percent={84} color={'#D42C26'}  />
                 </Row>
 
               </ProCard>
