@@ -50,7 +50,7 @@ export default class Index extends React.Component<any, any>{
           <li key={item.content} onClick={()=>{
             //点击事件
             confirm(item.content)
-          }}>
+          }}>  
             <Badge className={styles.badge} color={'#DA504F'} text={item.content} />
           </li>
         ))}

@@ -17,16 +17,15 @@ if (process.env.NODE_ENV !== 'development') {
 } else {
   host = '/api/';
 }
-/**
- * 模块说明:有api_token的请求
- */
 
+// 跨域请求下携带cookie
+axios.defaults.withCredentials=true;
 /**
  * 模块说明:无api_token请求
  */
 export const request = (api : string, method = MethodType.GET, params ={}) => {
   //这是类型type
-  const apiToken = localStorage.getItem('token');
+  // const apiToken = localStorage.getItem('token');
   const data = (method === 'GET') ? 'params' : 'data';
   // @ts-ignore
   return axios({
@@ -37,18 +36,22 @@ export const request = (api : string, method = MethodType.GET, params ={}) => {
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
       'Access-Control-Allow-Credentials': true,
-      'Authorization': `${apiToken}`,
-      'Access-Control-Allow-Origin':true ,
+      // 'Authorization': `${apiToken}`,
+      // 'Access-Control-Allow-Origin':true ,
     },
   })
     .then(resp => {
+      message.destroy('globalKey');
       if(resp.status === 200  && resp.data.errMsg){
+
          message.success(resp.data.errMsg);
       }
       return resp;
     })
     .catch(error => {
+      message.destroy('globalKey');
       if(error.response.status === 422 && error.response.data.errMsg ){
+
         message.error(error.response.data.errMsg);
       }
       /*return error 字符串  的promise状态为promise.resolved()*/

@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Alert, Avatar, Button, Card, Col, Descriptions, Input, Modal, Rate, Row, Space, Table} from "antd";
+import {Alert, Avatar, Button, Card, Col, Descriptions, Input, message, Modal, Rate, Row, Space, Spin, Table, Tag} from "antd";
 import {CheckCircleFilled, CheckOutlined, ExclamationCircleOutlined, SearchOutlined} from "@ant-design/icons/lib";
 import Highlighter from 'react-highlight-words';
 import ProCard from "@ant-design/pro-card";
@@ -11,6 +11,8 @@ import styles from './index.less'
 import TextArea from "antd/lib/input/TextArea";
 
 import { Document, Page ,pdfjs} from 'react-pdf';
+import HrStore from "@/stores/HrStore";
+import {toJS} from "mobx";
 
 const { success,confirm,info } = Modal;
 
@@ -19,7 +21,9 @@ export default class Index extends React.Component<any, any>{
   state = {
     searchText: '',
     searchedColumn: '',
-    data: []
+    data: [],
+    starCount: 4,
+    isLoading : false,
   };
 
   constructor(props) {
@@ -28,6 +32,15 @@ export default class Index extends React.Component<any, any>{
   }
 
   searchInput : any ;
+
+
+  //子组件的方法
+  childFormMethod = ()=>{};
+
+   // 获取子类的一个方法,并供父类调用
+  getChildMethod = (childMethod)=>{
+    this.childFormMethod = childMethod;
+  }
 
   //搜索
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -109,28 +122,39 @@ export default class Index extends React.Component<any, any>{
   //安排面试
   arrangeInterview = (current)=>{
     return (e)=>{
+      this.setState({visible: true })
       info({
         title: '请完善具体面试信息:',
         icon: <CheckOutlined/>,
-        content: (<InterviewForm current={current}/>),
+        /**::::::::::::::: 子组件给父组件传值*/
+        content: (<InterviewForm getFormValues={this.getChildMethod} current={current}/>),
         okText: '通知他',
         cancelText:'取消',
         okCancel:true,
         onCancel() {
-          console.log('Cancel');
         },
-        onOk: function () {
-          success({
-            title: <>为他的简历评分: </>,
-            icon: <CheckCircleFilled/>,
-            content: (<>
-                <Rate style={{fontSize: 40}} allowHalf/>
-            </>),
-            okText: '完成',
-            onOk() {
-              console.log('......')
-            },
-          });
+        onOk: async ()=>{
+          try {
+            const childFormValue = await this.childFormMethod();
+
+            success({
+              title: <>为他的简历评分: </>,
+              icon: <CheckCircleFilled/>,
+              content: (<>
+                  <Rate onChange={(starCount)=>{
+                    this.setState({starCount})
+                  }} defaultValue={this.state.starCount}  style={{fontSize: 40}} allowHalf/>
+              </>),
+              okText: '完成',
+              onOk : () => {
+                  message.loading({content:'加载中....',key:'globalKey'})
+                  console.log(this.state.starCount,childFormValue,current)
+              },
+            });
+            return Promise.resolve();
+            } catch (e) {
+            return Promise.reject();
+          }
         },
       });
       e.stopPropagation()
@@ -145,7 +169,7 @@ export default class Index extends React.Component<any, any>{
       confirm({
         title: '请输入拒绝原因并确认:',
         icon: <ExclamationCircleOutlined />,
-        content: <TextArea placeholder={'拒绝原因:未达到面试的目标公司最低要求'} showCount={true} allowClear bordered={true} rows={4}/>,
+        content: <TextArea placeholder={'未达到面试的目标公司最低要求'} showCount={true} allowClear bordered={true} rows={4}/>,
         onOk() {
           console.log('OK');
         },
@@ -158,6 +182,8 @@ export default class Index extends React.Component<any, any>{
     }
   }
 
+
+
   columns : any = [
     {
       dataIndex: 'avatar',
@@ -165,27 +191,44 @@ export default class Index extends React.Component<any, any>{
       width: "3%"
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'ID',
+      dataIndex: 'applicationId',
+      key: 'applicationId',
+      ...this.getColumnSearchProps('applicationId'),
+    },
+    {
+      title: '姓名',
+      dataIndex: ["employee","employeeName"],
+      key: ["employee","employeeName"],
       ...this.getColumnSearchProps('age'),
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-      ...this.getColumnSearchProps('age'),
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: '联系电话',
+      dataIndex: ["employee","employeePhoneNumber"],
+      key: ["employee","employeePhoneNumber"],
       ...this.getColumnSearchProps('address'),
     },
     {
+      title: '总体评级', dataIndex: ["employee","employeeStar"], key: ["employee","employeeStar"],
+    render: (text) =>{
+        return (
+          <Rate value={text} disabled={true}/>
+        )
+    }},
+    { title: '专业能力',
+      dataIndex: ["employee","employeeWillingJob"],
+      key: ["employee","employeeWillingJob"] ,
+      render : (text) => {
+          const jobList  = JSON.parse(text || "[]");
 
-      title: 'Column 1', dataIndex: 'address', key: '1' },
-    { title: 'Column 2', dataIndex: 'address', key: '2' },
+         return  jobList.map((item)=>{
+            return (
+              <Tag color={'red'}>
+                {item}
+              </Tag>
+            )
+          })
+      }},
     {
       title: '操作',
       dataIndex: 'operation',
@@ -205,20 +248,13 @@ export default class Index extends React.Component<any, any>{
 
 
 
-  componentDidMount(): void {
-    let data : any[]  = [];
-      for (let i = 0; i < 1000; i++) {
-        data.push({
-          key: i,
-          avatar :<Avatar src={'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg'} size={"default"} />,
-          name: `{John Brown}`,
-          age: Math.random() * 100,
-          address: 'New York No. 1 Lake Park',
-          description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
-        });
-      }
-      this.setState({data});
-    }
+  async  componentDidMount() {
+    //初始化applicationList
+    this.setState({isLoading:true})
+    await HrStore.initializeAllApplication();
+    this.setState({isLoading:false});
+    console.log(toJS(HrStore.applicationList))
+   }
 
   render(): React.ReactNode {
       // @ts-ignore
@@ -226,80 +262,80 @@ export default class Index extends React.Component<any, any>{
         <PageContainer>
           <Alert style={{marginBottom:'20px'}} banner={true} message="欢迎您,HR,以下为近期投递的简历信息,您可以对以下投递的简历信息进行筛选和打分"
                  type="warning"  closable={true} />
-          <Table
-            size={"middle"}
-            columns={this.columns}
-            pagination={{
-              defaultPageSize:20
-            }}
-            expandable={{
-              expandedRowRender: record => (
-                <>
-                  {/*style={{margin:'0 auto'}} */}
-                  <ProCard hoverable  bordered colSpan={24} >
-                    <Row gutter={[16, 16]} >
-                      <Col className={styles.col} span={24}>
-                        <Avatar  src={'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg'}  style={{width:'100px',height:'100px',fontSize:'70px',lineHeight:'90px'}}/>
-                      </Col>
-                      <Col className={styles.col} span={24}>
-                        <div style={{fontSize:30}}>付敬华</div>
-                      </Col>
-                      <Col className={styles.col} span={24}>
-                        <Card style={{ width: '100%' }} >
-                          sdadadadad
-                        </Card>
-                      </Col>
+          <Spin size={"large"} spinning={this.state.isLoading}>
+            <Table
+              size={"middle"}
+              columns={this.columns}
 
-                      <Col span={24} >
-                        <Descriptions
-                          bordered
-                          title="个人信息"
-                          column={2}
-                        >
-                          <Descriptions.Item label="真实姓名">付敬华</Descriptions.Item>
-                          <Descriptions.Item label="手机号码">18735380816</Descriptions.Item>
-                          <Descriptions.Item label="最高学历">大学本科</Descriptions.Item>
-                          <Descriptions.Item label="毕业院校">天津工业大学</Descriptions.Item>
-                          <Descriptions.Item label="性别">男</Descriptions.Item>
-                          <Descriptions.Item label="个人综合评分" >
-                            <Rate disabled defaultValue={4.5} allowHalf/>
-                          </Descriptions.Item>
-                          <Descriptions.Item label="理想工作方向" span={4}>
-                            Data disk type: MongoDB
-                            <br />
-                            Database version: 3.4
-                            <br />
-                            Package: dds.mongo.mid
-                            <br />
-                            Storage space: 10 GB
-                            <br />
-                            Replication factor: 3
-                            <br />
-                            Region: East China 1<br />
-                          </Descriptions.Item>
-                          <Descriptions.Item span={4} label={'简历信息'}>
-                            <Document
-                              file={'https://react-fuchuang.oss-cn-zhangjiakou.aliyuncs.com/APP/DNOSS11869619_zh-CN_intl_181211182439_public_b0b3e034e3b1ba422c2d90da94d6afa7.pdf'} //PDF文件在此
-                              onLoadSuccess={()=>{}}
+              pagination={{
+                defaultPageSize:20
+              }}
+              expandable={{
 
-                            >
-                              <Page pageNumber={1} />
-                            </Document>
-                          </Descriptions.Item>
+                expandedRowRender: (record:any ) => (
+                  <>
+                    {console.log(record)}
+                    {/*style={{margin:'0 auto'}} */}
+                    <ProCard hoverable  bordered colSpan={24} >
+                      <Row gutter={[16, 16]} >
+                        <Col className={styles.col} span={24}>
+                          <Avatar  src={'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg'}  style={{width:'100px',height:'100px',fontSize:'70px',lineHeight:'90px'}}/>
+                        </Col>
+                        <Col className={styles.col} span={24}>
+                          <div style={{fontSize:30}}>{record.employee?.employeeName}</div>
+                        </Col>
+                        <Col className={styles.col} span={24}>
+                          <Card style={{ width: '100%' }} >
+                            {record.employee?.employeeInfo}
+                          </Card>
+                        </Col>
 
-                        </Descriptions>
+                        <Col span={24} >
+                          <Descriptions
+                            bordered
+                            title="个人信息"
+                            column={2}
+                          >
+                            <Descriptions.Item label="真实姓名">{record.employee?.employeeName}</Descriptions.Item>
+                            <Descriptions.Item label="手机号码">{record.employee?.employeePhoneNumber}</Descriptions.Item>
+                            <Descriptions.Item label="最高学历">{record.employee?.employeeEducation}</Descriptions.Item>
+                            <Descriptions.Item label="毕业院校">{record.employee?.employeeCollege}</Descriptions.Item>
+                            <Descriptions.Item label="性别">{record.employee?.employeeGender}</Descriptions.Item>
+                            <Descriptions.Item label="个人综合评分" >
+                              <Rate disabled defaultValue={record.employee?.employeeStar} allowHalf/>
+                            </Descriptions.Item>
+                            <Descriptions.Item label="理想工作方向" span={4}>
+                              {
+                                JSON.parse(record.employee?.employeeWillingJob).map((item)=>{
+                                  return (
+                                    <p>{item}</p>
+                                  )
+                                })
+                              }
+                            </Descriptions.Item>
+                            <Descriptions.Item span={4} label={'简历信息'}>
+                              <Document
+                                file={record.employee?.employeeResume} //PDF文件在此
+                                onLoadSuccess={()=>{}}
+                              >
+                                <Page pageNumber={1} />
+                              </Document>
+                            </Descriptions.Item>
 
-                      </Col>
+                          </Descriptions>
+
+                        </Col>
 
 
-                    </Row>
-                  </ProCard>
-                </>
-              ),
-            }}
-            expandRowByClick={true}
-            dataSource={this.state.data}
-          />
+                      </Row>
+                    </ProCard>
+                  </>
+                ),
+              }}
+              expandRowByClick={true}
+              dataSource={HrStore.applicationList}
+            />
+          </Spin>
 
         </PageContainer>
       )
