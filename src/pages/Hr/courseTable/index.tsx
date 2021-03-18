@@ -13,6 +13,7 @@ const {info} = Modal
 export default class Index extends React.Component<any, any>{
   state = {
     listData : [],
+    currentMonth : moment().format('YYYY-MM')
   };
 
   formInstance : any = React.createRef();
@@ -248,6 +249,8 @@ return (
                 await formRef.validateFields();
                 const fieldsValue =  formRef.getFieldsValue();
                 await HrStore.publishCourse(fieldsValue);
+                await HrStore.loadAllCourseByMonth(this.state.currentMonth);
+                this.forceUpdate();
               } catch (e) {
 
               }
@@ -274,6 +277,7 @@ return (
         <Calendar headerRender={this.headerRender} dateCellRender={this.dateCellRender}  onPanelChange={async (value)=>{
           message.loading({content:'loading...',key:'loading'})
           await HrStore.loadAllCourseByMonth(moment(value).format('YYYY-MM'));
+          this.setState({currentMonth:moment(value).format('YYYY-MM')})
           this.forceUpdate(()=>{
             message.destroy("loading");
           });

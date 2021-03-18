@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {deleteOneHireinfo, dismissFormSubmit, getEmployedEmployeeList, getEnterpriseByAccount, getPassedEmployeeList, submitHireInfo, switchPost} from "@/apis/enterprise";
+import {deleteOneHireinfo, dismissFormSubmit, getEmployedEmployeeList, getEnterpriseByAccount, getPassedEmployeeList, inviteToEnter, submitHireInfo, switchPost} from "@/apis/enterprise";
 
 
 class EnterpriseStore{
@@ -90,6 +90,14 @@ class EnterpriseStore{
     }
   }
 
+
+  @action.bound
+  inviteToEnterprise = async  (empId)=>{
+    try {
+      await inviteToEnter({empId});
+    } catch (e) {
+    }
+  }
 
 }
 

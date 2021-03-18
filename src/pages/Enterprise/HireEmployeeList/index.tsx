@@ -279,7 +279,9 @@ export default class Index extends React.Component<any, any>{
                       });
 
                     }}>查看Ta的简历</a>
-                    <a style={{marginLeft:'15px'}} key="invite">邀请加入公司</a>
+                    <a style={{marginLeft:'15px'}} onClick={ async ()=>{
+                      await EnterpriseStore.inviteToEnterprise(record.employeeId);
+                    }}  key="invite">邀请加入公司</a>
                   </>
                 );
               },
