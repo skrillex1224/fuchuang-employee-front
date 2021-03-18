@@ -14,9 +14,6 @@ export const getAllApplication = async ()=>{
   return await request('getAllApplication');
 }
 
-export const getAllInterview = async (params)=>{
-  return await request('getAllInterviewByHrId',"GET",params)
-}
 
 export const getAllEnterpriseList = async ()=>{
   return await request('getAllRegisterEnterprise');
@@ -33,4 +30,8 @@ export const auditEnterpriseInfo=  async (params)=>{
 
 export const delEnterpriseInfo=  async (params)=>{
   return await request('delApplyEnterprise',"POST",params)
+}
+
+export const getAllInterview = async  (params)=>{
+  return await  request('getAllInterview','POST',params)
 }

@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {arrangeInterview, auditEnterpriseInfo, delEnterpriseInfo, getAllApplication, getAllEnterpriseList, getHrInfo, refuseInterview} from "@/apis/hr";
+import {arrangeInterview, auditEnterpriseInfo, delEnterpriseInfo, getAllApplication, getAllEnterpriseList, getAllInterview, getHrInfo, refuseInterview} from "@/apis/hr";
 
 
 class HrStore {
@@ -16,6 +16,21 @@ class HrStore {
     } catch (e) {
     }
   }
+
+  /**
+   * @param time 2021-03
+   */
+  @observable
+  currentInterviewList :any  = [];
+
+  @action.bound
+  loadInterviewInfoByMonth = async  (time)=>{
+    try {
+      this.currentInterviewList = (await getAllInterview({time})).data;
+    } catch (e) {
+    }
+  }
+
 
   // 删除公司
   @observable

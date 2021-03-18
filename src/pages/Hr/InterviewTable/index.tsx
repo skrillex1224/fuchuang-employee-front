@@ -1,57 +1,70 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Badge, Calendar, Col, Row, Select, Alert} from "antd";
+import {Badge, Calendar, Col, Row, Select, Alert, Popover, Descriptions, message} from "antd";
 import styles from './index.less'
+import {observer} from "mobx-react";
+import HrStore from "@/stores/HrStore";
 import moment from "moment";
 
+@observer
 export default class Index extends React.Component<any, any>{
   state = {
     listData : [],
   };
 
-  getListData(value) {
-    let listData;
-    console.log(moment(value).format("YYYY-MM-DD"))
+  async componentDidMount() {
+    message.loading({content:'加载中...',key:'loading',});
+    await HrStore.loadInterviewInfoByMonth(moment().format('YYYY-MM'));
+    this.forceUpdate(()=>{
+      message.destroy('loading');
+    });
 
-    switch (value.date()) {
-      case 8:
-        listData = [
-          {  content: 'This is warning event.' },
-          {  content: 'This is usual event.' },
-        ];
-        break;
-      case 10:
-        listData = [
-          {  content: 'This is warning event.' },
-          {  content: 'This is usual event.' },
-          { content: 'This is error event.' },
-        ];
-        break;
-      case 15:
-        listData = [
-          {  content: 'This is warning event' },
-          {  content: 'This is very long usual event。。....' },
-          { content: 'This is error event 1.' },
-          { content: 'This is error event 2.' },
-          { content: 'This is error event 3.' },
-          { content: 'This is error event 4.' },
-        ];
-        break;
-      default:
+  }
+
+  getListData(value) {
+    let listData : any  = [];
+
+    if(moment(HrStore.currentInterviewList[0]?.interviewTime).month() !== value.month()){
+      return [];
     }
+
+
+    const today = value.date();
+
+    HrStore.currentInterviewList.forEach((item : any ) =>{
+        if(moment(item.interviewTime).date() === today){
+           listData.push({
+               interviewTime : `${moment(item.interviewTime).format("HH:mm")}`,
+              content : <>
+                <Descriptions title="User Info" column={1} style={{width:'400px'}}>
+                  <Descriptions.Item label="UserName">面试时间:{moment(item.interviewTime).format("YYYY-MM-DD HH:mm:ss")}</Descriptions.Item>
+                  <Descriptions.Item label="Telephone">面试地点:{item.interviewLocation}</Descriptions.Item>
+                  <Descriptions.Item label="Live">HR姓名:{item.hr?.hrRealname}</Descriptions.Item>
+                  <Descriptions.Item label="Remark">面试人姓名:{item.employeeList[0]?.employeeName}</Descriptions.Item>
+                  <Descriptions.Item label="Address">
+                    No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+                  </Descriptions.Item>
+                </Descriptions>
+              </>
+           })
+        }
+    })
+
     return listData || [];
   }
 
   dateCellRender = (value)=> {
+    console.log(value,'--------------------------------------')
     const listData = this.getListData(value);
     return (
       <ul className={styles.events}>
         {listData.map(item => (
-          <li key={item.content} onClick={()=>{
-            //点击事件
-            confirm(item.content)
-          }}>  
-            <Badge className={styles.badge} color={'#DA504F'} text={item.content} />
+          <li key={item.interviewTime} >
+            <Popover content={item.content} placement={'right'} title="面试详细信息" trigger={'click'}>
+              <Badge className={styles.badge} color={'#DA504F'} text={
+                <>{item.interviewTime} <a>查看详情</a></> } />
+              {/*<Badge className={styles.badge} color={'#DA504F'} text={} />*/}
+            </Popover>
           </li>
         ))}
       </ul>
@@ -90,6 +103,9 @@ for (let i = year - 10; i < year + 10; i += 1) {
     </Select.Option>,
   );
 }
+
+
+
 return (
   <div style={{ padding: 8 }}>
     <Alert
@@ -136,7 +152,13 @@ return (
       <PageContainer>
         <Alert style={{marginBottom:'20px'}} banner={true} message="欢迎您,HR,以下是面试具体信息表,点击某一面试时间即可查看面试状态及详细信息"
                type="warning"  closable={true} />
-        <Calendar headerRender={this.headerRender} dateCellRender={this.dateCellRender}  />,
+        <Calendar headerRender={this.headerRender} onPanelChange={async (value)=>{
+          message.loading({content:'加载中...',key:'loading',});
+          await HrStore.loadInterviewInfoByMonth(moment(value).format('YYYY-MM'));
+          this.forceUpdate(()=>{
+              message.destroy('loading');
+          });
+        }} dateCellRender={this.dateCellRender}  />,
       </PageContainer>
     )
   }
