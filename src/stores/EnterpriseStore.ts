@@ -9,7 +9,7 @@ class EnterpriseStore{
 
     //企业个人信息
     @observable
-    enterpriseInfo = {};
+    enterpriseInfo : any = {};
 
     @action.bound
     initializeEnterpriseInfo = async ()=>{

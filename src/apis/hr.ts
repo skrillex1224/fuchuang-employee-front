@@ -22,3 +22,15 @@ export const getAllEnterpriseList = async ()=>{
   return await request('getAllRegisterEnterprise');
 }
 
+
+export const getHrInfo = async ()=>{
+  return await request('getHrByHrPhoneNumber');
+}
+
+export const auditEnterpriseInfo=  async (params)=>{
+  return await request('passEnterprise',"GET",params)
+}
+
+export const delEnterpriseInfo=  async (params)=>{
+  return await request('delApplyEnterprise',"POST",params)
+}

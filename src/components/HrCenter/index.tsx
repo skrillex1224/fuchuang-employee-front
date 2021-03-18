@@ -8,6 +8,7 @@ import { EyeInvisibleOutlined, EyeTwoTone,  PieChartTwoTone} from "@ant-design/i
 import {ChartCard, Field, MiniArea, MiniBar,  WaterWave} from "ant-design-pro/lib/Charts"
 import numeral from 'numeral';
 import moment from 'moment';
+import HrStore from "@/stores/HrStore";
 
 
 //审核公司数目图标
@@ -48,8 +49,14 @@ export default class UserCenter extends React.Component<any, any>{
       this.setVisible(true);
   }
 
-    render() {
+  async  componentDidMount() {
+    await HrStore.initializeHrInfo();
+  }
+
+  render() {
       const {visible, type } = this.state;
+      const {hrInfo} :any   = HrStore;
+      console.log(hrInfo)
       return (
           <>
             <ProCard  ghost={true} gutter={20}  >
@@ -59,11 +66,11 @@ export default class UserCenter extends React.Component<any, any>{
                         <Avatar  src={'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}  style={{width:'100px',height:'100px',fontSize:'70px',lineHeight:'90px'}}/>
                   </Col>
                   <Col style={{display:'flex',justifyContent:'center'}}  span={24}>
-                        <div style={{fontSize:30}}>HR付敬华</div>
+                        <div style={{fontSize:30}}>HR{hrInfo.hrRealName}</div>
                   </Col>
                   <Col span={24}>
                     <Card style={{ width: '100%' }} >
-                     sdadadadad
+                      {hrInfo.hrInfo}
                     </Card>
                   </Col>
 
@@ -74,18 +81,18 @@ export default class UserCenter extends React.Component<any, any>{
                       column={2}
                       extra={<Button type="primary" onClick={this.showDrawer}>修改个人信息</Button>}
                     >
-                      <Descriptions.Item label="真实姓名">付敬华</Descriptions.Item>
-                      <Descriptions.Item label="手机号码">18735380816</Descriptions.Item>
-                      <Descriptions.Item label="性别">男</Descriptions.Item>
+                      <Descriptions.Item label="真实姓名">{hrInfo.hrRealname}</Descriptions.Item>
+                      <Descriptions.Item label="手机号码">{hrInfo.hrPhoneNumber}</Descriptions.Item>
+                      <Descriptions.Item label="性别">{hrInfo.hrGender}</Descriptions.Item>
                       <Descriptions.Item label="登录密码">
                         <Input.Password readOnly={true}
-                                        value='140107199912043918'
+                                        value={hrInfo.hrPassword}
                                         bordered={false}
                                         iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                         />
                       </Descriptions.Item>
                       <Descriptions.Item label="身份证号码" span={4}>
-                            140107199912073918
+                        {hrInfo.hrIdCard}
                       </Descriptions.Item>
                       <Descriptions.Item span={4} label={'人脸图片信息'}>
                         <Button type="link" style={{width:'100%'}} onClick={()=>{

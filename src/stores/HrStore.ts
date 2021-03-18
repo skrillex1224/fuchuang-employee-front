@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {arrangeInterview, getAllApplication, getAllEnterpriseList, refuseInterview} from "@/apis/hr";
+import {arrangeInterview, auditEnterpriseInfo, delEnterpriseInfo, getAllApplication, getAllEnterpriseList, getHrInfo, refuseInterview} from "@/apis/hr";
 
 
 class HrStore {
@@ -7,6 +7,38 @@ class HrStore {
   constructor() {
     makeObservable(this)
   }
+
+  @observable
+  passEnterpriseInfo = async  (enterpriseId)=>{
+    try {
+      await auditEnterpriseInfo({enterpriseId});
+      await this.initializeEnterpriseList();
+    } catch (e) {
+    }
+  }
+
+  // 删除公司
+  @observable
+  fallbackEnterpriseInfo = async  (enterpriseId)=>{
+    try {
+      await delEnterpriseInfo({enterpriseId});
+      await this.initializeEnterpriseList();
+    } catch (e) {
+    }
+  }
+
+
+  @observable
+  hrInfo = {};
+
+  @action.bound
+  initializeHrInfo = async  ()=>{
+    try {
+      this.hrInfo = (await getHrInfo() ).data;
+    } catch (e) {
+    }
+  }
+
 
   @observable
   enterpriseList = [];

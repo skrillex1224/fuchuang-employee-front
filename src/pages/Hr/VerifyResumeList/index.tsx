@@ -224,7 +224,7 @@ export default class Index extends React.Component<any, any>{
       title: '联系电话',
       dataIndex: ["employee","employeePhoneNumber"],
       key: ["employee","employeePhoneNumber"],
-      ...this.getColumnSearchProps(["employee","employeePhoneNumber"]),
+      ...this.getColumnSearchProps("[employee,employeePhoneNumber]"),
     },
     {
     title: '总体评级', dataIndex: ["employee","employeeStar"], key: ["employee","employeeStar"],

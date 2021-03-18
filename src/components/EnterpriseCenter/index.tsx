@@ -1,7 +1,7 @@
 import React, {CSSProperties} from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Badge, Button, Card, Col, Descriptions, Input, Comment, Popover, Progress, Row, Tag, Empty, Collapse,  Popconfirm} from "antd";
+import {Avatar, Badge, Button, Card, Col, Descriptions, Input, Comment, Popover, Progress, Row, Tag, Empty, Collapse, Popconfirm, Modal} from "antd";
 import EditDrawer  from './EditDrawer'
 import styles from './index.less'
 import ProList from "@ant-design/pro-list";
@@ -10,8 +10,9 @@ import moment from "moment";
 import Ellipsis from 'ant-design-pro/lib/Ellipsis';
 import HireinfoForm from './HireinfoForm'
 import { Document, Page ,pdfjs} from 'react-pdf';
-import {DownSquareOutlined} from "@ant-design/icons/lib";
+import {DownSquareOutlined, MehOutlined} from "@ant-design/icons/lib";
 
+const {error} = Modal;
 
 const gridStyle : CSSProperties= {
   width: '33.33%',
@@ -64,6 +65,23 @@ export default class UserCenter extends React.Component<any, any>{
 
   async componentDidMount() {
       await EnterpriseStore.initializeEnterpriseInfo();
+
+    console.log(!EnterpriseStore.enterpriseInfo.enterpriseIsLegal,'-------------------')
+
+    if(!EnterpriseStore.enterpriseInfo.enterpriseIsLegal){
+      error({
+        title: '您的账号暂时还没有通过注册,请等候平台审批',
+        mask : true,
+        maskClosable:false,
+        icon: <MehOutlined />,
+        onOk() {
+          localStorage.clear();
+          window.location.href = '/user/login';
+        },
+        okCancel:false
+      });
+
+    }
   }
 
 
