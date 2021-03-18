@@ -1,5 +1,6 @@
 import {action, makeObservable, observable} from "mobx";
-import {getAllApplicationInterview,empSubmitResume, getAllHireInfo, getEmpInfo, getHireInfoByEnterName} from "@/apis/employee";
+import {getAllApplicationInterview, empSubmitResume, getAllHireInfo, getEmpInfo, getHireInfoByEnterName, getEmpInvolvedInterview} from "@/apis/employee";
+import {getPassedEmployeeList} from "@/apis/enterprise";
 
 class EmployeeStore {
   constructor() {
@@ -24,7 +25,6 @@ class EmployeeStore {
   @observable
   interviewList = [];
 
-
   initializeInterviewList = async()=>{
     try {
       const interviewList = (await getAllApplicationInterview()).data;
@@ -43,6 +43,18 @@ class EmployeeStore {
 
       this.interviewList = interviewList;
     } catch (e) {}
+  }
+
+  //当前用户已经结束的历史面试信息
+  @observable
+  passedInterviewList = [];
+
+  @action.bound
+  initializePassedInterviewList = async()=>{
+    try {
+      this.passedInterviewList =  (await getEmpInvolvedInterview()).data;
+    } catch (e) {
+    }
   }
 
 

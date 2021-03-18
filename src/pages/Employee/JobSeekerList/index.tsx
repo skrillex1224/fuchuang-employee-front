@@ -7,7 +7,6 @@ import EmployeeStore from "@/stores/EmployeeStore";
 import {observer} from "mobx-react";
 import moment from "moment";
 import TagSelect from 'ant-design-pro/lib/TagSelect';
-import {empSubmitResume} from "@/apis/employee";
 
 const {Panel} = Collapse;
 

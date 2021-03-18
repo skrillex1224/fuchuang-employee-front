@@ -60,6 +60,13 @@
                 authority: ['employee'],
               },
               {
+                path:'/employee/courseList',
+                icon: 'RiseOutlined',
+                name: '选课列表',
+                component: '../pages/Employee/CourseList',
+                authority: ['employee'],
+              },
+              {
                 path:'/account/employeeCenter',
                 icon: 'HomeOutlined',
                 name: '个人中心',

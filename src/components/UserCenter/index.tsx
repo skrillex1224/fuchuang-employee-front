@@ -23,9 +23,9 @@ export default class UserCenter extends React.Component<any, any>{
 
 
     async componentDidMount(){
-      const {initializeCurrentUser} = EmployeeStore;
+      const {initializeCurrentUser,initializePassedInterviewList} = EmployeeStore;
       await initializeCurrentUser();
-
+      await initializePassedInterviewList();
     }
 
   setVisible = (visible : boolean )=>{
@@ -180,7 +180,7 @@ export default class UserCenter extends React.Component<any, any>{
                           actions: {},
                         }}
                         headerTitle="我参与过的面试:"
-                        dataSource={applications?.map((currentItem) => ({
+                        dataSource={EmployeeStore.passedInterviewList?.map((currentItem :any) => ({
                           title: "面试公司："  + currentItem.enterprise?.enterpriseName,
                           subTitle:  <Tag color={currentItem.applicationEmpStatus === '未通过' ? 'red' : 'skyblue'}>状态：{currentItem.applicationEmpStatus}</Tag> ,
                           actions: [<a onClick={()=>window.location.href ='/employee/interviewStatus'}>查看当前面试进度→</a>],
