@@ -66,7 +66,7 @@ export default class UserCenter extends React.Component<any, any>{
                         <Avatar  src={'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}  style={{width:'100px',height:'100px',fontSize:'70px',lineHeight:'90px'}}/>
                   </Col>
                   <Col style={{display:'flex',justifyContent:'center'}}  span={24}>
-                        <div style={{fontSize:30}}>HR{hrInfo.hrRealName}</div>
+                        <div style={{fontSize:30}}>欢迎您，{hrInfo.hrRealname}</div>
                   </Col>
                   <Col span={24}>
                     <Card style={{ width: '100%' }} >
