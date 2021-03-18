@@ -20,7 +20,7 @@ export default class Index extends React.Component<any> {
       //搜索状态
       loading : false,
       //投递简历的状态
-      submitResume : false,
+      submitResume : [],
       checkedList : [
         'Java开发',
         'PHP开发',
@@ -42,11 +42,17 @@ export default class Index extends React.Component<any> {
     }
 
   //投递简历
-  handleSubmitResume =  async  (enterpriseId)=>{
-        this.setState({submitResume:true });
+  handleSubmitResume =  async  (enterpriseId : number)=>{
+        const  submitResume :any =  this.state.submitResume
+
+        submitResume[enterpriseId] = true;
+
+        this.setState({submitResume});
         //异步请求
         await EmployeeStore.submitEmpResume(enterpriseId);
-        this.setState({submitResume:false});
+
+        submitResume[enterpriseId] = false;
+        this.setState({submitResume});
   }
 
   //重新根据条件筛选列表
@@ -350,7 +356,7 @@ export default class Index extends React.Component<any> {
                           </Descriptions>
                         </Panel>
                       </Collapse>
-                      <Button loading={this.state.submitResume} onClick={()=>this.handleSubmitResume(item.enterprise && item.enterprise.enterpriseId)}  type={"primary"} style={{float:'right',marginTop:'10px'}}>投递我的简历至改公司</Button>
+                      <Button loading={this.state.submitResume[item.enterpriseId]} onClick={()=>this.handleSubmitResume(item.enterprise && item.enterprise.enterpriseId)}  type={"primary"} style={{float:'right',marginTop:'10px'}}>投递我的简历至改公司</Button>
                     </List.Item>
                   )}
                 />

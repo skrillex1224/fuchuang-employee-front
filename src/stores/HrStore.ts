@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {arrangeInterview, auditEnterpriseInfo, delEnterpriseInfo, getAllApplication, getAllEnterpriseList, getAllInterview, getHrInfo, refuseInterview} from "@/apis/hr";
+import {arrangeInterview, auditEnterpriseInfo, delEnterpriseInfo, getAllApplication, getAllCourse, getAllEnterpriseList, getAllInterview, getHrInfo, publishCourseInfo, refuseInterview} from "@/apis/hr";
 
 
 class HrStore {
@@ -31,6 +31,20 @@ class HrStore {
     }
   }
 
+
+  @observable
+  currentCourseList :any = [];
+
+  /**
+   * @param time 2021-03
+   */
+  @action.bound
+  loadAllCourseByMonth = async  (time)=>{
+      try {
+        this.currentInterviewList = (await getAllCourse({time})).data;
+      } catch (e) {
+      }
+  }
 
   // 删除公司
   @observable
@@ -114,6 +128,15 @@ class HrStore {
     }
   }
 
+
+  //发布课程
+  @action.bound
+  publishCourse = async  (params)=>{
+    try {
+      await publishCourseInfo(params);
+    } catch (e) {
+    }
+  }
 
 }
 

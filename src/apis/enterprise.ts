@@ -19,7 +19,7 @@ export const submitHireInfo = async (params)=>{
 
 /**待对接*/
 export const deleteOneHireinfo = async (params)=>{
-  return await request("deleteHireInfo","POST",params);
+  return await request("deleteHireInfo","GET",params);
 }
 
 export const dismissFormSubmit = async  (params)=>{

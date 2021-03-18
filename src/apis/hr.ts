@@ -35,3 +35,11 @@ export const delEnterpriseInfo=  async (params)=>{
 export const getAllInterview = async  (params)=>{
   return await  request('getAllInterview','POST',params)
 }
+
+export const getAllCourse = async  (params)=>{
+  return await  request('getAllCourseByTime','POST',params)
+}
+
+export const publishCourseInfo = async (params)=>{
+  return await request('addCourse',"POST",params)
+}

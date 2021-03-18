@@ -1,8 +1,8 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
 import ProCard from "@ant-design/pro-card";
-import {AlertFilled, CloseSquareFilled} from "@ant-design/icons/lib";
-import {Button, Card, DatePicker, Descriptions, Empty, message, Modal, Popconfirm, Steps, TimePicker} from "antd";
+import {AlertFilled, CloseSquareFilled, LoadingOutlined} from "@ant-design/icons/lib";
+import {Button, Card, DatePicker, Descriptions, Empty, message, Modal, Popconfirm, Spin, Steps, TimePicker} from "antd";
 import moment from "moment";
 import EmployeeStore from "@/stores/EmployeeStore";
 import {observer} from "mobx-react";
@@ -12,7 +12,8 @@ import {deleteByApplicationId} from "@/apis/employee";
 export default class Index extends React.Component<any, any>{
 
   state = {
-      visible : false
+      visible : false,
+    isLoading : false ,
   }
 
   showModal = () => {
@@ -42,17 +43,22 @@ export default class Index extends React.Component<any, any>{
 
   withdrawResume =async  (applicationId)=>{
     //撤回简历
+    this.setState({isLoading:true});
     await deleteByApplicationId({applicationId});
     await EmployeeStore.initializeInterviewList();
+    this.setState({isLoading:false});
   }
 
   async componentDidMount() {
+    this.setState({isLoading:true});
     await EmployeeStore.initializeInterviewList();
+    this.setState({isLoading:false});
   }
 
   render(): React.ReactNode {
     return (
       <PageContainer title={'正在进行的面试'} >
+        <Spin spinning={this.state.isLoading} size={"large"} indicator={<LoadingOutlined />} >
         {
           EmployeeStore.interviewList.length ?
             EmployeeStore.interviewList.map((item  : any ,index)=>{
@@ -62,6 +68,7 @@ export default class Index extends React.Component<any, any>{
               }
               return (
                 <>
+
                   <ProCard key={index}
                            style={{marginBottom:'40px'}}
                            title={`面试公司:${item.enterprise && item.enterprise.enterpriseName}`}
@@ -111,6 +118,7 @@ export default class Index extends React.Component<any, any>{
                     </Card>
                   </ProCard>
                 </>
+
               )
             })
             :
@@ -128,6 +136,7 @@ export default class Index extends React.Component<any, any>{
           面试日期: <DatePicker/>   <br/><br/>
           面试时间: <TimePicker  defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
         </Modal>
+        </Spin>
       </PageContainer>
     )
   }

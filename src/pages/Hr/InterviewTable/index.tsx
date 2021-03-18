@@ -36,14 +36,11 @@ export default class Index extends React.Component<any, any>{
            listData.push({
                interviewTime : `${moment(item.interviewTime).format("HH:mm")}`,
               content : <>
-                <Descriptions title="User Info" column={1} style={{width:'400px'}}>
-                  <Descriptions.Item label="UserName">面试时间:{moment(item.interviewTime).format("YYYY-MM-DD HH:mm:ss")}</Descriptions.Item>
-                  <Descriptions.Item label="Telephone">面试地点:{item.interviewLocation}</Descriptions.Item>
-                  <Descriptions.Item label="Live">HR姓名:{item.hr?.hrRealname}</Descriptions.Item>
-                  <Descriptions.Item label="Remark">面试人姓名:{item.employeeList[0]?.employeeName}</Descriptions.Item>
-                  <Descriptions.Item label="Address">
-                    No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-                  </Descriptions.Item>
+                <Descriptions title="面试详细信息" column={1} style={{width:'400px'}}>
+                  <Descriptions.Item label="面试时间:">{moment(item?.interviewTime).format("YYYY-MM-DD HH:mm:ss")}</Descriptions.Item>
+                  <Descriptions.Item label="面试地点:">{item?.interviewLocation}</Descriptions.Item>
+                  <Descriptions.Item label="HR姓名:">{item?.hr?.hrRealname}</Descriptions.Item>
+                  <Descriptions.Item label="面试人姓名:">{item?.employeeList && item?.employeeList[0]?.employeeName}</Descriptions.Item>
                 </Descriptions>
               </>
            })
@@ -54,13 +51,12 @@ export default class Index extends React.Component<any, any>{
   }
 
   dateCellRender = (value)=> {
-    console.log(value,'--------------------------------------')
     const listData = this.getListData(value);
     return (
       <ul className={styles.events}>
         {listData.map(item => (
           <li key={item.interviewTime} >
-            <Popover content={item.content} placement={'right'} title="面试详细信息" trigger={'click'}>
+            <Popover content={item.content} placement={'right'} trigger={'click'}>
               <Badge className={styles.badge} color={'#DA504F'} text={
                 <>{item.interviewTime} <a>查看详情</a></> } />
               {/*<Badge className={styles.badge} color={'#DA504F'} text={} />*/}
