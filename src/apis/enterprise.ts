@@ -17,7 +17,6 @@ export const submitHireInfo = async (params)=>{
   return await request("addHireInfoByEnterpriseId",'POST',params);
 }
 
-/**待对接*/
 export const deleteOneHireinfo = async (params)=>{
   return await request("deleteHireInfo","GET",params);
 }
@@ -28,4 +27,8 @@ export const dismissFormSubmit = async  (params)=>{
 
 export const switchPost = async  (params)=>{
   return await request("transferPosition","POST",params);
+}
+
+export const inviteToEnter = async (params)=>{
+  return await request('inviteEmpToEnterprise',"POST",params);
 }
