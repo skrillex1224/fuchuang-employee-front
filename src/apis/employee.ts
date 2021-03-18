@@ -36,3 +36,11 @@ export const empSubmitResume= async (params)=>{
 export const getEmpInvolvedInterview = async ()=>{
   return await request('getEmpInvolvedInterview');
 }
+
+export const getCourseList = async  ()=>{
+  return await request('getAllRestCourses');
+}
+
+export const signUpCourse = async (params)=>{
+  return await request('signUpCourse','POST',params)
+}

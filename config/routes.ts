@@ -61,7 +61,7 @@
               },
               {
                 path:'/employee/courseList',
-                icon: 'RiseOutlined',
+                icon: 'BlockOutlined',
                 name: '选课列表',
                 component: '../pages/Employee/CourseList',
                 authority: ['employee'],

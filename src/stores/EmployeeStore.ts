@@ -1,10 +1,31 @@
 import {action, makeObservable, observable} from "mobx";
-import {getAllApplicationInterview, empSubmitResume, getAllHireInfo, getEmpInfo, getHireInfoByEnterName, getEmpInvolvedInterview} from "@/apis/employee";
-import {getPassedEmployeeList} from "@/apis/enterprise";
+import {getAllApplicationInterview, empSubmitResume, getAllHireInfo, getEmpInfo, getHireInfoByEnterName, getEmpInvolvedInterview, getCourseList, signUpCourse} from "@/apis/employee";
 
 class EmployeeStore {
   constructor() {
      makeObservable(this)
+  }
+
+  @action.bound
+  chooseCourse = async  (courseId)=>{
+    try {
+      await signUpCourse({courseId});
+      await  this.initializeCourseList();
+    } catch (e) {
+    }
+  }
+
+
+  //剩余课程
+  @observable
+  restCourseList = [];
+
+  @action.bound
+  initializeCourseList = async  ()=>{
+    try {
+      this.restCourseList = (await getCourseList()).data;
+    } catch (e) {
+    }
   }
 
   @observable
