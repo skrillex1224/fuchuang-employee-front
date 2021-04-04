@@ -110,7 +110,7 @@ export default class UserCenter extends React.Component<any, any>{
                 </Row>
 
                 <Row style={{marginTop:'50px'}} gutter={[16, 16]} align={'top'} justify={'center'} wrap={true}>
-                  <WaterWave height={400} title="综合能力已超越其他HR" percent={84} color={'#D42C26'}  />
+                  <WaterWave height={400} title={<>用户满意度 <br/> 低于60%账户将会被封禁</>} percent={84} color={'#D42C26'}  />
                 </Row>
 
               </ProCard>
@@ -125,8 +125,8 @@ export default class UserCenter extends React.Component<any, any>{
                 <ProCard ghost={true}  layout="default" bordered colSpan={24}  >
                   <ChartCard
                     title="审核简历/安排面试总计"
-                    total={numeral(1235).format('0,0')}
-                    footer={<Field label="今日审核数" value={numeral(1234).format('0,0')} />}
+                    total={numeral(325).format('0,0')}
+                    footer={<Field label="今日审核数" value={numeral(23).format('0,0')} />}
                     contentHeight={450}
                     hoverable={true}
                   >
@@ -138,8 +138,8 @@ export default class UserCenter extends React.Component<any, any>{
                   <ChartCard
                     hoverable={true}
                     title="审核注册企业总计"
-                    total={numeral(1235).format('0,0')}
-                    footer={<Field label="今日审核数" value={numeral(1234).format('0,0')} />}
+                    total={numeral(42).format('0,0')}
+                    footer={<Field label="今日审核数" value={numeral(2).format('0,0')} />}
                     contentHeight={400}
                   >
                     <MiniBar height={400} data={visitData} />

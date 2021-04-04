@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Alert, Avatar, Button, Card, Col, Descriptions, Input, Modal, Rate, Row, Space, Spin, Table, Tag} from "antd";
+import {Alert, Avatar, Button, Card, Col, Descriptions, Input, message, Modal, Rate, Row, Space, Spin, Table, Tag} from "antd";
 import {CheckCircleFilled, CheckOutlined, ExclamationCircleOutlined, SearchOutlined} from "@ant-design/icons/lib";
 import Highlighter from 'react-highlight-words';
 import ProCard from "@ant-design/pro-card";
@@ -130,6 +130,7 @@ export default class Index extends React.Component<any, any>{
         content: (<InterviewForm getFormValues={this.getChildMethod} current={current}/>),
         okText: '通知他',
         cancelText:'取消',
+        width:600,
         okCancel:true,
         onCancel() {
         },
@@ -139,11 +140,17 @@ export default class Index extends React.Component<any, any>{
 
             success({
               title: <>为他的简历评分: </>,
+              width:600,
               icon: <CheckCircleFilled/>,
               content: (<>
-                  <Rate onChange={(starCount)=>{
-                    this.setState({starCount})
-                  }} defaultValue={4}  style={{fontSize: 40}} allowHalf/>
+                <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} >
+                  {
+                    [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
+                      <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
+                        <Rate  allowHalf  defaultValue={4}/>
+                      </Descriptions.Item>)
+                  }
+                </Descriptions>
               </>),
               okText: '完成',
               onOk : async () => {
@@ -167,8 +174,9 @@ export default class Index extends React.Component<any, any>{
     return (e)=>{
       //@ts-ignore
       confirm({
-        title: '请输入拒绝原因并确认:',
+        title: '请填写拒绝回执并确认:',
         icon: <ExclamationCircleOutlined />,
+        width:600,
         content: <TextArea   onChange={(event)=>{
           this.setState({dismissReason : event.target.value})
         }} placeholder={'未达到面试的目标公司最低要求'} showCount={true} allowClear bordered={true} rows={4}/>,
@@ -177,16 +185,23 @@ export default class Index extends React.Component<any, any>{
           success({
             title: <>为他的简历评分: </>,
             icon: <CheckCircleFilled/>,
+            width:600,
             content: (<>
-              <Rate onChange={(starCount)=>{
-                this.setState({starCount})
-              }} defaultValue={4}  style={{fontSize: 40}} allowHalf/>
+              <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} >
+                {
+                  [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
+                    <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
+                      <Rate  allowHalf  defaultValue={4}/>
+                    </Descriptions.Item>)
+                }
+              </Descriptions>
             </>),
             okText: '完成',
             onOk : async () => {
               this.setState({isLoading:true})
               await HrStore.hrRefuseInterview(this.state.dismissReason, current.applicationId,this.state.starCount);
               this.setState({isLoading:false})
+
             },
 
           });

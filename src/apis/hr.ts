@@ -43,3 +43,7 @@ export const getAllCourse = async  (params)=>{
 export const publishCourseInfo = async (params)=>{
   return await request('addCourse',"POST",params)
 }
+
+export const handleInterviewResult = async (params) =>{
+  return await request('passOrFailInterview',"POST",params);
+}

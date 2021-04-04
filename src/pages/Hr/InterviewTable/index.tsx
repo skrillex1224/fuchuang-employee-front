@@ -1,15 +1,18 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Badge, Calendar, Col, Row, Select, Alert, Popover, Descriptions, message} from "antd";
+import {Badge, Calendar, Col, Row, Select, Alert, Popover, Descriptions, message, Button, Rate, Modal} from "antd";
 import styles from './index.less'
 import {observer} from "mobx-react";
 import HrStore from "@/stores/HrStore";
 import moment from "moment";
+import {CheckCircleFilled} from "@ant-design/icons/lib";
+
 
 @observer
 export default class Index extends React.Component<any, any>{
   state = {
     listData : [],
+    loading : false
   };
 
   async componentDidMount() {
@@ -36,11 +39,77 @@ export default class Index extends React.Component<any, any>{
            listData.push({
                interviewTime : `${moment(item.interviewTime).format("HH:mm")}`,
               content : <>
-                <Descriptions title="面试详细信息" column={1} style={{width:'400px'}}>
+                <Descriptions colon={false} title="面试详细信息" column={1} style={{width:'400px'}}>
                   <Descriptions.Item label="面试时间:">{moment(item?.interviewTime).format("YYYY-MM-DD HH:mm:ss")}</Descriptions.Item>
                   <Descriptions.Item label="面试地点:">{item?.interviewLocation}</Descriptions.Item>
                   <Descriptions.Item label="HR姓名:">{item?.hr?.hrRealname}</Descriptions.Item>
                   <Descriptions.Item label="面试人姓名:">{item?.employeeList && item?.employeeList[0]?.employeeName}</Descriptions.Item>
+                  <Descriptions.Item label="操作:">
+                    <Button type={"danger"} style={{marginRight:'10px'}} onClick={()=>{
+                      this.setState({loading:true})
+                        HrStore.dealWithInterviewResult(item.interviewId,1).then(()=>{
+                            this.setState({loading:false})
+
+                              Modal.success({
+                                title: <>为他的面试表现评分: </>,
+                                width: 600,
+                                okText:'确认',
+                                onOk:()=>{
+                                  return new Promise((resolve)=>{
+                                    setTimeout(()=>{
+                                      message.success("操作成功!")
+                                      resolve(null);
+                                    },979)
+                                  })
+                                },
+                                icon: <CheckCircleFilled/>,
+                                content: (<>
+                                  <Descriptions className={styles.rateCol} column={2} style={{marginTop: '20px'}}>
+                                    {
+                                      [1, 2, 3, 3, 4, 2, 4, 123, 1, 3, 123, 12, 3, 123, 12, 3, 12, 3, 123].map((item, index) =>
+                                        <Descriptions.Item style={{verticalAlign: "middle"}} label="创新能力">
+                                          <Rate allowHalf defaultValue={4}/>
+                                        </Descriptions.Item>)
+                                    }
+                                  </Descriptions>
+                                </>)
+                              });
+                        });
+                    }
+                    }>拒绝面试</Button>
+                    <Button type={"default"} onClick={()=>{
+                        this.setState({loading:true})
+                        HrStore.dealWithInterviewResult(item.interviewId,0).then(()=> {
+                          this.setState({loading: false})
+
+                          Modal.success({
+                            title: <>为他的面试表现评分: </>,
+                            width: 600,
+                            okText:'确认',
+                            onOk:()=>{
+                               return new Promise((resolve)=>{
+                                 setTimeout(()=>{
+                                    message.success("操作成功!")
+                                    resolve(null);
+                                 },979)
+                               })
+                            },
+                            icon: <CheckCircleFilled/>,
+                            content: (<>
+                              <Descriptions className={styles.rateCol} column={2} style={{marginTop: '20px'}}>
+                                {
+                                  [1, 2, 3, 3, 4, , 4, 123, 1, 3, 123, 12, 3, 123, 12, 3, 12, 3, 123].map((item, index) =>
+                                    <Descriptions.Item style={{verticalAlign: "middle"}} label="创新能力">
+                                      <Rate allowHalf defaultValue={4}/>
+                                    </Descriptions.Item>)
+                                }
+                              </Descriptions>
+                            </>)
+                          });
+                        });
+                    }
+                    }>通过面试</Button>
+                  </Descriptions.Item>
                 </Descriptions>
               </>
            })
@@ -56,7 +125,7 @@ export default class Index extends React.Component<any, any>{
       <ul className={styles.events}>
         {listData.map(item => (
           <li key={item.interviewTime} >
-            <Popover content={item.content} placement={'right'} trigger={'click'}>
+            <Popover style={{zIndex:999,position:'relative'}} content={item.content} placement={'right'} trigger={'hover'}>
               <Badge className={styles.badge} color={'#DA504F'} text={
                 <>{item.interviewTime} <a>查看详情</a></> } />
               {/*<Badge className={styles.badge} color={'#DA504F'} text={} />*/}

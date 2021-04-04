@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {arrangeInterview, auditEnterpriseInfo, delEnterpriseInfo, getAllApplication, getAllCourse, getAllEnterpriseList, getAllInterview, getHrInfo, publishCourseInfo, refuseInterview} from "@/apis/hr";
+import {arrangeInterview, auditEnterpriseInfo, delEnterpriseInfo, getAllApplication, getAllCourse, getAllEnterpriseList, getAllInterview, getHrInfo, handleInterviewResult, publishCourseInfo, refuseInterview} from "@/apis/hr";
 
 
 class HrStore {
@@ -8,7 +8,17 @@ class HrStore {
     makeObservable(this)
   }
 
-  @observable
+
+  @action.bound
+  dealWithInterviewResult =  async (interviewId,passOrFail)=>{
+    try {
+      await handleInterviewResult({interviewId,passOrFail})
+    } catch (e) {
+    }
+  }
+
+
+  @action.bound
   passEnterpriseInfo = async  (enterpriseId)=>{
     try {
       await auditEnterpriseInfo({enterpriseId});
