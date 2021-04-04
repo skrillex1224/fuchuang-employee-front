@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Alert, Avatar, Button, Card, Col, Descriptions, Input, message, Modal, Rate, Row, Space, Spin, Table, Tag} from "antd";
+import {Alert, Avatar, Button, Card, Col, Descriptions, Input, message, Modal, Popover, Rate, Row, Space, Spin, Table, Tag} from "antd";
 import {CheckCircleFilled, CheckOutlined, ExclamationCircleOutlined, SearchOutlined} from "@ant-design/icons/lib";
 import Highlighter from 'react-highlight-words';
 import ProCard from "@ant-design/pro-card";
@@ -245,7 +245,21 @@ export default class Index extends React.Component<any, any>{
     title: '总体评级', dataIndex: ["employee","employeeStar"], key: ["employee","employeeStar"],
     render: (text) =>{
         return (
-          <Rate value={text} disabled={true}/>
+            <>
+              <Rate value={text} disabled={true}/>
+              <Popover style={{width:600}} title={'具体详情'} placement={"right"} content={<>
+                <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} >
+                  {
+                    [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
+                      <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
+                        <Rate  allowHalf  defaultValue={4}/>
+                      </Descriptions.Item>)
+                  }
+                </Descriptions>
+              </>}>
+              <a style={{marginLeft:'10px'}}>详情</a>
+              </Popover>
+            </>
         )
     }},
     { title: '专业能力',
