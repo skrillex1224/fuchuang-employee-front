@@ -7,7 +7,7 @@ import EditDrawer  from './EditDrawer'
 import styles from './index.less'
 import ProList from "@ant-design/pro-list";
 import EmployeeStore from "@/stores/EmployeeStore";
-import { StarFilled} from "@ant-design/icons/lib";
+import {SmileOutlined, StarFilled} from "@ant-design/icons/lib";
 import moment from "moment";
 
 
@@ -97,8 +97,8 @@ export default class UserCenter extends React.Component<any, any>{
                   subTitle={`${currentUser.employeeStar *20}%`}
                   style={{marginBottom:'20px'}}
                 >
-                  <Rate value={currentUser.employeeStar *2 >= 5 ? 5 : currentUser.employeeStar * 2 } disabled={true} character={<StarFilled />} style={{ fontSize: 66  }} />
-                  <Rate value={currentUser.employeeStar *2  <= 5 ? 0 : currentUser.employeeStar * 2 -5 } disabled={true} character={<StarFilled />} style={{ fontSize: 66  }} />
+                  <Rate  value={currentUser.employeeStar *2 >= 5 ? 5 : currentUser.employeeStar * 2 } disabled={true} character={<SmileOutlined />} style={{ fontSize: 66  }} />
+                  <Rate value={currentUser.employeeStar *2  <= 5 ? 0 : currentUser.employeeStar * 2 -5 } disabled={true} character={<SmileOutlined />} style={{ fontSize: 66  }} />
 
                   <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} title="评分细则">
                     {
