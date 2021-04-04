@@ -8,8 +8,75 @@ import EnterpriseStore from "@/stores/EnterpriseStore";
 import { Document, Page ,pdfjs} from 'react-pdf';
 import { Spin } from "antd";
 import {FilterOutlined} from "@ant-design/icons/lib";
+import styles from "@/pages/Hr/InterviewTable/index.less";
+import {Radar,} from "@ant-design/charts";
+import { DataSet } from '@antv/data-set';
 
 const {Option} = Select;
+
+
+const data = [
+  {item: "Design", score: 70},
+  {item: "Design1", score: 70},
+  {item: "2", score: 70},
+  {item: "Design3", score: 70},
+  {item: "Design4", score: 70},
+  {item: "Design5", score: 70},
+  {item: "Design6", score: 70},
+  {item: "Design7", score: 70},
+  {item: "Design8", score: 70},
+]
+
+
+const { DataView } = DataSet;
+const dv = new DataView().source(data);
+dv.transform({
+  type: 'fold',
+  fields: ['score'], // 展开字段集
+  key: 'user', // key字段
+  value: 'score', // value字段
+});
+
+const config = {
+  data: dv.rows,
+  xField: 'item',
+  yField: 'score',
+  seriesField: 'user',
+  meta: {
+    score: {
+      alias: '分数',
+      min: 0,
+      max: 100,
+    },
+  },
+  xAxis: {
+    line: null,
+    tickLine: null,
+    grid: {
+      line: {
+        style: {
+          lineDash: null,
+        },
+      },
+    },
+  },
+  yAxis: {
+    line: null,
+    tickLine: null,
+    grid: {
+      line: {
+        type: 'line',
+        style: {
+          lineDash: null,
+        },
+      },
+    },
+  },
+  // 开启面积
+  area: {},
+  // 开启辅助点
+  point: {},
+};
 
 @observer
 export default class Index extends React.Component<any, any>{
@@ -228,24 +295,26 @@ export default class Index extends React.Component<any, any>{
             },
             content: {
               render: (_,record:any) => (
-                  <Descriptions
-                    bordered={false}
-                    title="个人信息"
-                    column={2}
-                  >
-                    <Descriptions.Item label="真实姓名">{record.employeeName}</Descriptions.Item>
-                    <Descriptions.Item label="手机号码">{record.employeePhoneNumber}</Descriptions.Item>
-                    <Descriptions.Item label="最高学历">{record.employeeEducation}</Descriptions.Item>
-                    <Descriptions.Item label="毕业院校">{record.employeeCollege}</Descriptions.Item>
-                    <Descriptions.Item label="性别">{record.employeeGender}</Descriptions.Item>
-                    <Descriptions.Item label="理想工作方向" span={4}>
-                      {
-                        record.employeeWillingJob && JSON.parse(record.employeeWillingJob).map((item,index)=>{
-                          return <span style={{marginRight:'5px'}} key={index}>{item}</span>
-                        })
-                      }
-                    </Descriptions.Item>
-                  </Descriptions>
+                  <>
+                    <Descriptions
+                      bordered={false}
+                      title="个人信息"
+                      column={2}
+                    >
+                      <Descriptions.Item label="真实姓名">{record.employeeName}</Descriptions.Item>
+                      <Descriptions.Item label="手机号码">{record.employeePhoneNumber}</Descriptions.Item>
+                      <Descriptions.Item label="最高学历">{record.employeeEducation}</Descriptions.Item>
+                      <Descriptions.Item label="毕业院校">{record.employeeCollege}</Descriptions.Item>
+                      <Descriptions.Item label="性别">{record.employeeGender}</Descriptions.Item>
+                      <Descriptions.Item label="理想工作方向" span={4}>
+                        {
+                          record.employeeWillingJob && JSON.parse(record.employeeWillingJob).map((item,index)=>{
+                            return <span style={{marginRight:'5px'}} key={index}>{item}</span>
+                          })
+                        }
+                      </Descriptions.Item>
+                    </Descriptions>
+                  </>
               ),
             },
             actions: {
@@ -253,7 +322,55 @@ export default class Index extends React.Component<any, any>{
               render: (_,record : any ) => {
                 return (
                   <>
-                    <a  onClick={()=>{
+                    <a style={{fontWeight:"bold"}} onClick={ async ()=>{
+                      notification.open({
+                        message: `${record.employeeName}的背调信息`,
+                        duration : null,
+                        placement:'topRight',
+                        style: {
+                          width:700,
+                          height: window.innerHeight - 20,
+                          overflow:'auto'
+                        },
+                        description: <>
+                          <Descriptions className={styles.rateCol} column={2} style={{marginTop: '20px'}}>
+                            <Descriptions.Item style={{verticalAlign: "middle"}} span={2} label="总览" labelStyle={{fontWeight:'bold',fontSize:30}}>
+                              <Radar {...config} />
+                            </Descriptions.Item>
+                          </Descriptions>
+                          <Descriptions title={'1.历史评分记录'} className={styles.rateCol} column={2} style={{marginTop: '20px'}}>
+                            <Descriptions.Item style={{verticalAlign: "middle"}} span={2} label="总分" labelStyle={{fontWeight:'bold',fontSize:30}}>
+                              <Rate disabled allowHalf style={{fontSize:30}} defaultValue={4}/>
+                            </Descriptions.Item>
+                            {
+                              [1, 2, 3, 3, 4, 2, 4, 123, 1, 3, 123, 12, 3, 123, 12, 3, 12, 3, 123].map((item, index) =>
+                                <Descriptions.Item style={{verticalAlign: "middle"}} label="创新能力">
+                                  <Rate disabled allowHalf defaultValue={4}/>
+                                </Descriptions.Item>)
+                            }
+                          </Descriptions>
+
+                          <Descriptions title={'2.上任老板给该员工的推荐信'} className={styles.rateCol} column={1} style={{marginTop: '20px'}}>
+                              <Descriptions.Item style={{verticalAlign: "middle"}}>
+                                <Document
+                                  file={'https://react-fuchuang.oss-cn-zhangjiakou.aliyuncs.com/APP/%E6%8E%A8%E8%8D%90%E4%BF%A1.pdf'} //PDF文件在此
+                                  onLoadSuccess={()=>{}}
+
+                                >
+                                  <Page pageNumber={1} />
+                                </Document>
+                              </Descriptions.Item>
+                          </Descriptions>
+                        </>,
+
+                        onClick: () => {
+                          console.log('Notification Clicked!');
+                        },
+                      });
+
+                    }}  key="invite">历史数据统计</a>
+
+                    <a style={{marginLeft:'15px'}}  onClick={()=>{
                       this.setExpandedRowKeys([record.employeeId]);
                       notification.open({
                         message: `${record.employeeName}的简历信息`,
@@ -267,15 +384,12 @@ export default class Index extends React.Component<any, any>{
                         description: <>
                           <Document
                             file={record.employeeResume} //PDF文件在此
-                            onLoadSuccess={()=>{}}
+                            onLoadSuccess={()=>{
+                            }}
                           >
                             <Page pageNumber={1} />
                           </Document>
                         </>,
-
-                        onClick: () => {
-                          console.log('Notification Clicked!');
-                        },
                       });
 
                     }}>查看Ta的简历</a>
@@ -293,3 +407,5 @@ export default class Index extends React.Component<any, any>{
     )
   }
 }
+
+
