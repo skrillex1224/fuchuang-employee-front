@@ -1,4 +1,4 @@
-import { Avatar, List } from 'antd';
+import {Avatar, Badge, Button, List} from 'antd';
 
 import React from 'react';
 import classNames from 'classnames';
@@ -67,9 +67,6 @@ const NoticeList: React.SFC<NoticeIconTabProps> = ({
             <List.Item
               className={itemCls}
               key={item.key || i}
-              onClick={() => {
-                onClick?.(item);
-              }}
             >
               <List.Item.Meta
                 className={styles.meta}
@@ -77,8 +74,13 @@ const NoticeList: React.SFC<NoticeIconTabProps> = ({
                 title={
                   <div className={styles.title}>
                     {item.title}
-                    {console.log(item.extra,'---------------------------------')}
-                    <div className={styles.extra}>{item.extra}</div>
+                    <div onClick={()=>{
+                      onClick?.(item);
+                    }} className={styles.extra}>
+                      <Button type={"link"}>确认</Button>
+                      <Button  type={"link"}>取消</Button>
+                    </div>
+                    <div style={{marginTop:'6px'}}>{item.extra}</div>
                   </div>
                 }
                 description={
