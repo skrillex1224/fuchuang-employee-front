@@ -1,11 +1,24 @@
 import {action, makeObservable, observable} from "mobx";
-import {deleteOneHireinfo, dismissFormSubmit, getEmployedEmployeeList, getEnterpriseByAccount, getPassedEmployeeList, inviteToEnter, submitHireInfo, switchPost} from "@/apis/enterprise";
+import {deleteOneHireinfo, dismissFormSubmit, getEmployedEmployeeList, getEnterpriseByAccount, getHistoryEnterprise, getPassedEmployeeList, inviteToEnter, submitHireInfo, switchPost} from "@/apis/enterprise";
 
 
 class EnterpriseStore{
     constructor() {
       makeObservable(this)
     }
+
+    //历史任职公司
+    @observable
+    historyEnterpriseList = [];
+
+    @action.bound
+    initializeHistoryEnterprise = async  (empId)=>{
+      try {
+          this.historyEnterpriseList = ( await getHistoryEnterprise({empId})).data
+      } catch (e) {
+      }
+    }
+
 
     //企业个人信息
     @observable

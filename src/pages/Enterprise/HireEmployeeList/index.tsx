@@ -1,16 +1,17 @@
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
 import {observer} from "mobx-react";
-import {Avatar, Button, Checkbox, Descriptions, Divider, Input, notification, Rate, Select, Space, Tag} from "antd";
+import {Avatar, Button, Checkbox, Descriptions, Divider, Input, notification, Rate, Select, Space, Tag, Timeline} from "antd";
 import ProList from "@ant-design/pro-list";
 import ProCard from "@ant-design/pro-card";
 import EnterpriseStore from "@/stores/EnterpriseStore";
 import { Document, Page ,pdfjs} from 'react-pdf';
 import { Spin } from "antd";
-import {FilterOutlined} from "@ant-design/icons/lib";
+import {ClockCircleOutlined, FilterOutlined} from "@ant-design/icons/lib";
 import styles from "@/pages/Hr/InterviewTable/index.less";
 import {Radar,} from "@ant-design/charts";
 import { DataSet } from '@antv/data-set';
+import moment from "moment";
 
 const {Option} = Select;
 
@@ -174,7 +175,6 @@ export default class Index extends React.Component<any, any>{
 
   async  componentDidMount() {
     await this.onFilter();
-
   }
 
 
@@ -323,6 +323,8 @@ export default class Index extends React.Component<any, any>{
                 return (
                   <>
                     <a style={{fontWeight:"bold"}} onClick={ async ()=>{
+                      await EnterpriseStore.initializeHistoryEnterprise(record.employeeId);
+
                       notification.open({
                         message: `${record.employeeName}的背调信息`,
                         duration : null,
@@ -350,7 +352,23 @@ export default class Index extends React.Component<any, any>{
                             }
                           </Descriptions>
 
-                          <Descriptions title={'2.上任老板给该员工的推荐信'} className={styles.rateCol} column={1} style={{marginTop: '20px'}}>
+                          <Descriptions title={'2.员工历史任职情况'} className={styles.rateCol} column={1} style={{marginTop: '20px'}}>
+                            <Descriptions.Item style={{verticalAlign: "middle"}}>
+                              <Timeline pending="现在....." style={{marginTop:'2px',width:500}} mode={'left'}  >
+                                {
+                                  EnterpriseStore.historyEnterpriseList.map((item : any ,index)=>(
+                                      <Timeline.Item key={index} dot={<ClockCircleOutlined style={{ fontSize: '16px' }} />} label={moment(item.interview?.interviewTime).format("YYYY-MM-DD")}>
+                                        入职于 {item.enterprise?.enterpriseName} <br/>
+                                        在职雇主电话: <a>{item.enterprise?.enterprisePhoneNumber}</a> <br/>
+                                        在职雇主姓名: {item.enterprise?.enterpriseCorperationName} <br/>
+                                      </Timeline.Item>
+                                  ))
+                                }
+                              </Timeline>
+                            </Descriptions.Item>
+                          </Descriptions>
+
+                          <Descriptions title={'3.上任老板给该员工的推荐信'} className={styles.rateCol} column={1} style={{marginTop: '20px'}}>
                               <Descriptions.Item style={{verticalAlign: "middle"}}>
                                 <Document
                                   file={'https://react-fuchuang.oss-cn-zhangjiakou.aliyuncs.com/APP/%E6%8E%A8%E8%8D%90%E4%BF%A1.pdf'} //PDF文件在此
@@ -361,6 +379,8 @@ export default class Index extends React.Component<any, any>{
                                 </Document>
                               </Descriptions.Item>
                           </Descriptions>
+
+
                         </>,
 
                         onClick: () => {

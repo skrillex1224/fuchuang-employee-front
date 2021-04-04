@@ -32,3 +32,8 @@ export const switchPost = async  (params)=>{
 export const inviteToEnter = async (params)=>{
   return await request('inviteEmpToEnterprise',"POST",params);
 }
+
+
+export const getHistoryEnterprise = async (params) =>{
+    return await request('getHistoryEnterprise',"GET",params);
+}
