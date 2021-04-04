@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Button, Card, Col, Descriptions, Empty, Input, PageHeader, Rate, Row, Tag} from "antd";
+import {Avatar, Badge, Button, Card, Col, Descriptions, Empty, Input, PageHeader, Rate, Row, Tag} from "antd";
 import EditDrawer  from './EditDrawer'
 
 import styles from './index.less'
@@ -93,12 +93,23 @@ export default class UserCenter extends React.Component<any, any>{
               <ProCard  ghost={true} layout="default" bordered colSpan={16} direction={'column'} gutter={[20,20]}>
                 <PageHeader
                   ghost={false}
-                  title="个人综合评分"
+                  title="个人评分"
                   subTitle={`${currentUser.employeeStar *20}%`}
                   style={{marginBottom:'20px'}}
                 >
                   <Rate value={currentUser.employeeStar *2 >= 5 ? 5 : currentUser.employeeStar * 2 } disabled={true} character={<StarFilled />} style={{ fontSize: 66  }} />
                   <Rate value={currentUser.employeeStar *2  <= 5 ? 0 : currentUser.employeeStar * 2 -5 } disabled={true} character={<StarFilled />} style={{ fontSize: 66  }} />
+
+                  <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} title="评分细则">
+                    {
+                      [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
+                        <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
+                          <Rate disabled allowHalf  value={4}/> {index % 2 ? <Badge style={{backgroundColor:'volcano'}} count={'评分较低'} /> : <Badge style={{backgroundColor:'blue'}} count={'优势特长'} /> }
+                        </Descriptions.Item>)
+                    }
+
+                  </Descriptions>
+
                 </PageHeader>
                 <PageHeader
                   ghost={false}

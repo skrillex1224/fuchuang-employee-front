@@ -13,7 +13,7 @@ export const MethodType = {
 export let host : string;
 
 if (process.env.NODE_ENV !== 'development') {
-  host = 'http://192.168.43.113:8080/';
+  host = 'http://10.1.250.195:8080/';
 } else {
   host = '/api/';
 }
