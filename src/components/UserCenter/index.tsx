@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from "mobx-react";
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Badge, Button, Card, Col, Descriptions, Empty, Input, PageHeader, Rate, Row, Tag, Tooltip} from "antd";
+import {Avatar, Badge, Button, Card, Col, Descriptions, Empty, Input, Modal, PageHeader, Rate, Row, Tag, Tooltip} from "antd";
 import EditDrawer  from './EditDrawer'
 
 import styles from './index.less'
@@ -36,6 +36,24 @@ export default class UserCenter extends React.Component<any, any>{
   showDrawer = ()=>{
       this.setVisible(true);
   }
+
+  handleReaudit = (name)=>{
+      Modal.info({
+          centered:true,
+        title: <>您将要申请复核的信息是<b>{name}</b></>,
+          content:`当前的评级为${4}星`,
+          okText:'确认复核',
+          onOk:()=>{
+            return new Promise(resolve => {
+              setTimeout(()=>{
+                resolve(null);
+              },1000)
+            })
+          },
+          maskClosable:true,
+      })
+  }
+
 
     render() {
       const {visible, type } = this.state;
@@ -100,13 +118,15 @@ export default class UserCenter extends React.Component<any, any>{
                   <Rate  value={currentUser.employeeStar *2 >= 5 ? 5 : currentUser.employeeStar * 2 } disabled={true} character={<SmileOutlined />} style={{ fontSize: 66  }} />
                   <Rate value={currentUser.employeeStar *2  <= 5 ? 0 : currentUser.employeeStar * 2 -5 } disabled={true} character={<SmileOutlined />} style={{ fontSize: 66  }} />
 
-                  <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} title="评分细则">
+                  <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} title={<>
+                     <h3 onClick={()=>this.handleReaudit('总体评分')} >评分细则 <a style={{fontSize:14}}>申请全部复核</a></h3>
+                  </>}>
                     {
                       [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
                         <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
                             <Rate disabled allowHalf  value={4}/> {index % 2 ? <Badge style={{backgroundColor:'volcano'}} count={'评分较低'} /> : <Badge style={{backgroundColor:'blue'}} count={'优势特长'} /> }
                           <Tooltip title={'遭到恶意评分?点击申诉请求复核'}>
-                            <Button type={"link"} >复核</Button>
+                            <Button onClick={()=>this.handleReaudit(item)} type={"link"} >申请复核</Button>
                           </Tooltip>
                         </Descriptions.Item>)
                     }

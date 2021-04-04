@@ -346,10 +346,8 @@ const Login: React.FC<LoginProps> = (props) => {
           }}
         >
           <a onClick={()=>{
-            console.log('before: ',isUser)
             setIsUser(!isUser)
             setType(  !isUser ? 'employee' :  'hr')
-            console.log(isUser);
           }} >{isUser ? '前往管理员登录页' : '我是用户,前往登录'} <RightCircleOutlined /></a>
           <a
             style={{

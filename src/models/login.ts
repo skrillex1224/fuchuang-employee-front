@@ -6,6 +6,7 @@ import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
 import {commonLogout, employeeLogin, enterpriseLogin, hrLogin} from "@/apis/login";
+import {adminLogin} from "@/apis/admin";
 
 export type StateType = {
   status?: 'ok' | 'error';
@@ -45,6 +46,9 @@ const Model: LoginModelType = {
             break;
           case 'hr':
             response = (yield call(hrLogin, payload)).data;
+            break;
+          case 'admin':
+            response = (yield call(adminLogin, payload)).data;
             break;
           default:
             response = undefined;

@@ -37,7 +37,17 @@
                 path: '/enterprise',
                 redirect: '/account/enterpriseCenter',
               },
-
+              {
+                path: '/admin',
+                redirect: '/admin/adminCenter',
+              },
+              {
+                name: '复核中心',
+                icon: 'HomeOutlined',
+                path: '/admin/adminCenter',
+                component: '../pages/admin/index',
+                authority: ['admin']
+              },
               {
                 name: '招聘信息总览',
                 icon: 'HeatMapOutlined',
