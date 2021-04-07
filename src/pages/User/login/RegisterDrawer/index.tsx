@@ -341,7 +341,7 @@ export default  class DrawerForm extends React.Component<any> {
                       <Form.Item
                         name="employeeResume"
                         label="上传简历:"
-                        rules={[{ required: true, message: '请输入您的手机号' },]}
+                        rules={[{ required: true, message: '请上传简历' },]}
                       >
                         <Dragger {...this.employeeUploadProps}  fileList={this.state.empFileList}>
                           <p className="ant-upload-drag-icon">
