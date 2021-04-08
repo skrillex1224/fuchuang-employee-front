@@ -1,4 +1,5 @@
-import {action, makeObservable, observable} from "mobx";
+import {action, makeObservable, observable, runInAction} from "mobx";
+import {getAllRecheckInfos} from "@/apis/admin";
 
 
 class AdminStore{
@@ -6,7 +7,17 @@ class AdminStore{
     makeObservable(this)
   }
 
+  @observable
+  recheckInfos = [];
 
+  @action.bound
+  initializeRecheckInfos = async  ()=>{
+    const recheckInfos = (await getAllRecheckInfos()).data;
+
+    runInAction(()=>{
+       this.recheckInfos = recheckInfos;
+    })
+  }
 
 }
 

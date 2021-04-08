@@ -6,5 +6,5 @@ export const adminLogin = async  (params)=>{
 }
 
 export const getAllRecheckInfos = async ()=>{
-  return await request('getRecheckInfoByEmpId')
+  return await request('getTotalRecheck');
 }
