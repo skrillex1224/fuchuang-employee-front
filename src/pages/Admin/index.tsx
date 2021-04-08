@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Avatar, Button, Card, Carousel, Col, message, Modal, Row, Input, Descriptions, Rate} from "antd";
+import {Avatar, Button, Card, Carousel, Col, message, Modal, Row, Input, Descriptions, Rate, Tooltip} from "antd";
 import styles from './index.less'
 import Meta from "antd/es/card/Meta";
 import AdminStore from "@/stores/AdminStore";
@@ -45,14 +45,18 @@ export default class Index extends React.Component<any, any>{
                         actions={[
                           <div onClick={()=>{
                             Modal.confirm({
-                              title:`请重新评估${item.employee.employeeName}的能力`,
+                              title:<>
+                                <Tooltip title={'重新评估能力后将动态计算对应HR的评分和绩效'} >
+                                  请重新评估{item.employee.employeeName}的能力
+                                </Tooltip>
+                              </>,
                               width:800,
                               content : <>
                                 <Descriptions  className={styles.rateCol}  column={3} style={{width:660}} >
                                   {
                                     [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
                                       <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
-                                        <Rate disabled allowHalf  defaultValue={4}/>
+                                        <Rate allowHalf  defaultValue={4}/>
                                       </Descriptions.Item>)
                                   }
                                 </Descriptions>
@@ -61,8 +65,9 @@ export default class Index extends React.Component<any, any>{
                                 return new Promise(resolve => {
                                   setTimeout(()=>{
                                     resolve(null);
-                                    message.success("操作成功");
-                                  },1000)
+                                    message.success("能力重新评估成功,对应HR绩效已动态更新");
+                                    location.reload();
+                                  },1923)
                                 })
                               }
                             })}}>重新评估该用户星级</div>,
@@ -77,6 +82,7 @@ export default class Index extends React.Component<any, any>{
                                   setTimeout(()=>{
                                     resolve(null);
                                     message.success("操作成功");
+                                    location.reload();
                                   },1000)
                                 })
                               }
