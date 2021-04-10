@@ -44,3 +44,8 @@ export const getCourseList = async  ()=>{
 export const signUpCourse = async (params)=>{
   return await request('signUpCourse','POST',params)
 }
+
+
+export const applyRecheck = async (params)=>{
+   return await request('applyRecheck','POST',params)
+}

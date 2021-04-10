@@ -1,10 +1,23 @@
 import {action, makeObservable, observable} from "mobx";
-import {getAllApplicationInterview, empSubmitResume, getAllHireInfo, getEmpInfo, getHireInfoByEnterName, getEmpInvolvedInterview, getCourseList, signUpCourse} from "@/apis/employee";
+import {getAllApplicationInterview, empSubmitResume, getAllHireInfo, getEmpInfo, getHireInfoByEnterName, getEmpInvolvedInterview, getCourseList, signUpCourse, applyRecheck} from "@/apis/employee";
 
 class EmployeeStore {
   constructor() {
      makeObservable(this)
   }
+
+
+  //申请复核
+  @action.bound
+  recheckApply = async (params)=>{
+    try {
+      await applyRecheck(params);
+    } catch (e) {
+    }
+  }
+
+
+
 
   @action.bound
   chooseCourse = async  (courseId)=>{

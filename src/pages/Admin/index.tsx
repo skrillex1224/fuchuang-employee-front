@@ -7,6 +7,7 @@ import Meta from "antd/es/card/Meta";
 import AdminStore from "@/stores/AdminStore";
 import {BulbOutlined, CommentOutlined, FieldNumberOutlined, HistoryOutlined} from "@ant-design/icons/lib";
 import { List } from "antd";
+import globalAblitity from "@/utils/globalAblitity";
 
 const contentStyle = {
   height: '160px',
@@ -54,9 +55,9 @@ export default class Index extends React.Component<any, any>{
                               content : <>
                                 <Descriptions  className={styles.rateCol}  column={3} style={{width:660}} >
                                   {
-                                    [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
-                                      <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
-                                        <Rate allowHalf  defaultValue={4}/>
+                                    globalAblitity.map((item:any,index)=>
+                                      <Descriptions.Item style={{verticalAlign:"middle"}}  label={item[0]}>
+                                        <Rate allowHalf  defaultValue={item[1]}/>
                                       </Descriptions.Item>)
                                   }
                                 </Descriptions>
@@ -114,9 +115,9 @@ export default class Index extends React.Component<any, any>{
                               />
                               <Descriptions  className={styles.rateCol}  column={3} style={{width:660}} >
                                 {
-                                  [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
-                                    <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
-                                      <Rate disabled allowHalf  defaultValue={4}/>
+                                  globalAblitity.map((item:any,index)=>
+                                    <Descriptions.Item style={{verticalAlign:"middle"}}  label={item[0]}>
+                                      <Rate disabled allowHalf  defaultValue={item[1]}/>
                                     </Descriptions.Item>)
                                 }
                               </Descriptions>

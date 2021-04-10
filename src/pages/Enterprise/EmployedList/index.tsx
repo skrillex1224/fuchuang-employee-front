@@ -9,6 +9,7 @@ import EnterpriseStore from "@/stores/EnterpriseStore";
 import styles from "@/components/UserCenter/index.less";
 import Dragger from "antd/es/upload/Dragger";
 import {host} from "@/utils/promise";
+import globalAblitity from "@/utils/globalAblitity";
 
 const {Option} =Select;
 
@@ -126,9 +127,9 @@ export default class Index extends React.Component<any, any>{
                   <Form.Item required={true} name={'empStar'} label={"请为该员工进行打分:"} rules={[{required:false, message:'请为该员工打分'}]}>
                     <Descriptions className={styles.rateCol} column={1} style={{marginTop:'20px'}} >
                       {
-                        [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
-                          <Descriptions.Item style={{verticalAlign:"middle",display:'flex',alignItems:'center'}}  label="创新能力">
-                            <Rate  allowHalf  defaultValue={4}/>
+                        globalAblitity.map((item:any,index)=>
+                          <Descriptions.Item style={{verticalAlign:"middle",display:'flex',alignItems:'center'}}  label={item[0]}>
+                            <Rate  allowHalf  defaultValue={item[1]}/>
                           </Descriptions.Item>)
                       }
 

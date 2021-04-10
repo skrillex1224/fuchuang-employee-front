@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {PageContainer} from "@ant-design/pro-layout";
-import {Alert, Avatar, Button, Card, Col, Descriptions, Input, message, Modal, Popover, Rate, Row, Space, Spin, Table, Tag} from "antd";
+import {Alert, Avatar, Button, Card, Col, Descriptions, Input, Modal, Popover, Rate, Row, Space, Spin, Table, Tag} from "antd";
 import {CheckCircleFilled, CheckOutlined, ExclamationCircleOutlined, SearchOutlined} from "@ant-design/icons/lib";
 import Highlighter from 'react-highlight-words';
 import ProCard from "@ant-design/pro-card";
@@ -12,6 +12,7 @@ import TextArea from "antd/lib/input/TextArea";
 
 import { Document, Page ,pdfjs} from 'react-pdf';
 import HrStore from "@/stores/HrStore";
+import globalAblitity from "@/utils/globalAblitity";
 
 const { success,confirm,info } = Modal;
 
@@ -145,9 +146,9 @@ export default class Index extends React.Component<any, any>{
               content: (<>
                 <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} >
                   {
-                    [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
-                      <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
-                        <Rate  allowHalf  defaultValue={4}/>
+                    globalAblitity.map((item:any,index)=>
+                      <Descriptions.Item style={{verticalAlign:"middle"}}  label={item[0]}>
+                        <Rate  allowHalf  defaultValue={item[1]}/>
                       </Descriptions.Item>)
                   }
                 </Descriptions>
@@ -189,9 +190,9 @@ export default class Index extends React.Component<any, any>{
             content: (<>
               <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} >
                 {
-                  [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
-                    <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
-                      <Rate  allowHalf  defaultValue={4}/>
+                  globalAblitity.map((item:any,index)=>
+                    <Descriptions.Item style={{verticalAlign:"middle"}}  label={item[0]}>
+                      <Rate  allowHalf  defaultValue={item[1]}/>
                     </Descriptions.Item>)
                 }
               </Descriptions>
@@ -250,7 +251,7 @@ export default class Index extends React.Component<any, any>{
               <Popover style={{width:600}} title={'具体详情'} placement={"right"} content={<>
                 <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} >
                   {
-                    [1,2,3,3,4,,4,123,1,3,123,12,3,123,12,3,12,3,123].map((item,index)=>
+                    globalAblitity.map((item,index)=>
                       <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
                         <Rate  allowHalf  defaultValue={4}/>
                       </Descriptions.Item>)
