@@ -6,6 +6,7 @@ import {observer} from "mobx-react";
 import HrStore from "@/stores/HrStore";
 import moment from "moment";
 import {CheckCircleFilled} from "@ant-design/icons/lib";
+import globalAblitity from "@/utils/globalAblitity";
 
 
 @observer
@@ -66,9 +67,9 @@ export default class Index extends React.Component<any, any>{
                                 content: (<>
                                   <Descriptions className={styles.rateCol} column={2} style={{marginTop: '20px'}}>
                                     {
-                                      [1, 2, 3, 3, 4, 2, 4, 123, 1, 3, 123, 12, 3, 123, 12, 3, 12, 3, 123].map((item, index) =>
-                                        <Descriptions.Item style={{verticalAlign: "middle"}} label="创新能力">
-                                          <Rate allowHalf defaultValue={4}/>
+                                      globalAblitity.slice(12).map((item:any , index) =>
+                                        <Descriptions.Item style={{verticalAlign: "middle"}} label={item[0]}>
+                                          <Rate allowHalf defaultValue={item[1]}/>
                                         </Descriptions.Item>)
                                     }
                                   </Descriptions>
@@ -98,9 +99,9 @@ export default class Index extends React.Component<any, any>{
                             content: (<>
                               <Descriptions className={styles.rateCol} column={2} style={{marginTop: '20px'}}>
                                 {
-                                  [1, 2, 3, 3, 4, , 4, 123, 1, 3, 123, 12, 3, 123, 12, 3, 12, 3, 123].map((item, index) =>
-                                    <Descriptions.Item style={{verticalAlign: "middle"}} label="创新能力">
-                                      <Rate allowHalf defaultValue={4}/>
+                                  globalAblitity.slice(12).map((item:any , index) =>
+                                    <Descriptions.Item style={{verticalAlign: "middle"}} label={item[0]}>
+                                      <Rate allowHalf defaultValue={item[1]}/>
                                     </Descriptions.Item>)
                                 }
                               </Descriptions>

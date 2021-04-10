@@ -127,7 +127,7 @@ export default class Index extends React.Component<any, any>{
                   <Form.Item required={true} name={'empStar'} label={"请为该员工进行打分:"} rules={[{required:false, message:'请为该员工打分'}]}>
                     <Descriptions className={styles.rateCol} column={1} style={{marginTop:'20px'}} >
                       {
-                        globalAblitity.map((item:any,index)=>
+                        globalAblitity.slice(0,8).map((item:any,index)=>
                           <Descriptions.Item style={{verticalAlign:"middle",display:'flex',alignItems:'center'}}  label={item[0]}>
                             <Rate  allowHalf  defaultValue={item[1]}/>
                           </Descriptions.Item>)

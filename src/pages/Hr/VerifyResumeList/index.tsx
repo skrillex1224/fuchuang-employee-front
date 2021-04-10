@@ -131,7 +131,7 @@ export default class Index extends React.Component<any, any>{
         content: (<InterviewForm getFormValues={this.getChildMethod} current={current}/>),
         okText: '通知他',
         cancelText:'取消',
-        width:600,
+        width:660,
         okCancel:true,
         onCancel() {
         },
@@ -141,12 +141,12 @@ export default class Index extends React.Component<any, any>{
 
             success({
               title: <>为他的简历评分: </>,
-              width:600,
+              width:660,
               icon: <CheckCircleFilled/>,
               content: (<>
                 <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} >
                   {
-                    globalAblitity.map((item:any,index)=>
+                    globalAblitity.slice(8,12).map((item:any,index)=>
                       <Descriptions.Item style={{verticalAlign:"middle"}}  label={item[0]}>
                         <Rate  allowHalf  defaultValue={item[1]}/>
                       </Descriptions.Item>)
@@ -177,7 +177,7 @@ export default class Index extends React.Component<any, any>{
       confirm({
         title: '请填写拒绝回执并确认:',
         icon: <ExclamationCircleOutlined />,
-        width:600,
+        width:660,
         content: <TextArea   onChange={(event)=>{
           this.setState({dismissReason : event.target.value})
         }} placeholder={'未达到面试的目标公司最低要求'} showCount={true} allowClear bordered={true} rows={4}/>,
@@ -186,7 +186,7 @@ export default class Index extends React.Component<any, any>{
           success({
             title: <>为他的简历评分: </>,
             icon: <CheckCircleFilled/>,
-            width:600,
+            width:660,
             content: (<>
               <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} >
                 {
@@ -251,9 +251,9 @@ export default class Index extends React.Component<any, any>{
               <Popover style={{width:600}} title={'具体详情'} placement={"right"} content={<>
                 <Descriptions className={styles.rateCol} column={2} style={{marginTop:'20px'}} >
                   {
-                    globalAblitity.map((item,index)=>
-                      <Descriptions.Item style={{verticalAlign:"middle"}}  label="创新能力">
-                        <Rate  allowHalf  defaultValue={4}/>
+                    globalAblitity.map((item:any,index)=>
+                      <Descriptions.Item style={{verticalAlign:"middle"}}  label={item[0]}>
+                        <Rate  allowHalf disabled  defaultValue={item[1]}/>
                       </Descriptions.Item>)
                   }
                 </Descriptions>
