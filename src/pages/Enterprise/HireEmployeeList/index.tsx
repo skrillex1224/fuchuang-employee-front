@@ -12,6 +12,7 @@ import styles from "@/pages/Hr/InterviewTable/index.less";
 import {Radar,} from "@ant-design/charts";
 import { DataSet } from '@antv/data-set';
 import moment from "moment";
+import globalAblitity from "@/utils/globalAblitity";
 
 const {Option} = Select;
 
@@ -345,9 +346,9 @@ export default class Index extends React.Component<any, any>{
                               <Rate disabled allowHalf style={{fontSize:30}} defaultValue={4}/>
                             </Descriptions.Item>
                             {
-                              [1, 2, 3, 3, 4, 2, 4, 123, 1, 3, 123, 12, 3, 123, 12, 3, 12, 3, 123].map((item, index) =>
-                                <Descriptions.Item style={{verticalAlign: "middle"}} label="创新能力">
-                                  <Rate disabled allowHalf defaultValue={4}/>
+                              globalAblitity.map((item, index) =>
+                                <Descriptions.Item style={{verticalAlign: "middle"}} label={item[0]}>
+                                  <Rate disabled allowHalf defaultValue={item[1]}/>
                                 </Descriptions.Item>)
                             }
                           </Descriptions>
