@@ -18,15 +18,15 @@ const {Option} = Select;
 
 
 const data = [
-  {item: "Design", score: 70},
-  {item: "Design1", score: 70},
-  {item: "2", score: 70},
-  {item: "Design3", score: 70},
-  {item: "Design4", score: 70},
-  {item: "Design5", score: 70},
-  {item: "Design6", score: 70},
-  {item: "Design7", score: 70},
-  {item: "Design8", score: 70},
+  {item: "跨界学习能力", score: 70},
+  {item: "写作能力", score: 80},
+  {item: "专业技能掌握度", score: 80},
+  {item: "项目经验", score: 80},
+  {item: "技术栈丰富程度", score: 60},
+  {item: "逻辑推理能力", score: 80},
+  {item: "编程能力", score: 80},
+  {item: "综合潜力", score: 40},
+  {item: "英文水平能力", score: 70},
 ]
 
 
